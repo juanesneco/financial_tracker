@@ -1,0 +1,20 @@
+{
+  "name": "Financial Tracker",
+  "short_name": "Tracker",
+  "description": "Clarity in every transaction. Track your expenses with precision.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FAFAF8",
+  "theme_color": "#4A7C6F",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["finance", "productivity"],
+  "lang": "en"
+}
