@@ -1,6 +1,8 @@
 import { Sidebar } from "@/components/layout/Sidebar";
 import { MobileNav } from "@/components/layout/MobileNav";
 
+export const dynamic = "force-dynamic";
+
 export default function AppLayout({
   children,
 }: {

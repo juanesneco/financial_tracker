@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Receipt, BarChart3, Settings, Wallet } from "lucide-react";
+import { Home, Receipt, BarChart3, Settings, Wallet, Palette } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 
@@ -12,6 +12,7 @@ const navItems = [
   { href: "/expenses", icon: Receipt, label: "Expenses" },
   { href: "/statistics", icon: BarChart3, label: "Stats" },
   { href: "/settings", icon: Settings, label: "Settings" },
+  { href: "/design", icon: Palette, label: "Design Kit" },
 ];
 
 export function Sidebar() {
