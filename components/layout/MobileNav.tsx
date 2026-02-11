@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Receipt, Plus, BarChart3, Settings } from "lucide-react";
+import { Home, Receipt, Plus, BarChart3, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -10,7 +10,7 @@ const navItems = [
   { href: "/expenses", icon: Receipt, label: "Expenses" },
   { href: "/add", icon: Plus, label: "Add", isAction: true },
   { href: "/statistics", icon: BarChart3, label: "Stats" },
-  { href: "/settings", icon: Settings, label: "Settings" },
+  { href: "/settings", icon: MoreHorizontal, label: "More" },
 ];
 
 export function MobileNav() {

@@ -19,18 +19,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { format } from "date-fns";
-
-interface Category {
-  id: string;
-  name: string;
-  icon: string;
-}
-
-interface Subcategory {
-  id: string;
-  category_id: string;
-  name: string;
-}
+import type { Category, Subcategory, Card as CardType } from "@/lib/types";
 
 export default function AddExpensePage() {
   const router = useRouter();
@@ -38,35 +27,44 @@ export default function AddExpensePage() {
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
+  const [cards, setCards] = useState<CardType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Form state
   const [amount, setAmount] = useState("");
+  const [title, setTitle] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [subcategoryId, setSubcategoryId] = useState("");
   const [date, setDate] = useState(format(new Date(), "yyyy-MM-dd"));
   const [note, setNote] = useState("");
+  const [comments, setComments] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState<string>("");
+  const [cardId, setCardId] = useState("");
   const [receiptFile, setReceiptFile] = useState<File | null>(null);
   const [receiptPreview, setReceiptPreview] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { data: cats } = await (supabase as any)
+        const { data: cats } = await supabase
           .from("ft_categories")
           .select("*")
           .order("display_order");
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { data: subs } = await (supabase as any)
+        const { data: subs } = await supabase
           .from("ft_subcategories")
           .select("*")
           .order("display_order");
 
-        setCategories(cats || []);
-        setSubcategories(subs || []);
+        const { data: userCards } = await supabase
+          .from("ft_cards")
+          .select("*")
+          .order("bank");
+
+        setCategories((cats || []) as Category[]);
+        setSubcategories((subs || []) as Subcategory[]);
+        setCards((userCards || []) as CardType[]);
       } finally {
         setIsLoading(false);
       }
@@ -133,8 +131,7 @@ export default function AddExpensePage() {
       }
 
       // Insert expense
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { error: insertError } = await (supabase as any)
+      const { error: insertError } = await supabase
         .from("ft_expenses")
         .insert({
           user_id: user.id,
@@ -142,7 +139,11 @@ export default function AddExpensePage() {
           category_id: categoryId,
           subcategory_id: subcategoryId || null,
           date,
+          title: title || null,
           note: note || null,
+          comments: comments || null,
+          payment_method: paymentMethod || null,
+          card_id: cardId || null,
           receipt_url: receiptUrl,
         });
 
@@ -198,6 +199,18 @@ export default function AddExpensePage() {
               />
             </div>
 
+            {/* Title */}
+            <div className="space-y-2">
+              <Label htmlFor="title">Title</Label>
+              <Input
+                id="title"
+                placeholder="What was this for?"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                disabled={isSubmitting}
+              />
+            </div>
+
             {/* Category */}
             <div className="space-y-2">
               <Label>Category *</Label>
@@ -215,7 +228,7 @@ export default function AddExpensePage() {
                 <SelectContent>
                   {categories.map((cat) => (
                     <SelectItem key={cat.id} value={cat.id}>
-                      {cat.icon} {cat.name}
+                      {cat.emoji || cat.icon} {cat.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -237,7 +250,51 @@ export default function AddExpensePage() {
                   <SelectContent>
                     {filteredSubcategories.map((sub) => (
                       <SelectItem key={sub.id} value={sub.id}>
-                        {sub.name}
+                        {sub.emoji ? `${sub.emoji} ` : ""}{sub.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
+            {/* Payment Method */}
+            <div className="space-y-2">
+              <Label>Payment Method</Label>
+              <Select
+                value={paymentMethod}
+                onValueChange={(val) => {
+                  setPaymentMethod(val);
+                  if (val !== "card") setCardId("");
+                }}
+                disabled={isSubmitting}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Optional" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="card">Card</SelectItem>
+                  <SelectItem value="cash">Cash</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Card Selector (only if payment method is card) */}
+            {paymentMethod === "card" && cards.length > 0 && (
+              <div className="space-y-2">
+                <Label>Card</Label>
+                <Select
+                  value={cardId}
+                  onValueChange={setCardId}
+                  disabled={isSubmitting}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a card" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {cards.map((card) => (
+                      <SelectItem key={card.id} value={card.id}>
+                        {card.label || `${card.bank} ${card.last_four ? `(${card.last_four})` : ""}`}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -263,9 +320,22 @@ export default function AddExpensePage() {
               <Label htmlFor="note">Note</Label>
               <Textarea
                 id="note"
-                placeholder="What was this for?"
+                placeholder="Short description"
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
+                disabled={isSubmitting}
+                rows={2}
+              />
+            </div>
+
+            {/* Comments */}
+            <div className="space-y-2">
+              <Label htmlFor="comments">Comments</Label>
+              <Textarea
+                id="comments"
+                placeholder="Additional details"
+                value={comments}
+                onChange={(e) => setComments(e.target.value)}
                 disabled={isSubmitting}
                 rows={2}
               />

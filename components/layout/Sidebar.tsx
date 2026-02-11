@@ -3,16 +3,20 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Receipt, BarChart3, Settings, Wallet, Palette } from "lucide-react";
+import { Home, Receipt, BarChart3, Settings, Wallet, CreditCard, RefreshCw, Target, DollarSign, ArrowDownCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 
 const navItems = [
   { href: "/", icon: Home, label: "Home" },
   { href: "/expenses", icon: Receipt, label: "Expenses" },
+  { href: "/cards", icon: CreditCard, label: "Cards" },
+  { href: "/subscriptions", icon: RefreshCw, label: "Subscriptions" },
+  { href: "/budgets", icon: Target, label: "Budgets" },
+  { href: "/income", icon: DollarSign, label: "Income" },
+  { href: "/deposits", icon: ArrowDownCircle, label: "Deposits" },
   { href: "/statistics", icon: BarChart3, label: "Stats" },
   { href: "/settings", icon: Settings, label: "Settings" },
-  { href: "/design", icon: Palette, label: "Design Kit" },
 ];
 
 export function Sidebar() {
