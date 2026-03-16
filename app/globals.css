@@ -242,7 +242,22 @@
     scrollbar-width: none;
   }
 
-  .scrollbar-hide::-webkit-scrollbar {
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+  /* Currency/number display: proper containment inside cards, no cropped numbers */
+  .currency-display {
+    display: inline-block;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .currency-display::-webkit-scrollbar {
     display: none;
   }
 }

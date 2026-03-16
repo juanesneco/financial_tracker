@@ -248,22 +248,28 @@ export default function StatisticsPage() {
             </div>
 
             {/* Yearly summary */}
-            <Card>
-              <CardContent className="pt-6">
-                <div className="grid grid-cols-3 gap-4 text-center">
-                  <div>
+            <Card className="min-w-0 overflow-hidden">
+              <CardContent className="pt-6 min-w-0">
+                <div className="grid grid-cols-3 gap-4 min-w-0 text-center">
+                  <div className="min-w-0 overflow-hidden">
                     <p className="text-xs text-muted-foreground mb-1">Income</p>
-                    <p className="text-sm md:text-lg font-semibold text-emerald-600 truncate">{formatCurrency(yearTotalIncome)}</p>
+                    <div className="min-w-0 w-full overflow-hidden">
+                      <p className="currency-display text-xs sm:text-sm md:text-lg font-semibold text-emerald-600">{formatCurrency(yearTotalIncome)}</p>
+                    </div>
                   </div>
-                  <div>
+                  <div className="min-w-0 overflow-hidden">
                     <p className="text-xs text-muted-foreground mb-1">Expenses</p>
-                    <p className="text-sm md:text-lg font-semibold text-red-500 truncate">{formatCurrency(yearTotalExpenses)}</p>
+                    <div className="min-w-0 w-full overflow-hidden">
+                      <p className="currency-display text-xs sm:text-sm md:text-lg font-semibold text-red-500">{formatCurrency(yearTotalExpenses)}</p>
+                    </div>
                   </div>
-                  <div>
+                  <div className="min-w-0 overflow-hidden">
                     <p className="text-xs text-muted-foreground mb-1">Net</p>
-                    <p className={`text-sm md:text-lg font-semibold truncate ${yearNet >= 0 ? "text-emerald-600" : "text-red-500"}`}>
-                      {yearNet >= 0 ? "+" : ""}{formatCurrency(yearNet)}
-                    </p>
+                    <div className="min-w-0 w-full overflow-hidden">
+                      <p className={`currency-display text-xs sm:text-sm md:text-lg font-semibold ${yearNet >= 0 ? "text-emerald-600" : "text-red-500"}`}>
+                        {yearNet >= 0 ? "+" : ""}{formatCurrency(yearNet)}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -297,6 +303,7 @@ export default function StatisticsPage() {
             <Card>
               <CardContent className="pt-6">
                 <h3 className="font-serif text-lg font-semibold mb-4">Monthly Breakdown</h3>
+                <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -332,18 +339,19 @@ export default function StatisticsPage() {
                   <TableFooter>
                     <TableRow>
                       <TableCell className="font-semibold text-xs md:text-sm">Total</TableCell>
-                      <TableCell className="text-right tabular-nums font-semibold text-emerald-600 text-xs md:text-sm">
+                      <TableCell className="text-right tabular-nums font-semibold text-emerald-600 text-xs md:text-sm min-w-0 whitespace-nowrap">
                         {formatCurrency(yearTotalIncome)}
                       </TableCell>
-                      <TableCell className="text-right tabular-nums font-semibold text-red-500 text-xs md:text-sm">
+                      <TableCell className="text-right tabular-nums font-semibold text-red-500 text-xs md:text-sm min-w-0 whitespace-nowrap">
                         {formatCurrency(yearTotalExpenses)}
                       </TableCell>
-                      <TableCell className={`text-right tabular-nums font-semibold text-xs md:text-sm ${yearNet >= 0 ? "text-emerald-600" : "text-red-500"}`}>
+                      <TableCell className={`text-right tabular-nums font-semibold text-xs md:text-sm min-w-0 whitespace-nowrap ${yearNet >= 0 ? "text-emerald-600" : "text-red-500"}`}>
                         {yearNet >= 0 ? "+" : ""}{formatCurrency(yearNet)}
                       </TableCell>
                     </TableRow>
                   </TableFooter>
                 </Table>
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -382,10 +390,12 @@ export default function StatisticsPage() {
           </div>
 
           {/* Total */}
-          <Card>
-            <CardContent className="pt-6 text-center">
+          <Card className="min-w-0 overflow-hidden">
+            <CardContent className="pt-6 text-center min-w-0">
               <p className="text-sm text-muted-foreground mb-1">Total Expenses</p>
-              <p className="text-3xl font-serif font-semibold text-primary">{formatCurrency(monthTotal)}</p>
+              <div className="min-w-0 w-full overflow-hidden">
+                <p className="currency-display text-xl sm:text-2xl md:text-3xl font-serif font-semibold text-primary">{formatCurrency(monthTotal)}</p>
+              </div>
               <p className="text-xs text-muted-foreground mt-1">{expenses.length} transactions</p>
             </CardContent>
           </Card>
@@ -420,13 +430,13 @@ export default function StatisticsPage() {
                 {/* Legend */}
                 <div className="grid grid-cols-2 gap-2 mt-4">
                   {categoryTotals.map((ct, i) => (
-                    <div key={ct.category.id} className="flex items-center gap-2">
+                    <div key={ct.category.id} className="flex items-center gap-2 min-w-0">
                       <div
                         className="w-3 h-3 rounded-full flex-shrink-0"
                         style={{ backgroundColor: CHART_COLORS[i % CHART_COLORS.length] }}
                       />
-                      <span className="text-xs text-muted-foreground truncate">{ct.category.name}</span>
-                      <span className="text-xs font-medium ml-auto">{formatCurrency(ct.total)}</span>
+                      <span className="text-xs text-muted-foreground truncate min-w-0">{ct.category.name}</span>
+                      <span className="currency-display text-xs font-medium ml-auto min-w-0">{formatCurrency(ct.total)}</span>
                     </div>
                   ))}
                 </div>
@@ -468,12 +478,12 @@ export default function StatisticsPage() {
                     const percentage = monthTotal > 0 ? (ct.total / monthTotal) * 100 : 0;
                     return (
                       <div key={ct.category.id} className="space-y-1">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="flex items-center gap-2">
-                            <span>{ct.category.emoji || ct.category.icon}</span>
-                            <span className="font-medium">{ct.category.name}</span>
+                        <div className="flex items-center justify-between text-sm min-w-0 gap-2">
+                          <span className="flex items-center gap-2 min-w-0 truncate">
+                            <span className="shrink-0">{ct.category.emoji || ct.category.icon}</span>
+                            <span className="font-medium truncate">{ct.category.name}</span>
                           </span>
-                          <span className="tabular-nums">{formatCurrency(ct.total)}</span>
+                          <span className="currency-display shrink-0">{formatCurrency(ct.total)}</span>
                         </div>
                         <div className="w-full bg-muted rounded-full h-1.5">
                           <div

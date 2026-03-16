@@ -206,8 +206,8 @@ export default function DashboardPage() {
             </h2>
           </div>
 
-          {/* Quick Actions — 2 buttons */}
-          <div className="fade-in grid grid-cols-2 gap-3">
+          {/* Quick Actions — desktop only (mobile uses bottom nav + button) */}
+          <div className="fade-in hidden lg:grid grid-cols-2 gap-3">
             <button onClick={() => handleAddClick("expense")} className="block text-left">
               <Card className="hover:bg-muted/50 transition-colors transition-transform duration-200 hover:-translate-y-0.5 cursor-pointer">
                 <CardContent className="pt-5 pb-4 flex flex-col items-center gap-2">
@@ -238,29 +238,35 @@ export default function DashboardPage() {
           </div>
 
           {/* Summary Cards */}
-          <div className="fade-in fade-in-delay-1 grid grid-cols-3 gap-3">
-            <Card>
-              <CardContent className="pt-5 pb-4">
+          <div className="fade-in fade-in-delay-1 grid grid-cols-3 gap-3 min-w-0">
+            <Card className="min-w-0 overflow-hidden">
+              <CardContent className="pt-5 pb-4 min-w-0">
                 <p className="text-xs text-muted-foreground mb-1">Income</p>
-                <p className="text-sm md:text-xl font-serif font-semibold text-emerald-600 truncate">
-                  {formatCurrency(incomeTotal)}
-                </p>
+                <div className="min-w-0 w-full overflow-hidden">
+                  <p className="currency-display text-xs sm:text-sm md:text-lg font-serif font-semibold text-emerald-600">
+                    {formatCurrency(incomeTotal)}
+                  </p>
+                </div>
               </CardContent>
             </Card>
-            <Card>
-              <CardContent className="pt-5 pb-4">
+            <Card className="min-w-0 overflow-hidden">
+              <CardContent className="pt-5 pb-4 min-w-0">
                 <p className="text-xs text-muted-foreground mb-1">Expenses</p>
-                <p className="text-sm md:text-xl font-serif font-semibold text-red-500 truncate">
-                  {formatCurrency(monthlyTotal)}
-                </p>
+                <div className="min-w-0 w-full overflow-hidden">
+                  <p className="currency-display text-xs sm:text-sm md:text-lg font-serif font-semibold text-red-500">
+                    {formatCurrency(monthlyTotal)}
+                  </p>
+                </div>
               </CardContent>
             </Card>
-            <Card className={incomeTotal - monthlyTotal >= 0 ? "border-emerald-200 dark:border-emerald-800" : "border-red-200 dark:border-red-800"}>
-              <CardContent className="pt-5 pb-4">
+            <Card className={`min-w-0 overflow-hidden ${incomeTotal - monthlyTotal >= 0 ? "border-emerald-200 dark:border-emerald-800" : "border-red-200 dark:border-red-800"}`}>
+              <CardContent className="pt-5 pb-4 min-w-0">
                 <p className="text-xs text-muted-foreground mb-1">Net</p>
-                <p className={`text-sm md:text-xl font-serif font-semibold truncate ${incomeTotal - monthlyTotal >= 0 ? "text-emerald-600" : "text-red-500"}`}>
-                  {incomeTotal - monthlyTotal >= 0 ? "+" : ""}{formatCurrency(incomeTotal - monthlyTotal)}
-                </p>
+                <div className="min-w-0 w-full overflow-hidden">
+                  <p className={`currency-display text-xs sm:text-sm md:text-lg font-serif font-semibold ${incomeTotal - monthlyTotal >= 0 ? "text-emerald-600" : "text-red-500"}`}>
+                    {incomeTotal - monthlyTotal >= 0 ? "+" : ""}{formatCurrency(incomeTotal - monthlyTotal)}
+                  </p>
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -270,15 +276,17 @@ export default function DashboardPage() {
             {/* Category Breakdown */}
             {categoryTotals.length > 0 && (
               <div className="fade-in fade-in-delay-2">
-                <h3 className="text-[0.8rem] uppercase tracking-[0.25em] font-semibold mb-3 text-primary font-sans">By Category</h3>
-                <div className="grid grid-cols-2 gap-3">
+                <h3 className="text-[0.8rem] uppercase tracking-[0.25em] font-semibold mb-3 text-primary font-sans">By category</h3>
+                <div className="grid grid-cols-2 gap-3 min-w-0">
                   {categoryTotals.slice(0, 6).map(({ category, total, count }) => (
-                    <Card key={category.id} className="py-3">
-                      <CardContent className="flex items-center gap-3">
-                        <span className="text-xl">{category.emoji || category.icon}</span>
-                        <div className="min-w-0 flex-1">
-                          <p className="text-xs text-muted-foreground truncate">{category.name}</p>
-                          <p className="font-semibold text-sm">{formatCurrency(total)}</p>
+                    <Card key={category.id} className="py-3 min-w-0 overflow-hidden">
+                      <CardContent className="flex items-center gap-3 min-w-0">
+                        <span className="text-xl shrink-0">{category.emoji || category.icon}</span>
+                        <div className="min-w-0 flex-1 overflow-hidden">
+                          <p className="text-xs text-muted-foreground line-clamp-2 break-words">{category.name}</p>
+                          <div className="min-w-0 w-full overflow-hidden">
+                            <p className="currency-display font-semibold text-sm">{formatCurrency(total)}</p>
+                          </div>
                           <p className="text-[10px] text-muted-foreground">{count} items</p>
                         </div>
                       </CardContent>
@@ -292,7 +300,7 @@ export default function DashboardPage() {
             <div className="fade-in fade-in-delay-2">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-[0.8rem] uppercase tracking-[0.25em] font-semibold text-primary font-sans">Recent Expenses</h3>
-                <Button variant="ghost" size="sm" onClick={() => handleAddClick("expense")} className="gap-1">
+                <Button variant="ghost" size="sm" onClick={() => handleAddClick("expense")} className="hidden lg:inline-flex gap-1">
                   <Plus size={16} /> Add
                 </Button>
               </div>

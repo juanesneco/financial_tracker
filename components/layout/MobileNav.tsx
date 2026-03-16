@@ -70,7 +70,7 @@ export function MobileNav() {
   return (
     <>
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/70 border-t border-border/50 z-50 safe-area-bottom">
-        <div className="flex justify-around items-end h-16 px-2 pb-2">
+        <div className="flex justify-around items-center h-14 px-2 py-2">
           {bottomNavItems.map((item) => {
             const isActive = item.href === "/"
               ? pathname === "/"
@@ -108,7 +108,7 @@ export function MobileNav() {
                   )}
                   <button
                     onClick={() => setAddMenuOpen(!addMenuOpen)}
-                    className="flex flex-col items-center justify-center relative -mt-7"
+                    className="flex flex-col items-center justify-center relative -mt-4"
                   >
                     <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-xl ring-4 ring-background/90">
                       <item.icon size={24} className="text-primary-foreground" />

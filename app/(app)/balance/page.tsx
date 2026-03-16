@@ -217,8 +217,8 @@ export default function BalancePage() {
       <Header title="Balance Sheet" />
       <main className="flex-1 overflow-y-auto">
         <div className="max-w-2xl lg:max-w-5xl mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
-          {/* Action buttons */}
-          <div className="flex gap-3">
+          {/* Action buttons — desktop only (mobile uses bottom nav + button) */}
+          <div className="hidden lg:flex gap-3">
             <Button onClick={() => handleAddClick("expense")} variant="outline" className="gap-2">
               <Receipt size={16} /> Add Expense
             </Button>
@@ -235,35 +235,41 @@ export default function BalancePage() {
           </div>
 
           {/* Summary Cards */}
-          <div className="grid grid-cols-3 gap-3 fade-in">
-            <Card>
-              <CardContent className="pt-5 pb-4">
+          <div className="grid grid-cols-3 gap-3 min-w-0 fade-in">
+            <Card className="min-w-0 overflow-hidden">
+              <CardContent className="pt-5 pb-4 min-w-0">
                 <div className="flex items-center gap-1.5 mb-1">
                   <TrendingUp size={14} className="text-emerald-600" />
                   <p className="text-xs text-muted-foreground">Income</p>
                 </div>
-                <p className="text-lg md:text-xl font-serif font-semibold text-emerald-600">
-                  {formatCurrency(totalIncome)}
-                </p>
+                <div className="min-w-0 w-full overflow-hidden">
+                  <p className="currency-display text-xs sm:text-sm md:text-lg font-serif font-semibold text-emerald-600">
+                    {formatCurrency(totalIncome)}
+                  </p>
+                </div>
               </CardContent>
             </Card>
-            <Card>
-              <CardContent className="pt-5 pb-4">
+            <Card className="min-w-0 overflow-hidden">
+              <CardContent className="pt-5 pb-4 min-w-0">
                 <div className="flex items-center gap-1.5 mb-1">
                   <TrendingDown size={14} className="text-red-500" />
                   <p className="text-xs text-muted-foreground">Expenses</p>
                 </div>
-                <p className="text-lg md:text-xl font-serif font-semibold text-red-500">
-                  {formatCurrency(totalExpenses)}
-                </p>
+                <div className="min-w-0 w-full overflow-hidden">
+                  <p className="currency-display text-xs sm:text-sm md:text-lg font-serif font-semibold text-red-500">
+                    {formatCurrency(totalExpenses)}
+                  </p>
+                </div>
               </CardContent>
             </Card>
-            <Card className={netBalance >= 0 ? "border-emerald-200 dark:border-emerald-800" : "border-red-200 dark:border-red-800"}>
-              <CardContent className="pt-5 pb-4">
+            <Card className={`min-w-0 overflow-hidden ${netBalance >= 0 ? "border-emerald-200 dark:border-emerald-800" : "border-red-200 dark:border-red-800"}`}>
+              <CardContent className="pt-5 pb-4 min-w-0">
                 <p className="text-xs text-muted-foreground mb-1">Net</p>
-                <p className={`text-lg md:text-xl font-serif font-semibold ${netBalance >= 0 ? "text-emerald-600" : "text-red-500"}`}>
-                  {netBalance >= 0 ? "+" : ""}{formatCurrency(netBalance)}
-                </p>
+                <div className="min-w-0 w-full overflow-hidden">
+                  <p className={`currency-display text-xs sm:text-sm md:text-lg font-serif font-semibold ${netBalance >= 0 ? "text-emerald-600" : "text-red-500"}`}>
+                    {netBalance >= 0 ? "+" : ""}{formatCurrency(netBalance)}
+                  </p>
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -316,20 +322,24 @@ export default function BalancePage() {
                 </SelectContent>
               </Select>
 
-              <Input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="w-[140px]"
-                placeholder="From"
-              />
-              <Input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="w-[140px]"
-                placeholder="To"
-              />
+              <div className="flex flex-col gap-1">
+                <span className="text-xs text-muted-foreground">From</span>
+                <Input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="w-[140px]"
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <span className="text-xs text-muted-foreground">To</span>
+                <Input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  className="w-[140px]"
+                />
+              </div>
             </div>
 
             <p className="text-xs text-muted-foreground">
