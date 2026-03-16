@@ -1,0 +1,12 @@
+🔒 Row ID,time/timeframe,time/year,card/type,ledger/type,ledger/color,ledger/payment_method,ledger/currency,subscriptions/status_text,subscriptions/status_HEX,subscriptions/status_image
+CKJxmknHQUe9.KOhpR6O1g,Today,2022,Debit,Abono,#4FB9F4,Card,MXN,Active,#355e3b,"data:image/svg+xml;utf8,
+    <svg xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" viewBox=""0 0 200 200"" xml:space=""preserve"" height=""200px"" width=""200px"">
+      <rect width=""200"" height=""200"" style=""fill:%23355e3b;"" />
+    </svg>"
+K5eO0thHSHS0RsQrVLHioA,This Week,2023,Credit,Ivonne,#FE9800,Cash,USD,Not Active,#8B0000,"data:image/svg+xml;utf8,
+    <svg xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" viewBox=""0 0 200 200"" xml:space=""preserve"" height=""200px"" width=""200px"">
+      <rect width=""200"" height=""200"" style=""fill:%238b0000;"" />
+    </svg>"
+s4tXOjORS02xcZB8TMT2DA,This Month,2024,,Juanes,#8B0000,,,,,
+38KeOxcxTJ2q8Pfe7Ht3.Q,This Year,2025,,,,,,,,
+HR3oHdwST-qAC04KwnaFEg,Select date range,2026,,,,,,,,

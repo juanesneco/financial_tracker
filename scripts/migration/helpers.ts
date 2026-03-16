@@ -22,7 +22,7 @@ export const supabaseAdmin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
 
 // ─── CSV Data Directory ───────────────────────────────────────────────────────
 
-export const CSV_DIR = path.resolve(__dirname, "../../../financial_os/glide_data");
+export const CSV_DIR = path.resolve(__dirname, "glide_data");
 
 // ─── Mapping Store ────────────────────────────────────────────────────────────
 

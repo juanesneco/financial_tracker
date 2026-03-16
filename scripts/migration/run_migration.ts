@@ -24,6 +24,8 @@ import { migrateDeposits } from "./05_migrate_deposits";
 import { migrateSubscriptions } from "./06_migrate_subscriptions";
 import { migrateBudgets } from "./07_migrate_budgets";
 import { migrateIncomeSources } from "./08_migrate_income_sources";
+import { migrateIncome } from "./09_migrate_income";
+import { migrateImages } from "./10_migrate_images";
 import { supabaseAdmin } from "./helpers";
 
 async function runValidation() {
@@ -77,6 +79,12 @@ async function runValidation() {
     .select("*", { count: "exact", head: true });
   console.log(`  Income Sources: ${incomeSourceCount}`);
 
+  // Count income records
+  const { count: incomeRecordCount } = await supabaseAdmin
+    .from("ft_income_records")
+    .select("*", { count: "exact", head: true });
+  console.log(`  Income Records: ${incomeRecordCount}`);
+
   // Count users
   const { data: users } = await supabaseAdmin.auth.admin.listUsers();
   console.log(`  Users: ${users?.users?.length || 0}`);
@@ -98,6 +106,8 @@ async function main() {
     { name: "Migrate Subscriptions", fn: migrateSubscriptions },
     { name: "Migrate Budgets", fn: migrateBudgets },
     { name: "Migrate Income Sources", fn: migrateIncomeSources },
+    { name: "Migrate Income Records", fn: migrateIncome },
+    { name: "Migrate Images", fn: migrateImages },
   ];
 
   for (const step of steps) {

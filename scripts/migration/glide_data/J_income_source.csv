@@ -1,0 +1,4119 @@
+🔒 Row ID,keys/userID,source_name,initials,image/uploaded,image/show,legal/name,legal/address,legal/city_state_zip,legal/ID,HTML/template,totals/num_income,totals/amount_all,totals/amount_year,totals/year_avg_month,totals/year_01,totals/year_02,totals/year_03,totals/year_04,totals/year_05,totals/year_06,totals/year_07,totals/year_08,totals/year_09,totals/year_10,totals/year_11,totals/year_12,visibility/show
+mTy8pCocSs-pHV2Zpqv5vg,oln3M90-R.CB-GcdkYSK1w,Duplica,DUP,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/gHrwkyyyKeCDEf42RU6n.png,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/gHrwkyyyKeCDEf42RU6n.png,"CG Digital Consulting, LLC","651 N Broad St, Suite 206","Middletown, Delaware 19709",EIN: 85-1702254,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    CG Digital Consulting, LLC<br>
+                    651 N Broad St, Suite 206<br>
+                    Middletown, Delaware 19709<br>
+                    EIN: 85-1702254
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",35,2377623.6199999996,45111.36,22555.68,9325,35786.36,0,0,0,0,0,0,0,0,0,0,true
+IA6MsiiHQpCaAxPXtGBCSA,oln3M90-R.CB-GcdkYSK1w,KD,KD,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/NKteLX11rVud0R86rbPY.png,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/NKteLX11rVud0R86rbPY.png,Kreative Disruption LLC,6618 Morning Shadow Ln.,"Austin, Texas 78701",,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    Kreative Disruption LLC<br>
+                    6618 Morning Shadow Ln.<br>
+                    Austin, Texas 78701<br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",41,630193.06,50187.04,25093.52,37278.04,12909,0,0,0,0,0,0,0,0,0,0,true
+bOplGaNsTESrt2yNqyHpxA,oln3M90-R.CB-GcdkYSK1w,WOOF,WOOF,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/Pir6HK7U0a3D23QwjrNx.png,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/Pir6HK7U0a3D23QwjrNx.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",43,131878.14,5000,2500,2500,2500,0,0,0,0,0,0,0,0,0,0,true
+RXdn2fZJScKncAFQvZ.Yzg,oln3M90-R.CB-GcdkYSK1w,La Chiripa,LCC,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/JonmGYcDlFAIuCm9nGFg.png,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/JonmGYcDlFAIuCm9nGFg.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",36,139301,5000,2500,2500,2500,0,0,0,0,0,0,0,0,0,0,true
+XbwHadTBSHaeMsMtlS6-Sg,oln3M90-R.CB-GcdkYSK1w,Kbordados,KB,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/FMCQaRjHG7cAuJ2VIiIz.png,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/FMCQaRjHG7cAuJ2VIiIz.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",50,107964.24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,true
+dK5C9aFbT1GzEYfZProCAw,oln3M90-R.CB-GcdkYSK1w,Other,OTH,,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/te529CbkQgxw0kiso2hQ.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",16,142076.81,0,0,0,0,0,0,0,0,0,0,0,0,0,0,true
+6Nq90vmSTx27E1RtJOdrOg,iDL9UFS6R0u.cR3C.szCSw,Lex,LEX,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/Na2vBxurcRMs2yZW7NEm.png,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/Na2vBxurcRMs2yZW7NEm.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",2,278925,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+z.TW2eKRSqOjXKwiUe3v2Q,iDL9UFS6R0u.cR3C.szCSw,Other,OTH,,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/te529CbkQgxw0kiso2hQ.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",1,9000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+CT57SJrnTi-tZBfLKKKT1w,oln3M90-R.CB-GcdkYSK1w,TBB,TBB,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/dhtPpVymHHWd3jnqXDNU.png,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/dhtPpVymHHWd3jnqXDNU.png,"The Beauty Board, LLC",5313 Vega Avenue Unit 1312,"Austin, Texas 78735",EIN: 88-3873007,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    The Beauty Board, LLC<br>
+                    5313 Vega Avenue Unit 1312<br>
+                    Austin, Texas 78735<br>
+                    EIN: 88-3873007
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",5,78296.8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,true
+tz8AglWgQGGfOnDMTe3IZA,hwbFC4lCTRm0pNG-FHA4Dg,Kbordados,KBB,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/aJSRporOUbB9uwvXfdWk.png,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/aJSRporOUbB9uwvXfdWk.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",94,3762108.7700000005,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+ElpF2zFcQciR8StGp21ivA,hwbFC4lCTRm0pNG-FHA4Dg,HOA - Roca Vista,CCRV,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/dCEqiK4UjlytHWcnyCBb.png,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/dCEqiK4UjlytHWcnyCBb.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",58,1050100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+Dp4EYtXcRTOKPd70X9EVBw,hwbFC4lCTRm0pNG-FHA4Dg,HOA - Vista Real,CCVR,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/PGY5jCfS4fEZvcTcPVRw.png,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/PGY5jCfS4fEZvcTcPVRw.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",66,713000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+lr8jA5x8QLKdgRXANYbXWQ,hwbFC4lCTRm0pNG-FHA4Dg,HOA - Privadas Coromuel,CCPC,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/biHW3gDfdceCVbxQVGv9.png,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/biHW3gDfdceCVbxQVGv9.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",32,108000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+fIWZh9FaS6WhsFbURvuYyQ,hwbFC4lCTRm0pNG-FHA4Dg,HOA - Bahía del Tezal 1,CCBT,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/cvtDZTRyEX2kkB6Qdk6u.png,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/cvtDZTRyEX2kkB6Qdk6u.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",21,387048.6600000001,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+AVBw7sv2RtuDHyfw7HZ7bg,hwbFC4lCTRm0pNG-FHA4Dg,HOA - Torre María,CCTM,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/Ii5RhgaAXk9YSJsXIkvY.png,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/Ii5RhgaAXk9YSJsXIkvY.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",15,240000.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+kS7SvE1GSduIHConHd9QAQ,hwbFC4lCTRm0pNG-FHA4Dg,HOA - Isla del Sol,CCIS,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/LjydUg430VM31Z2V455V.png,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/LjydUg430VM31Z2V455V.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",39,166000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+a-bh85U91QjCWxsTCx-p8XA,hwbFC4lCTRm0pNG-FHA4Dg,Otros,OTR,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/amkpGaWlH1gwOFhK9iL5.png,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/amkpGaWlH1gwOFhK9iL5.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",31,261599.54,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+VIQ4oTpfRPa6bU1hPoaFUQ,hwbFC4lCTRm0pNG-FHA4Dg,Mark,MARK,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/KqpI3HE0aCUPiRYPJ7rU.png,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/KqpI3HE0aCUPiRYPJ7rU.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",7,18300,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+cjRiGjd6Ts2fKJe1IZVvKA,hwbFC4lCTRm0pNG-FHA4Dg,WEAR IT,WI,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/ThfTiRLgoNQEJqINpCN9.png,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/ThfTiRLgoNQEJqINpCN9.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",13,146043.88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+5kGrtYEKSwObk8Bv0vKbWA,hwbFC4lCTRm0pNG-FHA4Dg,HOA - Torre Catalina,CCTC,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/MzELQcF2RsxGNHJ00kCl.png,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/MzELQcF2RsxGNHJ00kCl.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",9,144000.07,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+Kga748-DRQqHFU5Y-0Ud9Q,AbN6.FXMRWSorXy9KxlPTQ,THERAPY,TER,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/amKVDuVH2wZRFrhuhki6.png,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/amKVDuVH2wZRFrhuhki6.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",53,57852.77,5550,2775,2850,800,1900,0,0,0,0,0,0,0,0,0,
+fCqjXTJ-QIKo16U3ThyaRQ,AbN6.FXMRWSorXy9KxlPTQ,PROPERTY,PC,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/iKVhRvAr4wwQ4bnpE5GW.jpg,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/iKVhRvAr4wwQ4bnpE5GW.jpg,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",16,1239413.82,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+q4zf4HTGTZm3Qs0AzITQ-g,AbN6.FXMRWSorXy9KxlPTQ,OTHER,OTHER,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/VxeWq6sXNfR4NEBBPiyk.jpeg,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/VxeWq6sXNfR4NEBBPiyk.jpeg,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",8,293543.07,156124.95,78062.475,52041.65,52041.65,52041.65,0,0,0,0,0,0,0,0,0,
+ZkqgCo80RSyMsYL3xy1Htw,AbN6.FXMRWSorXy9KxlPTQ,NÓMINA ,Nom,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/FchN9rXUCSUn3qHGJuWS.jpeg,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/FchN9rXUCSUn3qHGJuWS.jpeg,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",20,222873.2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+ixeViOAwQx6ciHAESTrNXg,AbN6.FXMRWSorXy9KxlPTQ,PERSONAL ASSISTANCE,PA,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/oLL5OYCLQYHYdPzr2LQt.jpg,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/oLL5OYCLQYHYdPzr2LQt.jpg,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",6,576226.39,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+a98EDDGbTbynnMpN2rns8g,hwbFC4lCTRm0pNG-FHA4Dg,HOA - VR51,VR51,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/Ksbaje31vDOocwUxbFcW.jpeg,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/Ksbaje31vDOocwUxbFcW.jpeg,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",10,60000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+pEmGwNU2QTSDegfx-jJ8vA,oln3M90-R.CB-GcdkYSK1w,Equity,EQU,,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/te529CbkQgxw0kiso2hQ.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",11,15716.13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,true
+PTYAhbEJTZ6jb2mf6Woxsg,hwbFC4lCTRm0pNG-FHA4Dg,HOA - Luxotica 3,CCLX,,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/te529CbkQgxw0kiso2hQ.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",1,16000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+IvCCaVzpRRmIslePa6Mpzw,hwbFC4lCTRm0pNG-FHA4Dg,HOA-Eonia 12,Eonia12,,https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/RBtJz4FerZjFZXW3ofwL/pub/te529CbkQgxw0kiso2hQ.png,,,,,"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            margin: 0 0 10px;
+            padding: 0;
+        }
+
+        .invoice-header, .invoice-details, .invoice-footer {
+            margin-bottom: 20px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            background-color: #f2f2f2; /* Light grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class=""invoice-container"">
+        <div class=""invoice-header"">
+            <h1>Invoice</h1>
+        </div>
+
+        <div class=""invoice-details"">
+            <table>
+                <tr>
+                    <td>Invoice Number:</td>
+                    <td>{{invoice_number}}</td>
+                    <td>Date of Issue:</td>
+                    <td>{{date_of_issue}}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{{due_date}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""flex-container"">
+            <div class=""flex-item invoice-from"">
+                <h2>From</h2>
+                <p>
+                    Juan E Necoechea G<br>
+                    2307 Thicket Ridge Ln<br>
+                    Houston, Texas 77077<br>
+                    United States<br>
+                    +52 (624) 358-0062
+                </p>
+            </div>
+
+            <div class=""flex-item invoice-to"">
+                <h2>Bill To</h2>
+                <p>
+                    <br>
+                    <br>
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+
+        <div class=""invoice-description"">
+            <h2>Description</h2>
+            <table>
+                <tr class=""header"">
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{unit_price}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                <tr class=""total"">
+                    <td colspan=""3"">Total</td>
+                    <td>{{total}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=""invoice-footer"">
+            <p>Preferred Payment Method: {{payment_method}}</p>
+            <p>Total Due: {{total}} USD</p>
+        </div>
+    </div>
+</body>
+</html>
+",3,16500,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

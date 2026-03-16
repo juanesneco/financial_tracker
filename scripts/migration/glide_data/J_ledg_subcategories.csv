@@ -1,0 +1,417 @@
+🔒 Row ID,keys/categoryID,keys/usersID,visibility/show,title,lookup/main_category_title,lookup/last_budget_value,totals/all_num_expenses,totals/all_spent,totals/own_expenses_year,totals/own_year_avg_month,totals/expenses_year_01,totals/expenses_year_02,totals/expenses_year_03,totals/expenses_year_04,totals/expenses_year_05,totals/expenses_year_06,totals/expenses_year_07,totals/expenses_year_08,totals/expenses_year_09,totals/expenses_year_10,totals/expenses_year_11,totals/expenses_year_12,template/AI_emoji,template/emoji_title,template/category_subcategory_title,template/avg,template/budget,JSON/template,currentMonth/screen,currentMonth/year_month,currentMonth/total_expenses
+zh9e0UshT6azasqEA3LpEQ,zh9e0UshT6azasqEA3LpEQ,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Clothing,Personal Spending,1000,175,308150.4699999999,11112.89,3704.2966666667,1692.89,9420,0,0,0,0,0,0,0,0,0,0,👚,👚 Clothing,Personal Spending - Clothing,"Avg: $3,704.30","Budget: $1,000.00","{
+  ""ID"": zh9e0UshT6azasqEA3LpEQ,
+  ""title"": ""Personal Spending - Clothing""
+}",https://thebrain.glide.page/dl/home,,0
+puyp5peSTm60M20rssM1OA,puyp5peSTm60M20rssM1OA,oln3M90-R.CB-GcdkYSK1w,true,Crédito TEC,Finance,5900,27,254542.14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,💳,💳 Crédito TEC,Finance - Crédito TEC,Avg: $0.00,"Budget: $5,900.00","{
+  ""ID"": puyp5peSTm60M20rssM1OA,
+  ""title"": ""Finance - Crédito TEC""
+}",https://thebrain.glide.page/dl/home,,0
+r0P8pAp.TOejFByXWeLTTA,Ggwbpe45R0-8DefKnoIxbQ,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Life Insurance,Insurance,2500,92,302707.8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,💸,💸 Life Insurance,Insurance - Life Insurance,Avg: $0.00,"Budget: $2,500.00","{
+  ""ID"": r0P8pAp.TOejFByXWeLTTA,
+  ""title"": ""Insurance - Life Insurance""
+}",https://thebrain.glide.page/dl/home,,0
+RKJSsbhnSsO7BnraDYKQIw,r0P8pAp.TOejFByXWeLTTA,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Phone,Utilities,595,84,93980.96,0,0,0,0,0,0,0,0,0,0,0,0,0,0,📱,📱 Phone,Utilities - Phone,Avg: $0.00,Budget: $595.00,"{
+  ""ID"": RKJSsbhnSsO7BnraDYKQIw,
+  ""title"": ""Utilities - Phone""
+}",https://thebrain.glide.page/dl/home,,0
+fdLePIRtSYWq-TTr5GvJyQ,RKJSsbhnSsO7BnraDYKQIw,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Restaurants,Food,6000,1389,639547.6199999999,29249.2,9749.7333333333,20510.15,6398.44,2340.61,0,0,0,0,0,0,0,0,0,🍽️,🍽️ Restaurants,Food - Restaurants,"Avg: $9,749.73","Budget: $6,000.00","{
+  ""ID"": fdLePIRtSYWq-TTr5GvJyQ,
+  ""title"": ""Food - Restaurants""
+}",https://thebrain.glide.page/dl/home,,0
+a.3DbYVw5SfuRQQ61dyWeYQ,RKJSsbhnSsO7BnraDYKQIw,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Groceries,Food,500,917,475344.2374999998,447.5,149.1666666667,150.5,248,49,0,0,0,0,0,0,0,0,0,🛒,🛒 Groceries,Food - Groceries,Avg: $149.17,Budget: $500.00,"{
+  ""ID"": a.3DbYVw5SfuRQQ61dyWeYQ,
+  ""title"": ""Food - Groceries""
+}",https://thebrain.glide.page/dl/home,,0
+y6cdmxBiRK2MqpWerUGfaw,fdLePIRtSYWq-TTr5GvJyQ,"oln3M90-R.CB-GcdkYSK1w,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Car Expenses,Transportation,300,65,145471.99,4879,1626.3333333333,230,4399,250,0,0,0,0,0,0,0,0,0,💸,💸 Car Expenses,Transportation - Car Expenses,"Avg: $1,626.33",Budget: $300.00,"{
+  ""ID"": y6cdmxBiRK2MqpWerUGfaw,
+  ""title"": ""Transportation - Car Expenses""
+}",https://thebrain.glide.page/dl/home,,0
+nB7Hlt0UTtiaWoVcgeX6Zg,fdLePIRtSYWq-TTr5GvJyQ,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Gasoline,Transportation,1600,340,306114.75,8594.59,2864.8633333333,3543.93,3389.92,1660.74,0,0,0,0,0,0,0,0,0,⛽,⛽ Gasoline,Transportation - Gasoline,"Avg: $2,864.86","Budget: $1,600.00","{
+  ""ID"": nB7Hlt0UTtiaWoVcgeX6Zg,
+  ""title"": ""Transportation - Gasoline""
+}",https://thebrain.glide.page/dl/home,,0
+VJ-A3JVtR1Op2I4r8NXe7g,fdLePIRtSYWq-TTr5GvJyQ,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Flights,Transportation,,54,253348.85,15824.76,5274.92,0,15824.76,0,0,0,0,0,0,0,0,0,0,✈️,✈️ Flights,Transportation - Flights,"Avg: $5,274.92",Budget: ,"{
+  ""ID"": VJ-A3JVtR1Op2I4r8NXe7g,
+  ""title"": ""Transportation - Flights""
+}",https://thebrain.glide.page/dl/home,,0
+n8rk4drdSBGzP5835Ev62w,a.3DbYVw5SfuRQQ61dyWeYQ,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Psychologist,Medical & Healthcare,700,45,41948.41,120,40,120,0,0,0,0,0,0,0,0,0,0,0,,,Medical & Healthcare - Psychologist,Avg: $40.00,Budget: $700.00,"{
+  ""ID"": n8rk4drdSBGzP5835Ev62w,
+  ""title"": ""Medical & Healthcare - Psychologist""
+}",https://thebrain.glide.page/dl/home,,0
+mtDKy.TkQQiAqrUirD7k0A,y6cdmxBiRK2MqpWerUGfaw,oln3M90-R.CB-GcdkYSK1w,true,Tenis,Recreation & Entertainment,,6,3828,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Recreation & Entertainment - Tenis,Avg: $0.00,Budget: ,"{
+  ""ID"": mtDKy.TkQQiAqrUirD7k0A,
+  ""title"": ""Recreation & Entertainment - Tenis""
+}",https://thebrain.glide.page/dl/home,,0
+QQUGgwF8RiKTtkOmIYcM7Q,y6cdmxBiRK2MqpWerUGfaw,"oln3M90-R.CB-GcdkYSK1w,iDL9UFS6R0u.cR3C.szCSw",true,Golf,Recreation & Entertainment,1500,133,173080.17,18691.14,6230.38,3977.14,8152,6562,0,0,0,0,0,0,0,0,0,,,Recreation & Entertainment - Golf,"Avg: $6,230.38","Budget: $1,500.00","{
+  ""ID"": QQUGgwF8RiKTtkOmIYcM7Q,
+  ""title"": ""Recreation & Entertainment - Golf""
+}",https://thebrain.glide.page/dl/home,,0
+kAiKUcIzS2Kk1KPUSJlntg,,oln3M90-R.CB-GcdkYSK1w,true,Deposit,,,133,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,, - Deposit,Avg: $0.00,Budget: ,"{
+  ""ID"": kAiKUcIzS2Kk1KPUSJlntg,
+  ""title"": "" - Deposit""
+}",https://thebrain.glide.page/dl/home,,0
+xB2A0OhbTmq77McsYaID.Q,y6cdmxBiRK2MqpWerUGfaw,"oln3M90-R.CB-GcdkYSK1w,iDL9UFS6R0u.cR3C.szCSw",true,Surf,Recreation & Entertainment,,4,8030,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Recreation & Entertainment - Surf,Avg: $0.00,Budget: ,"{
+  ""ID"": xB2A0OhbTmq77McsYaID.Q,
+  ""title"": ""Recreation & Entertainment - Surf""
+}",https://thebrain.glide.page/dl/home,,0
+KIQnyibmT-KbgHYErv9CoA,HqoZz-fARwGTbjZOi-kAXQ,"oln3M90-R.CB-GcdkYSK1w,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Business Expenses,Business,,1001,4435374.929999996,705.71,235.2366666667,705.71,0,0,0,0,0,0,0,0,0,0,0,,,Business - Business Expenses,Avg: $235.24,Budget: ,"{
+  ""ID"": KIQnyibmT-KbgHYErv9CoA,
+  ""title"": ""Business - Business Expenses""
+}",https://thebrain.glide.page/dl/home,,0
+a-qRtphVuQnKDljSwEbDTVQ,RKJSsbhnSsO7BnraDYKQIw,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw",true,Bars,Food,,21,8949.69,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Food - Bars,Avg: $0.00,Budget: ,"{
+  ""ID"": a-qRtphVuQnKDljSwEbDTVQ,
+  ""title"": ""Food - Bars""
+}",https://thebrain.glide.page/dl/home,,0
+HRrUV4SFRDO0m8fXF-dhRg,fdLePIRtSYWq-TTr5GvJyQ,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Uber,Transportation,,135,29643.32,603,201,0,0,603,0,0,0,0,0,0,0,0,0,,,Transportation - Uber,Avg: $201.00,Budget: ,"{
+  ""ID"": HRrUV4SFRDO0m8fXF-dhRg,
+  ""title"": ""Transportation - Uber""
+}",https://thebrain.glide.page/dl/home,,0
+djt8V0n.QG-9bBEoVA35gQ,y6cdmxBiRK2MqpWerUGfaw,"oln3M90-R.CB-GcdkYSK1w,iDL9UFS6R0u.cR3C.szCSw",true,Running,Recreation & Entertainment,2400,50,71513.06,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Recreation & Entertainment - Running,Avg: $0.00,"Budget: $2,400.00","{
+  ""ID"": djt8V0n.QG-9bBEoVA35gQ,
+  ""title"": ""Recreation & Entertainment - Running""
+}",https://thebrain.glide.page/dl/home,,0
+Qg5zY821R1KcpjMh6bfouQ,zh9e0UshT6azasqEA3LpEQ,"oln3M90-R.CB-GcdkYSK1w,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Haircut,Personal Spending,,24,20110,350,116.6666666667,350,0,0,0,0,0,0,0,0,0,0,0,,,Personal Spending - Haircut,Avg: $116.67,Budget: ,"{
+  ""ID"": Qg5zY821R1KcpjMh6bfouQ,
+  ""title"": ""Personal Spending - Haircut""
+}",https://thebrain.glide.page/dl/home,,0
+HzRdWCpFQkGhlKKy.IorAQ,a.3DbYVw5SfuRQQ61dyWeYQ,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Pharmacy,Medical & Healthcare,,60,31166.72,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Medical & Healthcare - Pharmacy,Avg: $0.00,Budget: ,"{
+  ""ID"": HzRdWCpFQkGhlKKy.IorAQ,
+  ""title"": ""Medical & Healthcare - Pharmacy""
+}",https://thebrain.glide.page/dl/home,,0
+9w1xJWYrQSKHDyqillk72w,zh9e0UshT6azasqEA3LpEQ,AbN6.FXMRWSorXy9KxlPTQ,,Nails,Personal Spending,,20,42553.21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Personal Spending - Nails,Avg: $0.00,Budget: ,"{
+  ""ID"": 9w1xJWYrQSKHDyqillk72w,
+  ""title"": ""Personal Spending - Nails""
+}",https://thebrain.glide.page/dl/home,,0
+FM.egTPSRQmw21fx6e6mqg,zh9e0UshT6azasqEA3LpEQ,AbN6.FXMRWSorXy9KxlPTQ,,Waxing,Personal Spending,,5,2768.55,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Personal Spending - Waxing,Avg: $0.00,Budget: ,"{
+  ""ID"": FM.egTPSRQmw21fx6e6mqg,
+  ""title"": ""Personal Spending - Waxing""
+}",https://thebrain.glide.page/dl/home,,0
+e3rsBK9iQV25FKBPCJyNvw,zh9e0UshT6azasqEA3LpEQ,"oln3M90-R.CB-GcdkYSK1w,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Massage / Spa,Personal Spending,,16,7084,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Personal Spending - Massage / Spa,Avg: $0.00,Budget: ,"{
+  ""ID"": e3rsBK9iQV25FKBPCJyNvw,
+  ""title"": ""Personal Spending - Massage / Spa""
+}",https://thebrain.glide.page/dl/home,,0
+ViIFHvg6SR2H8YTrczVHFg,a.3DbYVw5SfuRQQ61dyWeYQ,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Doctors & Medicine,Medical & Healthcare,,144,166589,2000,666.6666666667,0,0,2000,0,0,0,0,0,0,0,0,0,,,Medical & Healthcare - Doctors & Medicine,Avg: $666.67,Budget: ,"{
+  ""ID"": ViIFHvg6SR2H8YTrczVHFg,
+  ""title"": ""Medical & Healthcare - Doctors & Medicine""
+}",https://thebrain.glide.page/dl/home,,0
+ZclgH13ETi-BnDCThNvwNg,RKJSsbhnSsO7BnraDYKQIw,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Café,Food,600,141,29374.59,1752.81,584.27,1029.81,115,608,0,0,0,0,0,0,0,0,0,,,Food - Café,Avg: $584.27,Budget: $600.00,"{
+  ""ID"": ZclgH13ETi-BnDCThNvwNg,
+  ""title"": ""Food - Café""
+}",https://thebrain.glide.page/dl/home,,0
+vgLPoIDnS7-8M-6l5QBFLA,y6cdmxBiRK2MqpWerUGfaw,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw",true,Gym,Recreation & Entertainment,,10,16766.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Recreation & Entertainment - Gym,Avg: $0.00,Budget: ,"{
+  ""ID"": vgLPoIDnS7-8M-6l5QBFLA,
+  ""title"": ""Recreation & Entertainment - Gym""
+}",https://thebrain.glide.page/dl/home,,0
+Nx5L6UcPQ1-54RRcHqWz6A,y6cdmxBiRK2MqpWerUGfaw,AbN6.FXMRWSorXy9KxlPTQ,,Pilates,Recreation & Entertainment,,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Recreation & Entertainment - Pilates,Avg: $0.00,Budget: ,"{
+  ""ID"": Nx5L6UcPQ1-54RRcHqWz6A,
+  ""title"": ""Recreation & Entertainment - Pilates""
+}",https://thebrain.glide.page/dl/home,,0
+LiEpQ0buQkS4R2x8DkQehg,y6cdmxBiRK2MqpWerUGfaw,AbN6.FXMRWSorXy9KxlPTQ,,Cycling,Recreation & Entertainment,,2,722.36,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Recreation & Entertainment - Cycling,Avg: $0.00,Budget: ,"{
+  ""ID"": LiEpQ0buQkS4R2x8DkQehg,
+  ""title"": ""Recreation & Entertainment - Cycling""
+}",https://thebrain.glide.page/dl/home,,0
+9TJnc-NKT5-7oDDU-nMGDQ,y6cdmxBiRK2MqpWerUGfaw,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Movies (Cinema),Recreation & Entertainment,,5,1663.89,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Recreation & Entertainment - Movies (Cinema),Avg: $0.00,Budget: ,"{
+  ""ID"": 9TJnc-NKT5-7oDDU-nMGDQ,
+  ""title"": ""Recreation & Entertainment - Movies (Cinema)""
+}",https://thebrain.glide.page/dl/home,,0
+kH-o8x7IQHyZDRe6d6iD-Q,fdLePIRtSYWq-TTr5GvJyQ,AbN6.FXMRWSorXy9KxlPTQ,,Metro,Transportation,,2,301.94,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Transportation - Metro,Avg: $0.00,Budget: ,"{
+  ""ID"": kH-o8x7IQHyZDRe6d6iD-Q,
+  ""title"": ""Transportation - Metro""
+}",https://thebrain.glide.page/dl/home,,0
+wnJfwhsTSVCuVOKi56.CUw,fdLePIRtSYWq-TTr5GvJyQ,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Hotels / Airbnb,Transportation,,12,69462.24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Transportation - Hotels / Airbnb,Avg: $0.00,Budget: ,"{
+  ""ID"": wnJfwhsTSVCuVOKi56.CUw,
+  ""title"": ""Transportation - Hotels / Airbnb""
+}",https://thebrain.glide.page/dl/home,,0
+aNUBXOhtT-W5-pBTX-cm2w,fdLePIRtSYWq-TTr5GvJyQ,AbN6.FXMRWSorXy9KxlPTQ,,Bolt,Transportation,,6,1314.44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Transportation - Bolt,Avg: $0.00,Budget: ,"{
+  ""ID"": aNUBXOhtT-W5-pBTX-cm2w,
+  ""title"": ""Transportation - Bolt""
+}",https://thebrain.glide.page/dl/home,,0
+2x6yZDP1T-SWtcMN7728lA,r0P8pAp.TOejFByXWeLTTA,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Rent,Utilities,,24,319790,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Utilities - Rent,Avg: $0.00,Budget: ,"{
+  ""ID"": 2x6yZDP1T-SWtcMN7728lA,
+  ""title"": ""Utilities - Rent""
+}",https://thebrain.glide.page/dl/home,,0
+17wJEv3eRQur-f1ckzjpFg,r0P8pAp.TOejFByXWeLTTA,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Wifi,Utilities,,6,3723,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Utilities - Wifi,Avg: $0.00,Budget: ,"{
+  ""ID"": 17wJEv3eRQur-f1ckzjpFg,
+  ""title"": ""Utilities - Wifi""
+}",https://thebrain.glide.page/dl/home,,0
+y7HHTEKgSKq2LrfB8H0Eaw,r0P8pAp.TOejFByXWeLTTA,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Water,Utilities,,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Utilities - Water,Avg: $0.00,Budget: ,"{
+  ""ID"": y7HHTEKgSKq2LrfB8H0Eaw,
+  ""title"": ""Utilities - Water""
+}",https://thebrain.glide.page/dl/home,,0
+UBCjUyuGR4Orj9-d.ffsWg,r0P8pAp.TOejFByXWeLTTA,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Gas,Utilities,,6,6751.89,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Utilities - Gas,Avg: $0.00,Budget: ,"{
+  ""ID"": UBCjUyuGR4Orj9-d.ffsWg,
+  ""title"": ""Utilities - Gas""
+}",https://thebrain.glide.page/dl/home,,0
+dAoWwgXHQ2a147TZBWwAkA,r0P8pAp.TOejFByXWeLTTA,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Energy / CFE,Utilities,,15,47422,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Utilities - Energy / CFE,Avg: $0.00,Budget: ,"{
+  ""ID"": dAoWwgXHQ2a147TZBWwAkA,
+  ""title"": ""Utilities - Energy / CFE""
+}",https://thebrain.glide.page/dl/home,,0
+l4yjQU86Q2yEeTa6Wq3aGA,puyp5peSTm60M20rssM1OA,AbN6.FXMRWSorXy9KxlPTQ,,Credit Card Payment ,Finance,,3,15708.57,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Finance - Credit Card Payment ,Avg: $0.00,Budget: ,"{
+  ""ID"": l4yjQU86Q2yEeTa6Wq3aGA,
+  ""title"": ""Finance - Credit Card Payment ""
+}",https://thebrain.glide.page/dl/home,,0
+A2.1PA6NSe6hEkkwfFNbJg,HqoZz-fARwGTbjZOi-kAXQ,oln3M90-R.CB-GcdkYSK1w,true,Aji,Business,,19,75855.28,2998,999.3333333333,2998,0,0,0,0,0,0,0,0,0,0,0,,,Business - Aji,Avg: $999.33,Budget: ,"{
+  ""ID"": A2.1PA6NSe6hEkkwfFNbJg,
+  ""title"": ""Business - Aji""
+}",https://thebrain.glide.page/dl/home,,0
+PUdn6tQORiahhGuyhC10tA,r0P8pAp.TOejFByXWeLTTA,AbN6.FXMRWSorXy9KxlPTQ,,Cleaning Lady,Utilities,,2,421.25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Utilities - Cleaning Lady,Avg: $0.00,Budget: ,"{
+  ""ID"": PUdn6tQORiahhGuyhC10tA,
+  ""title"": ""Utilities - Cleaning Lady""
+}",https://thebrain.glide.page/dl/home,,0
+9JqWKUA3ShOnP-o5uSdsYg,zh9e0UshT6azasqEA3LpEQ,AbN6.FXMRWSorXy9KxlPTQ,,Makeup,Personal Spending,,5,3873.74,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Personal Spending - Makeup,Avg: $0.00,Budget: ,"{
+  ""ID"": 9JqWKUA3ShOnP-o5uSdsYg,
+  ""title"": ""Personal Spending - Makeup""
+}",https://thebrain.glide.page/dl/home,,0
+2dWJ.UfYTUu7XlFZDVAv4w,RKJSsbhnSsO7BnraDYKQIw,"oln3M90-R.CB-GcdkYSK1w,H8EDxMJfTSGXDT-3Krqacg,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Uber Eats,Food,,6,2478.69,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Food - Uber Eats,Avg: $0.00,Budget: ,"{
+  ""ID"": 2dWJ.UfYTUu7XlFZDVAv4w,
+  ""title"": ""Food - Uber Eats""
+}",https://thebrain.glide.page/dl/home,,0
+pEx6jHKyRc6pljKWIMoSQg,hcdXe2v5RxyysoOMwcx-0w,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,hwbFC4lCTRm0pNG-FHA4Dg",true,Others,Other Expenses,,45,137472.58,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Other Expenses - Others,Avg: $0.00,Budget: ,"{
+  ""ID"": pEx6jHKyRc6pljKWIMoSQg,
+  ""title"": ""Other Expenses - Others""
+}",https://thebrain.glide.page/dl/home,,0
+zDSreV1RSVmpnVbf81K41g,y6cdmxBiRK2MqpWerUGfaw,AbN6.FXMRWSorXy9KxlPTQ,,Education ,Recreation & Entertainment,,1,800,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Recreation & Entertainment - Education ,Avg: $0.00,Budget: ,"{
+  ""ID"": zDSreV1RSVmpnVbf81K41g,
+  ""title"": ""Recreation & Entertainment - Education ""
+}",https://thebrain.glide.page/dl/home,,0
+W3e6GI3oRi-Iz-4pEKl-Nw,fdLePIRtSYWq-TTr5GvJyQ,"oln3M90-R.CB-GcdkYSK1w,hwbFC4lCTRm0pNG-FHA4Dg",true,Casetas,Transportation,,9,2889,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Transportation - Casetas,Avg: $0.00,Budget: ,"{
+  ""ID"": W3e6GI3oRi-Iz-4pEKl-Nw,
+  ""title"": ""Transportation - Casetas""
+}",https://thebrain.glide.page/dl/home,,0
+Aqd9J.eyRXm.rfkQYq6Sjg,hcdXe2v5RxyysoOMwcx-0w,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Presents (Regalos),Other Expenses,,411,258276.86,12127,4042.3333333333,497,4141,7489,0,0,0,0,0,0,0,0,0,,,Other Expenses - Presents (Regalos),"Avg: $4,042.33",Budget: ,"{
+  ""ID"": Aqd9J.eyRXm.rfkQYq6Sjg,
+  ""title"": ""Other Expenses - Presents (Regalos)""
+}",https://thebrain.glide.page/dl/home,,0
+KOnpo8t0SN2jbH8hmtPwRw,y6cdmxBiRK2MqpWerUGfaw,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Concert,Recreation & Entertainment,,2,2360.69,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Recreation & Entertainment - Concert,Avg: $0.00,Budget: ,"{
+  ""ID"": KOnpo8t0SN2jbH8hmtPwRw,
+  ""title"": ""Recreation & Entertainment - Concert""
+}",https://thebrain.glide.page/dl/home,,0
+JKIahRsgTS2J6iLdzAGVlg,y6cdmxBiRK2MqpWerUGfaw,"oln3M90-R.CB-GcdkYSK1w,iDL9UFS6R0u.cR3C.szCSw",true,Events,Recreation & Entertainment,,17,24829.73,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Recreation & Entertainment - Events,Avg: $0.00,Budget: ,"{
+  ""ID"": JKIahRsgTS2J6iLdzAGVlg,
+  ""title"": ""Recreation & Entertainment - Events""
+}",https://thebrain.glide.page/dl/home,,0
+fdcinrvHQASJ24eUEMwk4g,zh9e0UshT6azasqEA3LpEQ,"oln3M90-R.CB-GcdkYSK1w,H8EDxMJfTSGXDT-3Krqacg",true,Tech,Personal Spending,,18,70857.68,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Personal Spending - Tech,Avg: $0.00,Budget: ,"{
+  ""ID"": fdcinrvHQASJ24eUEMwk4g,
+  ""title"": ""Personal Spending - Tech""
+}",https://thebrain.glide.page/dl/home,,0
+Mmo9uswbQsuvKQR0NkdKlQ,dOKCd0RlRluR6tRmLdIX.w,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Subscriptions,Self Development ,,36,27205.03,3188.2,1062.7333333333,319,716.2,2153,0,0,0,0,0,0,0,0,0,,,Self Development  - Subscriptions,"Avg: $1,062.73",Budget: ,"{
+  ""ID"": Mmo9uswbQsuvKQR0NkdKlQ,
+  ""title"": ""Self Development  - Subscriptions""
+}",https://thebrain.glide.page/dl/home,,0
+Ny6BEimzTxqdIuwDhBezMQ,zh9e0UshT6azasqEA3LpEQ,oln3M90-R.CB-GcdkYSK1w,true,PNC Fees,Personal Spending,,13,1253.06,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Personal Spending - PNC Fees,Avg: $0.00,Budget: ,"{
+  ""ID"": Ny6BEimzTxqdIuwDhBezMQ,
+  ""title"": ""Personal Spending - PNC Fees""
+}",https://thebrain.glide.page/dl/home,,0
+ByhupVXzSh2bY-m76Osv.Q,fdLePIRtSYWq-TTr5GvJyQ,oln3M90-R.CB-GcdkYSK1w,true,Train,Transportation,,10,8618.98,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Transportation - Train,Avg: $0.00,Budget: ,"{
+  ""ID"": ByhupVXzSh2bY-m76Osv.Q,
+  ""title"": ""Transportation - Train""
+}",https://thebrain.glide.page/dl/home,,0
+zlx0spbvR.OVwhalK6oZ.Q,dOKCd0RlRluR6tRmLdIX.w,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw,hwbFC4lCTRm0pNG-FHA4Dg",true,Books,Self Development ,,5,4209.81,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Self Development  - Books,Avg: $0.00,Budget: ,"{
+  ""ID"": zlx0spbvR.OVwhalK6oZ.Q,
+  ""title"": ""Self Development  - Books""
+}",https://thebrain.glide.page/dl/home,,0
+3-5UfgwpSB6OGkHO2sBrUw,puyp5peSTm60M20rssM1OA,oln3M90-R.CB-GcdkYSK1w,true,BBVA Anualidad,Finance,,1,2579,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Finance - BBVA Anualidad,Avg: $0.00,Budget: ,"{
+  ""ID"": 3-5UfgwpSB6OGkHO2sBrUw,
+  ""title"": ""Finance - BBVA Anualidad""
+}",https://thebrain.glide.page/dl/home,,0
+YrPFCkpoTiO6xDvU9anhiA,zh9e0UshT6azasqEA3LpEQ,"oln3M90-R.CB-GcdkYSK1w,AbN6.FXMRWSorXy9KxlPTQ,iDL9UFS6R0u.cR3C.szCSw",true,Amazon,Personal Spending,,5,18836.64,2868.8,956.2666666667,2868.8,0,0,0,0,0,0,0,0,0,0,0,,,Personal Spending - Amazon,Avg: $956.27,Budget: ,"{
+  ""ID"": YrPFCkpoTiO6xDvU9anhiA,
+  ""title"": ""Personal Spending - Amazon""
+}",https://thebrain.glide.page/dl/home,,0
+nSBH9tiPR0yuz47BDFg5DA,y6cdmxBiRK2MqpWerUGfaw,oln3M90-R.CB-GcdkYSK1w,true,Padel,Recreation & Entertainment,,6,1680,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Recreation & Entertainment - Padel,Avg: $0.00,Budget: ,"{
+  ""ID"": nSBH9tiPR0yuz47BDFg5DA,
+  ""title"": ""Recreation & Entertainment - Padel""
+}",https://thebrain.glide.page/dl/home,,0
+YqBYCf79SuKQgSFVc3qHCw,HqoZz-fARwGTbjZOi-kAXQ,hwbFC4lCTRm0pNG-FHA4Dg,,KB - Angel,Business,,210,358789.8100000005,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Business - KB - Angel,Avg: $0.00,Budget: ,"{
+  ""ID"": YqBYCf79SuKQgSFVc3qHCw,
+  ""title"": ""Business - KB - Angel""
+}",https://thebrain.glide.page/dl/home,,0
+kkTTZjAMTNKu464N3WJESw,HqoZz-fARwGTbjZOi-kAXQ,hwbFC4lCTRm0pNG-FHA4Dg,,KB - Karina,Business,,24,39500,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Business - KB - Karina,Avg: $0.00,Budget: ,"{
+  ""ID"": kkTTZjAMTNKu464N3WJESw,
+  ""title"": ""Business - KB - Karina""
+}",https://thebrain.glide.page/dl/home,,0
+a-7A-4vXOQiuiA66LH0wNfA,HqoZz-fARwGTbjZOi-kAXQ,hwbFC4lCTRm0pNG-FHA4Dg,,IS - Lupita,Business,,16,2700,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Business - IS - Lupita,Avg: $0.00,Budget: ,"{
+  ""ID"": a-7A-4vXOQiuiA66LH0wNfA,
+  ""title"": ""Business - IS - Lupita""
+}",https://thebrain.glide.page/dl/home,,0
+BmudMlCtRMKFTkPVePaijw,HqoZz-fARwGTbjZOi-kAXQ,hwbFC4lCTRm0pNG-FHA4Dg,,RV - Esperanza,Business,,58,156500,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Business - RV - Esperanza,Avg: $0.00,Budget: ,"{
+  ""ID"": BmudMlCtRMKFTkPVePaijw,
+  ""title"": ""Business - RV - Esperanza""
+}",https://thebrain.glide.page/dl/home,,0
+DZLyxOl4QkiiZdp9sf3sPg,y6cdmxBiRK2MqpWerUGfaw,hwbFC4lCTRm0pNG-FHA4Dg,,Sports,Recreation & Entertainment,,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Recreation & Entertainment - Sports,Avg: $0.00,Budget: ,"{
+  ""ID"": DZLyxOl4QkiiZdp9sf3sPg,
+  ""title"": ""Recreation & Entertainment - Sports""
+}",https://thebrain.glide.page/dl/home,,0
+YL3pedTFRFqcoOE-c1vtbA,fdLePIRtSYWq-TTr5GvJyQ,"oln3M90-R.CB-GcdkYSK1w,hwbFC4lCTRm0pNG-FHA4Dg",true,Travel,Transportation,,74,178048.75,371,123.6666666667,0,371,0,0,0,0,0,0,0,0,0,0,,,Transportation - Travel,Avg: $123.67,Budget: ,"{
+  ""ID"": YL3pedTFRFqcoOE-c1vtbA,
+  ""title"": ""Transportation - Travel""
+}",https://thebrain.glide.page/dl/home,,0
+kBVzmBzlTk-6U9NX4NqggA,fdLePIRtSYWq-TTr5GvJyQ,hwbFC4lCTRm0pNG-FHA4Dg,,Honda CR-V,Transportation,,30,26395.79,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Transportation - Honda CR-V,Avg: $0.00,Budget: ,"{
+  ""ID"": kBVzmBzlTk-6U9NX4NqggA,
+  ""title"": ""Transportation - Honda CR-V""
+}",https://thebrain.glide.page/dl/home,,0
+rEazwIoCRda31fcZ0iP-3A,zh9e0UshT6azasqEA3LpEQ,hwbFC4lCTRm0pNG-FHA4Dg,,Pendiente**,Personal Spending,,25,41014.88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Personal Spending - Pendiente**,Avg: $0.00,Budget: ,"{
+  ""ID"": rEazwIoCRda31fcZ0iP-3A,
+  ""title"": ""Personal Spending - Pendiente**""
+}",https://thebrain.glide.page/dl/home,,0
+P3JJBiY6QkicZEtQZisTbg,r0P8pAp.TOejFByXWeLTTA,"oln3M90-R.CB-GcdkYSK1w,hwbFC4lCTRm0pNG-FHA4Dg",true,House Expenses,Utilities,,326,773171.1099999999,11878.2,3959.4,0,11878.2,0,0,0,0,0,0,0,0,0,0,,,Utilities - House Expenses,"Avg: $3,959.40",Budget: ,"{
+  ""ID"": P3JJBiY6QkicZEtQZisTbg,
+  ""title"": ""Utilities - House Expenses""
+}",https://thebrain.glide.page/dl/home,,0
+2rIBFj6SRbOexMdbw7ujeg,puyp5peSTm60M20rssM1OA,hwbFC4lCTRm0pNG-FHA4Dg,,Ahorro entre Primas,Finance,,3,4000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Finance - Ahorro entre Primas,Avg: $0.00,Budget: ,"{
+  ""ID"": 2rIBFj6SRbOexMdbw7ujeg,
+  ""title"": ""Finance - Ahorro entre Primas""
+}",https://thebrain.glide.page/dl/home,,0
+pYZfUa5JTqiuonhRDyvPEw,puyp5peSTm60M20rssM1OA,hwbFC4lCTRm0pNG-FHA4Dg,,Tarjeta Home Depot,Finance,,5,5098.58,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Finance - Tarjeta Home Depot,Avg: $0.00,Budget: ,"{
+  ""ID"": pYZfUa5JTqiuonhRDyvPEw,
+  ""title"": ""Finance - Tarjeta Home Depot""
+}",https://thebrain.glide.page/dl/home,,0
+0p5TnOeoRwqjLnRlpG9RzQ,hcdXe2v5RxyysoOMwcx-0w,hwbFC4lCTRm0pNG-FHA4Dg,,Juanes - General,Other Expenses,,165,619180.2500000002,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Other Expenses - Juanes - General,Avg: $0.00,Budget: ,"{
+  ""ID"": 0p5TnOeoRwqjLnRlpG9RzQ,
+  ""title"": ""Other Expenses - Juanes - General""
+}",https://thebrain.glide.page/dl/home,,0
+sGtV7jFhSamqs8ZuEPJO.Q,y6cdmxBiRK2MqpWerUGfaw,hwbFC4lCTRm0pNG-FHA4Dg,,Entertainment,Recreation & Entertainment,,5,1678,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Recreation & Entertainment - Entertainment,Avg: $0.00,Budget: ,"{
+  ""ID"": sGtV7jFhSamqs8ZuEPJO.Q,
+  ""title"": ""Recreation & Entertainment - Entertainment""
+}",https://thebrain.glide.page/dl/home,,0
+YVKywJStRUyABl4i1TsUPQ,dOKCd0RlRluR6tRmLdIX.w,hwbFC4lCTRm0pNG-FHA4Dg,,Crecimiento Personal,Self Development ,,1,1160,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Self Development  - Crecimiento Personal,Avg: $0.00,Budget: ,"{
+  ""ID"": YVKywJStRUyABl4i1TsUPQ,
+  ""title"": ""Self Development  - Crecimiento Personal""
+}",https://thebrain.glide.page/dl/home,,0
+j-ppyt67Qoez0nJkHnJvjQ,r0P8pAp.TOejFByXWeLTTA,hwbFC4lCTRm0pNG-FHA4Dg,,Laundry,Utilities,,2,560,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Utilities - Laundry,Avg: $0.00,Budget: ,"{
+  ""ID"": j-ppyt67Qoez0nJkHnJvjQ,
+  ""title"": ""Utilities - Laundry""
+}",https://thebrain.glide.page/dl/home,,0
+kcU1yxItT9GPAzyvo0etqQ,puyp5peSTm60M20rssM1OA,hwbFC4lCTRm0pNG-FHA4Dg,,Ahorro USD,Finance,,4,30153,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Finance - Ahorro USD,Avg: $0.00,Budget: ,"{
+  ""ID"": kcU1yxItT9GPAzyvo0etqQ,
+  ""title"": ""Finance - Ahorro USD""
+}",https://thebrain.glide.page/dl/home,,0
+PMgeGd2ETlayFaEIEKT6zg,puyp5peSTm60M20rssM1OA,hwbFC4lCTRm0pNG-FHA4Dg,,Intereses Préstamo 200k,Finance,,43,84150,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Finance - Intereses Préstamo 200k,Avg: $0.00,Budget: ,"{
+  ""ID"": PMgeGd2ETlayFaEIEKT6zg,
+  ""title"": ""Finance - Intereses Préstamo 200k""
+}",https://thebrain.glide.page/dl/home,,0
+X6q3Lf4bTV2b6KOMvciWnQ,puyp5peSTm60M20rssM1OA,hwbFC4lCTRm0pNG-FHA4Dg,,Tarjeta 1421 (Enganche),Finance,,15,158000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Finance - Tarjeta 1421 (Enganche),Avg: $0.00,Budget: ,"{
+  ""ID"": X6q3Lf4bTV2b6KOMvciWnQ,
+  ""title"": ""Finance - Tarjeta 1421 (Enganche)""
+}",https://thebrain.glide.page/dl/home,,0
+f0IJBGs6QZKKRvP9hIQJtQ,puyp5peSTm60M20rssM1OA,hwbFC4lCTRm0pNG-FHA4Dg,,Tarjeta BX COSTCO 7080,Finance,,3,5722.61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Finance - Tarjeta BX COSTCO 7080,Avg: $0.00,Budget: ,"{
+  ""ID"": f0IJBGs6QZKKRvP9hIQJtQ,
+  ""title"": ""Finance - Tarjeta BX COSTCO 7080""
+}",https://thebrain.glide.page/dl/home,,0
+V463DYsDTqu.Rxdfap6Q8Q,fdLePIRtSYWq-TTr5GvJyQ,"oln3M90-R.CB-GcdkYSK1w,hwbFC4lCTRm0pNG-FHA4Dg",true,Hyundai Creta IGG,Transportation,,79,66885.97,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Transportation - Hyundai Creta IGG,Avg: $0.00,Budget: ,"{
+  ""ID"": V463DYsDTqu.Rxdfap6Q8Q,
+  ""title"": ""Transportation - Hyundai Creta IGG""
+}",https://thebrain.glide.page/dl/home,,0
+8R9TStNRSm2rKZX49Xw3.A,puyp5peSTm60M20rssM1OA,hwbFC4lCTRm0pNG-FHA4Dg,,Tarjeta BR1919,Finance,,1,20979.43,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Finance - Tarjeta BR1919,Avg: $0.00,Budget: ,"{
+  ""ID"": 8R9TStNRSm2rKZX49Xw3.A,
+  ""title"": ""Finance - Tarjeta BR1919""
+}",https://thebrain.glide.page/dl/home,,0
+YO.6kZvcSjy6gp-4CIZApA,fdLePIRtSYWq-TTr5GvJyQ,"oln3M90-R.CB-GcdkYSK1w,hwbFC4lCTRm0pNG-FHA4Dg",true,Honda City,Transportation,,10,9999.4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Transportation - Honda City,Avg: $0.00,Budget: ,"{
+  ""ID"": YO.6kZvcSjy6gp-4CIZApA,
+  ""title"": ""Transportation - Honda City""
+}",https://thebrain.glide.page/dl/home,,0
+bwWbJNJVTqS-D6Sv3wSaYw,zh9e0UshT6azasqEA3LpEQ,hwbFC4lCTRm0pNG-FHA4Dg,,Gastos Personales Ivonne,Personal Spending,,252,152031.96,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Personal Spending - Gastos Personales Ivonne,Avg: $0.00,Budget: ,"{
+  ""ID"": bwWbJNJVTqS-D6Sv3wSaYw,
+  ""title"": ""Personal Spending - Gastos Personales Ivonne""
+}",https://thebrain.glide.page/dl/home,,0
+XA0V-8R5TPilSdCTFGvRBQ,puyp5peSTm60M20rssM1OA,hwbFC4lCTRm0pNG-FHA4Dg,,BBVA Greta 2022,Finance,,24,116991.15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Finance - BBVA Greta 2022,Avg: $0.00,Budget: ,"{
+  ""ID"": XA0V-8R5TPilSdCTFGvRBQ,
+  ""title"": ""Finance - BBVA Greta 2022""
+}",https://thebrain.glide.page/dl/home,,0
+TuTzWS1ARySFBbU7f68uAw,HqoZz-fARwGTbjZOi-kAXQ,hwbFC4lCTRm0pNG-FHA4Dg,,CC - Katy,Business,,36,80380,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Business - CC - Katy,Avg: $0.00,Budget: ,"{
+  ""ID"": TuTzWS1ARySFBbU7f68uAw,
+  ""title"": ""Business - CC - Katy""
+}",https://thebrain.glide.page/dl/home,,0
+GITSFgVXRAGuDf4wx8x4WQ,puyp5peSTm60M20rssM1OA,oln3M90-R.CB-GcdkYSK1w,true,Taxes - Glenda,Finance,,2,15220.36,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Finance - Taxes - Glenda,Avg: $0.00,Budget: ,"{
+  ""ID"": GITSFgVXRAGuDf4wx8x4WQ,
+  ""title"": ""Finance - Taxes - Glenda""
+}",https://thebrain.glide.page/dl/home,,0
+9fBPT2chTQekQFT2fDvsCQ,Ggwbpe45R0-8DefKnoIxbQ,hwbFC4lCTRm0pNG-FHA4Dg,,Savings Insurance,Insurance,,17,75394.27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Insurance - Savings Insurance,Avg: $0.00,Budget: ,"{
+  ""ID"": 9fBPT2chTQekQFT2fDvsCQ,
+  ""title"": ""Insurance - Savings Insurance""
+}",https://thebrain.glide.page/dl/home,,0
+tBE2CJ7eSomRQHGXjOLUuQ,Ggwbpe45R0-8DefKnoIxbQ,hwbFC4lCTRm0pNG-FHA4Dg,,Apartment Insurance ,Insurance,,7,3297.3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Insurance - Apartment Insurance ,Avg: $0.00,Budget: ,"{
+  ""ID"": tBE2CJ7eSomRQHGXjOLUuQ,
+  ""title"": ""Insurance - Apartment Insurance ""
+}",https://thebrain.glide.page/dl/home,,0
+Cdpj0npUSt-YVtNjO5lLhQ,Ggwbpe45R0-8DefKnoIxbQ,hwbFC4lCTRm0pNG-FHA4Dg,,Car Insurance - City,Insurance,,5,2917.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Insurance - Car Insurance - City,Avg: $0.00,Budget: ,"{
+  ""ID"": Cdpj0npUSt-YVtNjO5lLhQ,
+  ""title"": ""Insurance - Car Insurance - City""
+}",https://thebrain.glide.page/dl/home,,0
+uEDNMtt8RaOovuqJ0qy8Yw,Ggwbpe45R0-8DefKnoIxbQ,hwbFC4lCTRm0pNG-FHA4Dg,,Car Insurance - Greta,Insurance,,1,11940.08,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Insurance - Car Insurance - Greta,Avg: $0.00,Budget: ,"{
+  ""ID"": uEDNMtt8RaOovuqJ0qy8Yw,
+  ""title"": ""Insurance - Car Insurance - Greta""
+}",https://thebrain.glide.page/dl/home,,0
+Khfd3KWWQo-r0LlQp9xoUQ,zh9e0UshT6azasqEA3LpEQ,hwbFC4lCTRm0pNG-FHA4Dg,,Nails ,Personal Spending,,18,11080,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Personal Spending - Nails ,Avg: $0.00,Budget: ,"{
+  ""ID"": Khfd3KWWQo-r0LlQp9xoUQ,
+  ""title"": ""Personal Spending - Nails ""
+}",https://thebrain.glide.page/dl/home,,0
+t6L1MVo9TQyeHU1FGy5DdA,puyp5peSTm60M20rssM1OA,AbN6.FXMRWSorXy9KxlPTQ,,Life Insurance,Finance,,2,17558.23,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Finance - Life Insurance,Avg: $0.00,Budget: ,"{
+  ""ID"": t6L1MVo9TQyeHU1FGy5DdA,
+  ""title"": ""Finance - Life Insurance""
+}",https://thebrain.glide.page/dl/home,,0
+M4nRoU6dRz2m3gi4BztZaQ,Ggwbpe45R0-8DefKnoIxbQ,hwbFC4lCTRm0pNG-FHA4Dg,,Medical Insurance,Insurance,,22,154294.95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Insurance - Medical Insurance,Avg: $0.00,Budget: ,"{
+  ""ID"": M4nRoU6dRz2m3gi4BztZaQ,
+  ""title"": ""Insurance - Medical Insurance""
+}",https://thebrain.glide.page/dl/home,,0
+nhx4onn7TGSHl32RHtkU9A,fdLePIRtSYWq-TTr5GvJyQ,oln3M90-R.CB-GcdkYSK1w,true,Hyundai Creta JENG,Transportation,,7,253355,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Transportation - Hyundai Creta JENG,Avg: $0.00,Budget: ,"{
+  ""ID"": nhx4onn7TGSHl32RHtkU9A,
+  ""title"": ""Transportation - Hyundai Creta JENG""
+}",https://thebrain.glide.page/dl/home,,0
+ko1gCYBTRjyff5Z-MOsalg,puyp5peSTm60M20rssM1OA,AbN6.FXMRWSorXy9KxlPTQ,,SAT,Finance,,14,100449,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Finance - SAT,Avg: $0.00,Budget: ,"{
+  ""ID"": ko1gCYBTRjyff5Z-MOsalg,
+  ""title"": ""Finance - SAT""
+}",https://thebrain.glide.page/dl/home,,0
+gykEllkxQXWfTJCzB-CPcg,puyp5peSTm60M20rssM1OA,AbN6.FXMRWSorXy9KxlPTQ,,Accountant ,Finance,,16,53370,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Finance - Accountant ,Avg: $0.00,Budget: ,"{
+  ""ID"": gykEllkxQXWfTJCzB-CPcg,
+  ""title"": ""Finance - Accountant ""
+}",https://thebrain.glide.page/dl/home,,0
+EVVnTM0pSLKFU1.LFewKzw,puyp5peSTm60M20rssM1OA,hwbFC4lCTRm0pNG-FHA4Dg,,Crédito Hipotecario (LUX3),Finance,,2,17504.61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Finance - Crédito Hipotecario (LUX3),Avg: $0.00,Budget: ,"{
+  ""ID"": EVVnTM0pSLKFU1.LFewKzw,
+  ""title"": ""Finance - Crédito Hipotecario (LUX3)""
+}",https://thebrain.glide.page/dl/home,,0
+36khipo4RGKxZF6aIHRcHQ,hcdXe2v5RxyysoOMwcx-0w,hwbFC4lCTRm0pNG-FHA4Dg,,Mamá,Other Expenses,,47,144128.6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Other Expenses - Mamá,Avg: $0.00,Budget: ,"{
+  ""ID"": 36khipo4RGKxZF6aIHRcHQ,
+  ""title"": ""Other Expenses - Mamá""
+}",https://thebrain.glide.page/dl/home,,0
+dEU5rQmtQHyKmiZ8MVvKuw,hcdXe2v5RxyysoOMwcx-0w,hwbFC4lCTRm0pNG-FHA4Dg,,Frida,Other Expenses,,6,4288.9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Other Expenses - Frida,Avg: $0.00,Budget: ,"{
+  ""ID"": dEU5rQmtQHyKmiZ8MVvKuw,
+  ""title"": ""Other Expenses - Frida""
+}",https://thebrain.glide.page/dl/home,,0
+4XLMp52MTziquTN3Fz-soQ,fdLePIRtSYWq-TTr5GvJyQ,AbN6.FXMRWSorXy9KxlPTQ,,Service Car,Transportation,,1,3199,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Transportation - Service Car,Avg: $0.00,Budget: ,"{
+  ""ID"": 4XLMp52MTziquTN3Fz-soQ,
+  ""title"": ""Transportation - Service Car""
+}",https://thebrain.glide.page/dl/home,,0
+Da.zTiweR660QMhTWrBfxA,zh9e0UshT6azasqEA3LpEQ,oln3M90-R.CB-GcdkYSK1w,true,Wedding,Personal Spending,,10,115029.535,58067.05,19355.6833333333,16187.85,12823.2,29056,0,0,0,0,0,0,0,0,0,,,Personal Spending - Wedding,"Avg: $19,355.68",Budget: ,"{
+  ""ID"": Da.zTiweR660QMhTWrBfxA,
+  ""title"": ""Personal Spending - Wedding""
+}",https://thebrain.glide.page/dl/home,,0
+ibVwrel9TuSkbK.QpN78CQ,HqoZz-fARwGTbjZOi-kAXQ,oln3M90-R.CB-GcdkYSK1w,true,Courses,Business,,1,10030.9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Business - Courses,Avg: $0.00,Budget: ,"{
+  ""ID"": ibVwrel9TuSkbK.QpN78CQ,
+  ""title"": ""Business - Courses""
+}",https://thebrain.glide.page/dl/home,,0
+VZSlzltETxuTS7S5XeHn7g,puyp5peSTm60M20rssM1OA,hwbFC4lCTRm0pNG-FHA4Dg,,1 million intereses (Mazoy),Finance,,7,59984.99,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Finance - 1 million intereses (Mazoy),Avg: $0.00,Budget: ,"{
+  ""ID"": VZSlzltETxuTS7S5XeHn7g,
+  ""title"": ""Finance - 1 million intereses (Mazoy)""
+}",https://thebrain.glide.page/dl/home,,0
+UqRcIaZcQjuGk-BsxfY1yg,puyp5peSTm60M20rssM1OA,hwbFC4lCTRm0pNG-FHA4Dg,,1 million capital (Mazoy),Finance,,13,107730.94,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Finance - 1 million capital (Mazoy),Avg: $0.00,Budget: ,"{
+  ""ID"": UqRcIaZcQjuGk-BsxfY1yg,
+  ""title"": ""Finance - 1 million capital (Mazoy)""
+}",https://thebrain.glide.page/dl/home,,0
+HDf7gC9WSbyHkn2zzpBTvg,zh9e0UshT6azasqEA3LpEQ,hwbFC4lCTRm0pNG-FHA4Dg,,Modalidad 40,Personal Spending,,35,48089.93,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Personal Spending - Modalidad 40,Avg: $0.00,Budget: ,"{
+  ""ID"": HDf7gC9WSbyHkn2zzpBTvg,
+  ""title"": ""Personal Spending - Modalidad 40""
+}",https://thebrain.glide.page/dl/home,,0
+dpmZVx-OR7esVCWmCzZUww,zLbcy0SnT3yuuxVN0fOxFw,hwbFC4lCTRm0pNG-FHA4Dg,,Regalos invitados,Boda Majo&Juanes,,4,16560,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Boda Majo&Juanes - Regalos invitados,Avg: $0.00,Budget: ,"{
+  ""ID"": dpmZVx-OR7esVCWmCzZUww,
+  ""title"": ""Boda Majo&Juanes - Regalos invitados""
+}",https://thebrain.glide.page/dl/home,,0
+rE0h9.BNTJqH.phaMDSJPQ,HqoZz-fARwGTbjZOi-kAXQ,hwbFC4lCTRm0pNG-FHA4Dg,,Verónica CC,Business,,12,39500,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,Business - Verónica CC,Avg: $0.00,Budget: ,"{
+  ""ID"": rE0h9.BNTJqH.phaMDSJPQ,
+  ""title"": ""Business - Verónica CC""
+}",https://thebrain.glide.page/dl/home,,0
+lnEpkFybSdiKMyXBRfshkA,zh9e0UshT6azasqEA3LpEQ,oln3M90-R.CB-GcdkYSK1w,true,Honeymoon,Personal Spending,,5,75954.14,32864.14,10954.7133333333,32864.14,0,0,0,0,0,0,0,0,0,0,0,💑,💑 Honeymoon,Personal Spending - Honeymoon,"Avg: $10,954.71",Budget: ,"{
+  ""ID"": lnEpkFybSdiKMyXBRfshkA,
+  ""title"": ""Personal Spending - Honeymoon""
+}",https://thebrain.glide.page/dl/home,,0

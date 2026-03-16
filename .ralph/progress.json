@@ -1,0 +1,16 @@
+{
+  "phases": {
+    "0": { "total": 10, "completed": 10, "status": "done" },
+    "1": { "total": 4, "completed": 0, "status": "in_progress" },
+    "2": { "total": 11, "completed": 0, "status": "pending" },
+    "3": { "total": 4, "completed": 0, "status": "pending" },
+    "4": { "total": 4, "completed": 0, "status": "pending" },
+    "5": { "total": 9, "completed": 0, "status": "pending" },
+    "6": { "total": 6, "completed": 0, "status": "pending" }
+  },
+  "overall": {
+    "total_tasks": 48,
+    "completed": 10,
+    "percentage": 20.8
+  }
+}
