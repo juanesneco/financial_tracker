@@ -172,7 +172,7 @@ export default function DesignKitPage() {
           <section className="space-y-4">
             <SectionHeading
               title="Color Palette"
-              description='The "Clean Ledger" design system uses sage green as the primary color and warm amber as the accent.'
+              description='The "Clean Ledger" design system uses professional blue as the primary color and warm amber as the accent.'
             />
 
             {/* Primary & Accent */}
@@ -181,7 +181,7 @@ export default function DesignKitPage() {
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <ColorSwatch
-                name="Primary (Sage Green)"
+                name="Primary (Professional Blue)"
                 variable="--primary"
                 colorClass="bg-primary"
                 textClass="text-primary-foreground"
@@ -322,24 +322,36 @@ export default function DesignKitPage() {
           <section className="space-y-4">
             <SectionHeading
               title="Typography"
-              description="DM Serif Display for headings, Inter for body text."
+              description="DM Serif Display for headings (fluid clamp() sizing), Inter for body text."
             />
 
             <Card>
               <CardContent className="pt-6 space-y-6">
                 <div className="space-y-4">
-                  <h1 className="font-serif text-3xl font-bold">
-                    Heading 1 - DM Serif Display
-                  </h1>
-                  <h2 className="font-serif text-2xl font-semibold">
-                    Heading 2 - DM Serif Display
-                  </h2>
-                  <h3 className="font-serif text-xl font-semibold">
-                    Heading 3 - DM Serif Display
-                  </h3>
-                  <h4 className="font-serif text-lg font-semibold">
-                    Heading 4 - DM Serif Display
-                  </h4>
+                  <div>
+                    <h1 className="font-serif font-bold">
+                      Heading 1 - DM Serif Display
+                    </h1>
+                    <p className="text-[10px] text-muted-foreground font-mono mt-1">clamp(1.75rem, 5vw, 2.75rem)</p>
+                  </div>
+                  <div>
+                    <h2 className="font-serif font-semibold">
+                      Heading 2 - DM Serif Display
+                    </h2>
+                    <p className="text-[10px] text-muted-foreground font-mono mt-1">clamp(1.5rem, 4vw, 2.25rem)</p>
+                  </div>
+                  <div>
+                    <h3 className="font-serif font-semibold">
+                      Heading 3 - DM Serif Display
+                    </h3>
+                    <p className="text-[10px] text-muted-foreground font-mono mt-1">clamp(1.25rem, 3vw, 1.75rem)</p>
+                  </div>
+                  <div>
+                    <h4 className="font-serif font-semibold">
+                      Heading 4 - DM Serif Display
+                    </h4>
+                    <p className="text-[10px] text-muted-foreground font-mono mt-1">clamp(1.125rem, 2.5vw, 1.5rem)</p>
+                  </div>
                 </div>
 
                 <Separator />
@@ -566,7 +578,44 @@ export default function DesignKitPage() {
           <Separator />
 
           {/* ═══════════════════════════════════════════════════════════════════
-             5. FORM ELEMENTS
+             5. SHADOWS
+             ═══════════════════════════════════════════════════════════════════ */}
+          <section className="space-y-4">
+            <SectionHeading
+              title="Shadows"
+              description="Card and component shadow scale."
+            />
+
+            <Card>
+              <CardContent className="pt-6 space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                  <div className="space-y-2">
+                    <div className="h-20 bg-card rounded-xl border shadow-[0_8px_30px_rgba(31,35,40,0.07)] flex items-center justify-center">
+                      <span className="text-xs text-muted-foreground">Card Default</span>
+                    </div>
+                    <p className="text-[10px] text-muted-foreground font-mono">0 8px 30px rgba(31,35,40,0.07)</p>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="h-20 bg-card rounded-[22px] border shadow-[0_18px_40px_rgba(31,35,40,0.10)] flex items-center justify-center">
+                      <span className="text-xs text-muted-foreground">Card Warm</span>
+                    </div>
+                    <p className="text-[10px] text-muted-foreground font-mono">0 18px 40px rgba(31,35,40,0.10)</p>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="h-20 bg-primary text-primary-foreground rounded-full flex items-center justify-center shadow-[0_12px_30px_rgba(13,78,166,0.15)]">
+                      <span className="text-xs">Pill Hover</span>
+                    </div>
+                    <p className="text-[10px] text-muted-foreground font-mono">0 12px 30px rgba(13,78,166,0.15)</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+
+          <Separator />
+
+          {/* ═══════════════════════════════════════════════════════════════════
+             6. FORM ELEMENTS
              ═══════════════════════════════════════════════════════════════════ */}
           <section className="space-y-4">
             <SectionHeading
@@ -749,7 +798,7 @@ export default function DesignKitPage() {
           <section className="space-y-4">
             <SectionHeading
               title="Spacing & Layout"
-              description="Visual reference for the spacing scale and common layout patterns."
+              description="Visual reference for the spacing scale and common layout patterns. Standard page gap: space-y-6 md:space-y-10."
             />
 
             <Card>
@@ -828,7 +877,7 @@ export default function DesignKitPage() {
                     </div>
                     <div className="border rounded p-3 space-y-2">
                       <span className="text-[10px] text-muted-foreground font-mono">
-                        max-w-lg mx-auto p-4 md:p-6 space-y-6
+                        max-w-lg mx-auto p-4 md:p-6 space-y-6 md:space-y-10
                       </span>
                       <div className="h-16 bg-card border rounded-xl flex items-center justify-center">
                         <span className="text-[10px] text-muted-foreground font-mono">

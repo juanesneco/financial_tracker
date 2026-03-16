@@ -18,8 +18,8 @@ import {
 import { Wallet, Plus, Trash2, Pencil, Check, X } from "lucide-react";
 
 const colors = [
-  { name: "Primary", var: "bg-primary", text: "text-primary-foreground", hex: "#4A7C6F / #6AAE9A" },
-  { name: "Secondary", var: "bg-secondary", text: "text-secondary-foreground", hex: "#E8ECE9 / #333333" },
+  { name: "Primary", var: "bg-primary", text: "text-primary-foreground", hex: "#0d4ea6 / #4d8fd6" },
+  { name: "Secondary", var: "bg-secondary", text: "text-secondary-foreground", hex: "#E8EDF3 / #333333" },
   { name: "Accent", var: "bg-accent", text: "text-accent-foreground", hex: "#D4915E / #E8A870" },
   { name: "Muted", var: "bg-muted", text: "text-muted-foreground", hex: "#F0F0EC / #333333" },
   { name: "Destructive", var: "bg-destructive", text: "text-destructive-foreground", hex: "#DC3545 / #EF5350" },

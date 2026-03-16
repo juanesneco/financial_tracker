@@ -8,7 +8,7 @@ export const OTP_CONFIG = {
 
   footerTagline: "Clarity in every transaction.",
 
-  primaryColor: "#4A7C6F",
+  primaryColor: "#0d4ea6",
   accentColor: "#D4915E",
   mutedColor: "#6B6B6B",
   bgColor: "#FAFAF8",

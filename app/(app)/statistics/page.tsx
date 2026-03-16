@@ -14,7 +14,7 @@ import {
 import type { Expense, Category, CategoryTotal } from "@/lib/types";
 
 const CHART_COLORS = [
-  "#4A7C6F", "#D4915E", "#E57373", "#64B5F6", "#81C784",
+  "#0d4ea6", "#D4915E", "#E57373", "#64B5F6", "#81C784",
   "#BA68C8", "#FFB74D", "#4DB6AC", "#7986CB", "#A1887F",
   "#F06292", "#4FC3F7", "#90A4AE",
 ];
@@ -123,7 +123,7 @@ export default function StatisticsPage() {
     <>
       <Header title="Statistics" />
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-2xl mx-auto p-4 md:p-6 space-y-6">
+        <div className="max-w-2xl mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
           <MonthYearPicker
             month={selectedMonth}
             year={selectedYear}
@@ -200,7 +200,7 @@ export default function StatisticsPage() {
                       formatter={(value: number | undefined) => formatCurrency(value ?? 0)}
                       contentStyle={{ borderRadius: "8px", fontSize: "12px" }}
                     />
-                    <Bar dataKey="total" fill="#4A7C6F" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="total" fill="#0d4ea6" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>

@@ -135,7 +135,7 @@ export default function BalancePage() {
     <>
       <Header title="Balance Sheet" />
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-2xl mx-auto p-4 md:p-6 space-y-6">
+        <div className="max-w-2xl mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
           {/* Month Selector */}
           <div className="flex items-center justify-between">
             <Button variant="ghost" size="sm" onClick={goToPreviousMonth}>&larr;</Button>
