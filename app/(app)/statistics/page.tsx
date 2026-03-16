@@ -253,15 +253,15 @@ export default function StatisticsPage() {
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div>
                     <p className="text-xs text-muted-foreground mb-1">Income</p>
-                    <p className="text-lg font-semibold text-emerald-600">{formatCurrency(yearTotalIncome)}</p>
+                    <p className="text-sm md:text-lg font-semibold text-emerald-600 truncate">{formatCurrency(yearTotalIncome)}</p>
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground mb-1">Expenses</p>
-                    <p className="text-lg font-semibold text-red-500">{formatCurrency(yearTotalExpenses)}</p>
+                    <p className="text-sm md:text-lg font-semibold text-red-500 truncate">{formatCurrency(yearTotalExpenses)}</p>
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground mb-1">Net</p>
-                    <p className={`text-lg font-semibold ${yearNet >= 0 ? "text-emerald-600" : "text-red-500"}`}>
+                    <p className={`text-sm md:text-lg font-semibold truncate ${yearNet >= 0 ? "text-emerald-600" : "text-red-500"}`}>
                       {yearNet >= 0 ? "+" : ""}{formatCurrency(yearNet)}
                     </p>
                   </div>
@@ -273,7 +273,7 @@ export default function StatisticsPage() {
             <Card>
               <CardContent className="pt-6">
                 <h3 className="font-serif text-lg font-semibold mb-4">Income vs Expenses</h3>
-                <ResponsiveContainer width="100%" height={250}>
+                <ResponsiveContainer width="100%" height={200}>
                   <BarChart data={barChartData}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis dataKey="name" tick={{ fontSize: 11 }} />
@@ -315,14 +315,14 @@ export default function StatisticsPage() {
                           className="cursor-pointer"
                           onClick={() => handleMonthClick(d.month)}
                         >
-                          <TableCell className="font-medium">{MONTH_NAMES[d.month]}</TableCell>
-                          <TableCell className="text-right tabular-nums text-emerald-600">
+                          <TableCell className="font-medium text-xs md:text-sm">{MONTH_NAMES[d.month]}</TableCell>
+                          <TableCell className="text-right tabular-nums text-emerald-600 text-xs md:text-sm">
                             {formatCurrency(d.income)}
                           </TableCell>
-                          <TableCell className="text-right tabular-nums text-red-500">
+                          <TableCell className="text-right tabular-nums text-red-500 text-xs md:text-sm">
                             {formatCurrency(d.expenses)}
                           </TableCell>
-                          <TableCell className={`text-right tabular-nums font-medium ${net >= 0 ? "text-emerald-600" : "text-red-500"}`}>
+                          <TableCell className={`text-right tabular-nums font-medium text-xs md:text-sm ${net >= 0 ? "text-emerald-600" : "text-red-500"}`}>
                             {net >= 0 ? "+" : ""}{formatCurrency(net)}
                           </TableCell>
                         </TableRow>
@@ -331,14 +331,14 @@ export default function StatisticsPage() {
                   </TableBody>
                   <TableFooter>
                     <TableRow>
-                      <TableCell className="font-semibold">Total</TableCell>
-                      <TableCell className="text-right tabular-nums font-semibold text-emerald-600">
+                      <TableCell className="font-semibold text-xs md:text-sm">Total</TableCell>
+                      <TableCell className="text-right tabular-nums font-semibold text-emerald-600 text-xs md:text-sm">
                         {formatCurrency(yearTotalIncome)}
                       </TableCell>
-                      <TableCell className="text-right tabular-nums font-semibold text-red-500">
+                      <TableCell className="text-right tabular-nums font-semibold text-red-500 text-xs md:text-sm">
                         {formatCurrency(yearTotalExpenses)}
                       </TableCell>
-                      <TableCell className={`text-right tabular-nums font-semibold ${yearNet >= 0 ? "text-emerald-600" : "text-red-500"}`}>
+                      <TableCell className={`text-right tabular-nums font-semibold text-xs md:text-sm ${yearNet >= 0 ? "text-emerald-600" : "text-red-500"}`}>
                         {yearNet >= 0 ? "+" : ""}{formatCurrency(yearNet)}
                       </TableCell>
                     </TableRow>

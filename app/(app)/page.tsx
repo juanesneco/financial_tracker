@@ -242,7 +242,7 @@ export default function DashboardPage() {
             <Card>
               <CardContent className="pt-5 pb-4">
                 <p className="text-xs text-muted-foreground mb-1">Income</p>
-                <p className="text-lg md:text-xl font-serif font-semibold text-emerald-600">
+                <p className="text-sm md:text-xl font-serif font-semibold text-emerald-600 truncate">
                   {formatCurrency(incomeTotal)}
                 </p>
               </CardContent>
@@ -250,7 +250,7 @@ export default function DashboardPage() {
             <Card>
               <CardContent className="pt-5 pb-4">
                 <p className="text-xs text-muted-foreground mb-1">Expenses</p>
-                <p className="text-lg md:text-xl font-serif font-semibold text-red-500">
+                <p className="text-sm md:text-xl font-serif font-semibold text-red-500 truncate">
                   {formatCurrency(monthlyTotal)}
                 </p>
               </CardContent>
@@ -258,7 +258,7 @@ export default function DashboardPage() {
             <Card className={incomeTotal - monthlyTotal >= 0 ? "border-emerald-200 dark:border-emerald-800" : "border-red-200 dark:border-red-800"}>
               <CardContent className="pt-5 pb-4">
                 <p className="text-xs text-muted-foreground mb-1">Net</p>
-                <p className={`text-lg md:text-xl font-serif font-semibold ${incomeTotal - monthlyTotal >= 0 ? "text-emerald-600" : "text-red-500"}`}>
+                <p className={`text-sm md:text-xl font-serif font-semibold truncate ${incomeTotal - monthlyTotal >= 0 ? "text-emerald-600" : "text-red-500"}`}>
                   {incomeTotal - monthlyTotal >= 0 ? "+" : ""}{formatCurrency(incomeTotal - monthlyTotal)}
                 </p>
               </CardContent>
