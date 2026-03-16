@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { Loader2, Plus, CreditCard, Banknote } from "lucide-react";
+import { Loader2, Plus, CreditCard, Banknote, Receipt, DollarSign, ArrowRightLeft } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { formatCurrency, formatDateShort, getMonthDateRange, formatMonthYear } from "@/lib/format-utils";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import type { Expense, Category, Deposit, CategoryTotal } from "@/lib/types";
+import type { Expense, Category, Deposit, IncomeRecord, CategoryTotal } from "@/lib/types";
 
 export default function DashboardPage() {
   const supabase = createClient();
@@ -16,9 +16,11 @@ export default function DashboardPage() {
   const [displayName, setDisplayName] = useState<string>("");
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [deposits, setDeposits] = useState<Deposit[]>([]);
+  const [incomeRecords, setIncomeRecords] = useState<IncomeRecord[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [monthlyTotal, setMonthlyTotal] = useState(0);
   const [depositsTotal, setDepositsTotal] = useState(0);
+  const [incomeTotal, setIncomeTotal] = useState(0);
   const [categoryTotals, setCategoryTotals] = useState<CategoryTotal[]>([]);
 
   // Month/year selector
@@ -77,12 +79,26 @@ export default function DashboardPage() {
       const deps = (monthDeposits || []) as Deposit[];
       setDeposits(deps);
 
+      // Fetch income records for month
+      const { data: monthIncome } = await supabase
+        .from("ft_income_records")
+        .select("*")
+        .gte("date", start)
+        .lte("date", end)
+        .order("date", { ascending: false });
+
+      const incRecs = (monthIncome || []) as IncomeRecord[];
+      setIncomeRecords(incRecs);
+
       // Calculate totals
       const expTotal = exps.reduce((sum, e) => sum + Number(e.amount), 0);
       setMonthlyTotal(expTotal);
 
       const depTotal = deps.reduce((sum, d) => sum + Number(d.amount), 0);
       setDepositsTotal(depTotal);
+
+      const incTotal = incRecs.reduce((sum, r) => sum + Number(r.amount), 0);
+      setIncomeTotal(incTotal);
 
       // Category totals
       const catMap = new Map<string, { total: number; count: number }>();
@@ -106,6 +122,22 @@ export default function DashboardPage() {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -30px 0px" }
+    );
+    document.querySelectorAll(".fade-in").forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [isLoading]);
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -165,6 +197,40 @@ export default function DashboardPage() {
             </h2>
           </div>
 
+          {/* Quick Actions */}
+          <div className="fade-in grid grid-cols-3 gap-3">
+            <Link href="/add" className="block">
+              <Card className="hover:bg-muted/50 transition-colors transition-transform duration-200 hover:-translate-y-0.5 cursor-pointer">
+                <CardContent className="pt-5 pb-4 flex flex-col items-center gap-2">
+                  <div className="h-11 w-11 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                    <Receipt size={20} className="text-red-500" />
+                  </div>
+                  <p className="text-xs font-medium text-center">Add Expense</p>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link href="/add-income" className="block">
+              <Card className="hover:bg-muted/50 transition-colors transition-transform duration-200 hover:-translate-y-0.5 cursor-pointer">
+                <CardContent className="pt-5 pb-4 flex flex-col items-center gap-2">
+                  <div className="h-11 w-11 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+                    <DollarSign size={20} className="text-emerald-600" />
+                  </div>
+                  <p className="text-xs font-medium text-center">Add Income</p>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link href="/balance" className="block">
+              <Card className="hover:bg-muted/50 transition-colors transition-transform duration-200 hover:-translate-y-0.5 cursor-pointer">
+                <CardContent className="pt-5 pb-4 flex flex-col items-center gap-2">
+                  <div className="h-11 w-11 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                    <ArrowRightLeft size={20} className="text-blue-600" />
+                  </div>
+                  <p className="text-xs font-medium text-center">Balance</p>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
+
           {/* Month Selector */}
           <div className="flex items-center justify-between">
             <Button variant="ghost" size="sm" onClick={goToPreviousMonth}>&larr;</Button>
@@ -173,37 +239,37 @@ export default function DashboardPage() {
           </div>
 
           {/* Summary Cards */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="fade-in fade-in-delay-1 grid grid-cols-3 gap-3">
             <Card>
-              <CardContent className="pt-6">
-                <p className="text-sm text-muted-foreground mb-1">Expenses</p>
-                <p className="text-2xl md:text-3xl font-serif font-semibold text-primary">
-                  {formatCurrency(monthlyTotal)}
-                </p>
-                <p className="text-xs text-muted-foreground mt-2">
-                  {expenses.length} expense{expenses.length !== 1 ? "s" : ""}
+              <CardContent className="pt-5 pb-4">
+                <p className="text-xs text-muted-foreground mb-1">Income</p>
+                <p className="text-lg md:text-xl font-serif font-semibold text-emerald-600">
+                  {formatCurrency(incomeTotal)}
                 </p>
               </CardContent>
             </Card>
-            {deposits.length > 0 && (
-              <Card>
-                <CardContent className="pt-6">
-                  <p className="text-sm text-muted-foreground mb-1">Deposits</p>
-                  <p className="text-2xl md:text-3xl font-serif font-semibold text-accent-foreground">
-                    {formatCurrency(depositsTotal)}
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-2">
-                    {deposits.length} deposit{deposits.length !== 1 ? "s" : ""}
-                  </p>
-                </CardContent>
-              </Card>
-            )}
+            <Card>
+              <CardContent className="pt-5 pb-4">
+                <p className="text-xs text-muted-foreground mb-1">Expenses</p>
+                <p className="text-lg md:text-xl font-serif font-semibold text-red-500">
+                  {formatCurrency(monthlyTotal)}
+                </p>
+              </CardContent>
+            </Card>
+            <Card className={incomeTotal - monthlyTotal >= 0 ? "border-emerald-200 dark:border-emerald-800" : "border-red-200 dark:border-red-800"}>
+              <CardContent className="pt-5 pb-4">
+                <p className="text-xs text-muted-foreground mb-1">Net</p>
+                <p className={`text-lg md:text-xl font-serif font-semibold ${incomeTotal - monthlyTotal >= 0 ? "text-emerald-600" : "text-red-500"}`}>
+                  {incomeTotal - monthlyTotal >= 0 ? "+" : ""}{formatCurrency(incomeTotal - monthlyTotal)}
+                </p>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Category Breakdown */}
           {categoryTotals.length > 0 && (
-            <div>
-              <h3 className="font-serif text-lg font-semibold mb-3">By Category</h3>
+            <div className="fade-in fade-in-delay-2">
+              <h3 className="text-[0.8rem] uppercase tracking-[0.25em] font-semibold mb-3 text-primary font-sans">By Category</h3>
               <div className="grid grid-cols-2 gap-3">
                 {categoryTotals.slice(0, 6).map(({ category, total, count }) => (
                   <Card key={category.id} className="py-3">
@@ -222,9 +288,9 @@ export default function DashboardPage() {
           )}
 
           {/* Recent Expenses */}
-          <div>
+          <div className="fade-in fade-in-delay-2">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="font-serif text-lg font-semibold">Recent Expenses</h3>
+              <h3 className="text-[0.8rem] uppercase tracking-[0.25em] font-semibold text-primary font-sans">Recent Expenses</h3>
               <Button variant="ghost" size="sm" asChild>
                 <Link href="/add" className="gap-1">
                   <Plus size={16} /> Add

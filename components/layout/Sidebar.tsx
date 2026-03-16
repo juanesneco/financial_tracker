@@ -3,26 +3,30 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Receipt, BarChart3, Settings, Wallet, CreditCard, RefreshCw, Target, DollarSign, ArrowDownCircle } from "lucide-react";
+import { Home, Receipt, BarChart3, Settings, Wallet, CreditCard, RefreshCw, Target, ArrowRightLeft, ArrowDownCircle, DollarSign, Palette } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 
 const navItems = [
   { href: "/", icon: Home, label: "Home" },
+  { href: "/balance", icon: ArrowRightLeft, label: "Balance Sheet" },
   { href: "/expenses", icon: Receipt, label: "Expenses" },
   { href: "/cards", icon: CreditCard, label: "Cards" },
   { href: "/subscriptions", icon: RefreshCw, label: "Subscriptions" },
   { href: "/budgets", icon: Target, label: "Budgets" },
-  { href: "/income", icon: DollarSign, label: "Income" },
-  { href: "/deposits", icon: ArrowDownCircle, label: "Deposits" },
+  { href: "/income", icon: DollarSign, label: "Income Sources" },
   { href: "/statistics", icon: BarChart3, label: "Stats" },
   { href: "/settings", icon: Settings, label: "Settings" },
 ];
+
+const DEPOSITS_ALLOWED_NAMES = ["juanes", "ivonne"];
 
 export function Sidebar() {
   const pathname = usePathname();
   const supabase = createClient();
   const [displayName, setDisplayName] = useState<string | null>(null);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+  const [canSeeDeposits, setCanSeeDeposits] = useState(false);
 
   useEffect(() => {
     async function getUser() {
@@ -31,7 +35,7 @@ export function Sidebar() {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const { data: profile } = await (supabase as any)
           .from("ft_profiles")
-          .select("display_name")
+          .select("display_name, is_super_admin")
           .eq("id", authUser.id)
           .single();
 
@@ -39,13 +43,16 @@ export function Sidebar() {
           profile?.display_name ||
           authUser.email?.split("@")[0] || "User"
         );
+        setIsSuperAdmin(profile?.is_super_admin === true);
+        const name = (profile?.display_name || "").toLowerCase();
+        setCanSeeDeposits(DEPOSITS_ALLOWED_NAMES.some((n) => name.includes(n)));
       }
     }
     getUser();
   }, [supabase]);
 
   return (
-    <aside className="hidden md:flex flex-col w-64 border-r bg-card h-screen sticky top-0">
+    <aside className="hidden md:flex flex-col w-64 border-r bg-background/80 backdrop-blur-xl h-screen sticky top-0">
       {/* Logo */}
       <div className="border-b">
         <div className="h-14 flex items-center px-4 md:px-6">
@@ -65,7 +72,7 @@ export function Sidebar() {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors",
                 isActive
                   ? "bg-primary text-primary-foreground"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -76,6 +83,38 @@ export function Sidebar() {
             </Link>
           );
         })}
+
+        {/* Deposits — restricted to Juanes/Ivonne */}
+        {canSeeDeposits && (
+          <Link
+            href="/deposits"
+            className={cn(
+              "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors",
+              pathname === "/deposits" || pathname.startsWith("/deposits/")
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+            )}
+          >
+            <ArrowDownCircle size={20} />
+            Deposits
+          </Link>
+        )}
+
+        {/* Admin-only nav items */}
+        {isSuperAdmin && (
+          <Link
+            href="/design-kit"
+            className={cn(
+              "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors",
+              pathname === "/design-kit" || pathname.startsWith("/design-kit/")
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+            )}
+          >
+            <Palette size={20} />
+            Design Kit
+          </Link>
+        )}
       </nav>
 
       {/* User section */}
