@@ -1,0 +1,63 @@
+{
+  "project": "Financial Tracker",
+  "trackId": "09_statistics",
+  "trackName": "Statistics & Analytics",
+  "branchName": "track/09-statistics",
+  "description": "Visual analytics for expense patterns using Recharts. Pie/donut chart for category breakdown, bar chart for 6-month trends, top categories with progress bars, and month selector for navigating between periods.",
+  "status": "done",
+  "priority": 2,
+  "dependencies": ["04_expense_management"],
+  "subDeliverables": [
+    {
+      "id": "09-SD-001",
+      "title": "Category breakdown pie/donut chart",
+      "description": "Pie or donut chart showing expense distribution by category for the selected month. Displays percentage and absolute amount per slice.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Chart renders with one slice per spending category",
+        "Each slice shows percentage and amount on hover/tap",
+        "Uses custom 13-color chart palette",
+        "Responsive container adapts to viewport"
+      ]
+    },
+    {
+      "id": "09-SD-002",
+      "title": "6-month trend bar chart",
+      "description": "Bar chart showing total monthly spending for the current month and 5 previous months, revealing spending trends over time.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "6 bars: current month + 5 previous",
+        "Month labels on x-axis",
+        "Amount values on y-axis",
+        "Consistent color with primary palette"
+      ]
+    },
+    {
+      "id": "09-SD-003",
+      "title": "Top categories with progress bars",
+      "description": "Ranked list of categories by spending amount with progress bars showing each category's share of total monthly spending.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Categories ranked by total spend descending",
+        "Progress bar proportional to category's share",
+        "Percentage of monthly total displayed",
+        "Category emoji and name shown"
+      ]
+    },
+    {
+      "id": "09-SD-004",
+      "title": "Month selector navigation",
+      "description": "Previous/next month navigation allowing users to view statistics for any past month.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Previous/next buttons navigate months",
+        "Current month and year displayed",
+        "All charts and data update on month change"
+      ]
+    }
+  ]
+}

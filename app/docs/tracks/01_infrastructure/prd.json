@@ -1,0 +1,72 @@
+{
+  "project": "Financial Tracker",
+  "trackId": "01_infrastructure",
+  "trackName": "Infrastructure",
+  "branchName": "track/01-infrastructure",
+  "description": "Foundation layer: Supabase schema setup with financial_tracker schema and ft_* prefixed views, browser and server Supabase clients, PostgREST view configuration with security_invoker, PWA manifest, and shared utility helpers for date/currency formatting.",
+  "status": "done",
+  "priority": 1,
+  "dependencies": [],
+  "subDeliverables": [
+    {
+      "id": "01-SD-001",
+      "title": "Supabase schema setup",
+      "description": "Create the financial_tracker PostgreSQL schema on the shared JENG Supabase instance. Set up ft_* prefixed public views that bridge the schema to PostgREST.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "financial_tracker schema exists in PostgreSQL",
+        "All tables use ft_ prefix in public views",
+        "Views are accessible via PostgREST API"
+      ]
+    },
+    {
+      "id": "01-SD-002",
+      "title": "Environment variables & Supabase clients",
+      "description": "Configure environment variables for Supabase connection. Create browser client with persistSession and server client with cookie-based auth.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Browser client created with persistSession: true",
+        "Server client created with cookie-based session handling",
+        "Environment variables configured for Supabase URL and anon key"
+      ]
+    },
+    {
+      "id": "01-SD-003",
+      "title": "PostgREST view configuration",
+      "description": "Configure all PostgREST views with security_invoker = true to ensure RLS policies are enforced through the view layer.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "All ft_* views use security_invoker = true",
+        "RLS policies enforced when querying through views",
+        "Views support insert/update/delete operations"
+      ]
+    },
+    {
+      "id": "01-SD-004",
+      "title": "PWA manifest & favicon",
+      "description": "Add PWA manifest.json with app name, icons, theme color, and standalone display mode. Include SVG favicon.",
+      "priority": 2,
+      "passes": true,
+      "acceptanceCriteria": [
+        "manifest.json exists with correct app name and display: standalone",
+        "SVG icon referenced and accessible",
+        "App installable as PWA on mobile devices"
+      ]
+    },
+    {
+      "id": "01-SD-005",
+      "title": "Utility helpers",
+      "description": "Create shared utility functions: format-utils.ts for date/currency formatting, utils.ts for cn() class composition helper.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "formatCurrency supports MXN and USD formats",
+        "formatDate returns 'Today'/'Yesterday' or formatted date",
+        "cn() helper combines clsx and tailwind-merge"
+      ]
+    }
+  ]
+}

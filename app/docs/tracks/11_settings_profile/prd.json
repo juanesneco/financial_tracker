@@ -1,0 +1,72 @@
+{
+  "project": "Financial Tracker",
+  "trackId": "11_settings_profile",
+  "trackName": "Settings & Profile",
+  "branchName": "track/11-settings-profile",
+  "description": "User profile and preferences: display name editing, currency preference (MXN/USD), account info display (role, member since), admin badge for super admins, and logout functionality.",
+  "status": "done",
+  "priority": 1,
+  "dependencies": ["02_authentication"],
+  "subDeliverables": [
+    {
+      "id": "11-SD-001",
+      "title": "Display name editing",
+      "description": "Editable display name field on the settings page, saved to ft_profiles.display_name.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Display name shown in editable input",
+        "Save button persists change to database",
+        "Updated name reflected across the app"
+      ]
+    },
+    {
+      "id": "11-SD-002",
+      "title": "Currency preference",
+      "description": "Currency selector allowing users to choose between MXN and USD. Preference stored in ft_profiles.currency and used throughout the app for formatting.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Toggle or select between MXN and USD",
+        "Preference saved to ft_profiles.currency",
+        "Currency used in formatCurrency throughout app"
+      ]
+    },
+    {
+      "id": "11-SD-003",
+      "title": "Account info display",
+      "description": "Read-only display of account information: user role and member since date derived from profile created_at.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Role displayed from profile record",
+        "Member since date formatted from created_at",
+        "Email address shown"
+      ]
+    },
+    {
+      "id": "11-SD-004",
+      "title": "Admin badge for super admins",
+      "description": "Visual badge indicator shown next to user name when is_super_admin is true on the profile.",
+      "priority": 2,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Badge visible when is_super_admin is true",
+        "Badge hidden for regular users",
+        "Styled consistently with app design system"
+      ]
+    },
+    {
+      "id": "11-SD-005",
+      "title": "Logout functionality",
+      "description": "Logout button that calls Supabase signOut(), clears the session, and redirects to the login page.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Button triggers Supabase signOut()",
+        "Session cookies cleared",
+        "User redirected to /login after logout"
+      ]
+    }
+  ]
+}

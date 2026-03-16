@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
-import { Loader2, Trash2, CreditCard, Banknote } from "lucide-react";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
+import { Loader2, Trash2, CreditCard, Banknote, Pencil, ChevronRight, ImageIcon, ImageOff } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { formatCurrency, formatDate } from "@/lib/format-utils";
+import Link from "next/link";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -24,8 +25,17 @@ import type { Expense, Category, Subcategory, Card as CardType } from "@/lib/typ
 export default function ExpenseDetailPage() {
   const router = useRouter();
   const params = useParams();
+  const searchParams = useSearchParams();
   const supabase = createClient();
   const expenseId = params.id as string;
+
+  const fromParam = searchParams.get("from");
+  const originMap: Record<string, { label: string; href: string }> = {
+    home: { label: "Home", href: "/" },
+    expenses: { label: "Expenses", href: "/expenses" },
+    balance: { label: "Balance", href: "/balance" },
+  };
+  const origin = originMap[fromParam || ""] || originMap.expenses;
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -232,19 +242,30 @@ export default function ExpenseDetailPage() {
               </Select>
             </div>
 
-            {paymentMethod === "card" && cards.length > 0 && (
-              <div className="space-y-2">
-                <Label>Card</Label>
-                <Select value={cardId} onValueChange={setCardId}>
-                  <SelectTrigger><SelectValue placeholder="Select card" /></SelectTrigger>
-                  <SelectContent>
-                    {cards.map((c) => (
-                      <SelectItem key={c.id} value={c.id}>{c.label || c.bank}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
+            {paymentMethod === "card" && cards.length > 0 && (() => {
+              // Show active cards (no deactivated_at) + the currently assigned card +
+              // deactivated cards that were still active on the expense date
+              const availableCards = cards.filter(c =>
+                !c.deactivated_at ||
+                c.id === cardId ||
+                (c.deactivated_at && date && c.deactivated_at >= date)
+              );
+              return availableCards.length > 0 ? (
+                <div className="space-y-2">
+                  <Label>Card</Label>
+                  <Select value={cardId} onValueChange={setCardId}>
+                    <SelectTrigger><SelectValue placeholder="Select card" /></SelectTrigger>
+                    <SelectContent>
+                      {availableCards.map((c) => (
+                        <SelectItem key={c.id} value={c.id}>
+                          {c.label || c.bank}{c.deactivated_at ? " (inactive)" : ""}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              ) : null;
+            })()}
 
             <div className="space-y-2">
               <Label>Date *</Label>
@@ -280,7 +301,18 @@ export default function ExpenseDetailPage() {
       <Header title="Expense" showBackButton />
       <main className="flex-1 overflow-y-auto">
         <div className="max-w-lg mx-auto p-4 md:p-6 space-y-6">
-          {/* Amount & Category */}
+          {/* Breadcrumbs */}
+          <nav className="flex items-center gap-1 text-sm text-muted-foreground">
+            <Link href={origin.href} className="hover:text-foreground transition-colors">
+              {origin.label}
+            </Link>
+            <ChevronRight size={14} />
+            <span className="text-foreground font-medium truncate">
+              {expense.title || cat?.name || "Detail"}
+            </span>
+          </nav>
+
+          {/* Amount, Category & Actions */}
           <Card>
             <CardContent className="pt-6 text-center">
               <span className="text-4xl mb-2 block">{cat?.emoji || cat?.icon || "📦"}</span>
@@ -289,6 +321,22 @@ export default function ExpenseDetailPage() {
               </p>
               <p className="text-sm text-muted-foreground mt-1">{cat?.name}</p>
               {sub && <p className="text-xs text-muted-foreground">{sub.name}</p>}
+
+              {/* Actions */}
+              <div className="flex gap-3 mt-5">
+                <Button variant="outline" className="flex-1" onClick={() => setIsEditing(true)}>
+                  <Pencil size={14} className="mr-2" />
+                  Edit
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="icon"
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                >
+                  {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 size={16} />}
+                </Button>
+              </div>
             </CardContent>
           </Card>
 
@@ -330,23 +378,26 @@ export default function ExpenseDetailPage() {
                   <p className="text-sm">{expense.comments}</p>
                 </div>
               )}
+
+              {/* Receipt hint */}
+              <div>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider">Receipt</p>
+                <div className="flex items-center gap-2 text-sm mt-1">
+                  {expense.receipt_url ? (
+                    <>
+                      <ImageIcon size={14} className="text-primary" />
+                      <span className="text-primary font-medium">Image attached</span>
+                    </>
+                  ) : (
+                    <>
+                      <ImageOff size={14} className="text-muted-foreground" />
+                      <span className="text-muted-foreground">No image attached</span>
+                    </>
+                  )}
+                </div>
+              </div>
             </CardContent>
           </Card>
-
-          {/* Actions */}
-          <div className="flex gap-3">
-            <Button variant="outline" className="flex-1" onClick={() => setIsEditing(true)}>
-              Edit
-            </Button>
-            <Button
-              variant="destructive"
-              size="icon"
-              onClick={handleDelete}
-              disabled={isDeleting}
-            >
-              {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 size={16} />}
-            </Button>
-          </div>
         </div>
       </main>
     </>

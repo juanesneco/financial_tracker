@@ -1,15 +1,18 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, ChevronLeft, ChevronRight, ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { formatCurrency, getMonthDateRange } from "@/lib/format-utils";
+import { formatCurrency, getMonthDateRange, formatMonthYear } from "@/lib/format-utils";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
-import { MonthYearPicker } from "@/components/shared/MonthYearPicker";
+import {
+  Table, TableHeader, TableBody, TableFooter,
+  TableHead, TableRow, TableCell,
+} from "@/components/ui/table";
 import {
   PieChart, Pie, Cell, ResponsiveContainer, Tooltip,
-  BarChart, Bar, XAxis, YAxis, CartesianGrid,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend,
 } from "recharts";
 import type { Expense, Category, CategoryTotal } from "@/lib/types";
 
@@ -19,31 +22,104 @@ const CHART_COLORS = [
   "#F06292", "#4FC3F7", "#90A4AE",
 ];
 
+const MONTH_NAMES = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+
+const MONTH_SHORT = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+];
+
+interface MonthlyData {
+  month: number;
+  income: number;
+  expenses: number;
+}
+
 export default function StatisticsPage() {
   const supabase = createClient();
-  const [isLoading, setIsLoading] = useState(true);
+  const now = new Date();
+
+  // View state
+  const [view, setView] = useState<"year" | "month">("year");
+  const [selectedYear, setSelectedYear] = useState(now.getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
+
+  // Year view data
+  const [yearLoading, setYearLoading] = useState(true);
+  const [monthlyData, setMonthlyData] = useState<MonthlyData[]>([]);
+
+  // Valid year range (based on actual data)
+  const [minYear, setMinYear] = useState(now.getFullYear());
+  const [maxYear, setMaxYear] = useState(now.getFullYear());
+
+  // Month detail data
+  const [monthLoading, setMonthLoading] = useState(false);
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoryTotals, setCategoryTotals] = useState<CategoryTotal[]>([]);
-
-  const now = new Date();
-  const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
-  const [selectedYear, setSelectedYear] = useState(now.getFullYear());
-
-  // Monthly trend data (last 6 months)
   const [trendData, setTrendData] = useState<{ month: string; total: number }[]>([]);
 
-  const fetchData = useCallback(async () => {
-    setIsLoading(true);
+  // ─── Fetch valid year range on mount ─────────────────────────────────────────
+  useEffect(() => {
+    async function fetchYearRange() {
+      const [{ data: oldestExp }, { data: oldestInc }, { data: newestExp }, { data: newestInc }] = await Promise.all([
+        supabase.from("ft_expenses").select("date").order("date", { ascending: true }).limit(1),
+        supabase.from("ft_income_records").select("date").order("date", { ascending: true }).limit(1),
+        supabase.from("ft_expenses").select("date").order("date", { ascending: false }).limit(1),
+        supabase.from("ft_income_records").select("date").order("date", { ascending: false }).limit(1),
+      ]);
+
+      const dates = [
+        oldestExp?.[0]?.date, oldestInc?.[0]?.date,
+        newestExp?.[0]?.date, newestInc?.[0]?.date,
+      ].filter(Boolean).map((d: string) => new Date(d + "T00:00:00").getFullYear());
+
+      if (dates.length > 0) {
+        setMinYear(Math.min(...dates));
+        setMaxYear(Math.max(...dates));
+      }
+    }
+    fetchYearRange();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ─── Year view fetch ────────────────────────────────────────────────────────
+  const fetchYearData = useCallback(async () => {
+    setYearLoading(true);
     try {
-      // Fetch categories
+      const promises = Array.from({ length: 12 }, async (_, m) => {
+        const { start, end } = getMonthDateRange(m, selectedYear);
+
+        const [{ data: expData }, { data: incData }] = await Promise.all([
+          supabase.from("ft_expenses").select("amount").gte("date", start).lte("date", end),
+          supabase.from("ft_income_records").select("amount").gte("date", start).lte("date", end),
+        ]);
+
+        const expenses = (expData || []).reduce((sum: number, r: { amount: number }) => sum + Number(r.amount), 0);
+        const income = (incData || []).reduce((sum: number, r: { amount: number }) => sum + Number(r.amount), 0);
+
+        return { month: m, income, expenses };
+      });
+
+      setMonthlyData(await Promise.all(promises));
+    } finally {
+      setYearLoading(false);
+    }
+  }, [supabase, selectedYear]);
+
+  // ─── Month detail fetch ─────────────────────────────────────────────────────
+  const fetchMonthData = useCallback(async () => {
+    setMonthLoading(true);
+    try {
       const { data: cats } = await supabase
         .from("ft_categories")
         .select("*")
         .order("display_order");
       setCategories((cats || []) as Category[]);
 
-      // Fetch current month expenses
       const { start, end } = getMonthDateRange(selectedMonth, selectedYear);
       const { data: exps } = await supabase
         .from("ft_expenses")
@@ -54,7 +130,7 @@ export default function StatisticsPage() {
       const expenseList = (exps || []) as Expense[];
       setExpenses(expenseList);
 
-      // Calculate category totals
+      // Category totals
       const catMap = new Map<string, { total: number; count: number }>();
       expenseList.forEach((e) => {
         const existing = catMap.get(e.category_id) || { total: 0, count: 0 };
@@ -69,7 +145,7 @@ export default function StatisticsPage() {
       totals.sort((a, b) => b.total - a.total);
       setCategoryTotals(totals);
 
-      // Calculate 6-month trend
+      // 6-month trend
       const months = [];
       for (let i = 5; i >= 0; i--) {
         let m = selectedMonth - i;
@@ -93,22 +169,191 @@ export default function StatisticsPage() {
 
       setTrendData(await Promise.all(trendPromises));
     } finally {
-      setIsLoading(false);
+      setMonthLoading(false);
     }
   }, [supabase, selectedMonth, selectedYear]);
 
-  useEffect(() => { fetchData(); }, [fetchData]);
+  // Fetch on view/year/month changes
+  useEffect(() => {
+    if (view === "year") fetchYearData();
+  }, [view, fetchYearData]);
+
+  useEffect(() => {
+    if (view === "month") fetchMonthData();
+  }, [view, fetchMonthData]);
+
+  // ─── Derived data ───────────────────────────────────────────────────────────
+  const yearTotalIncome = monthlyData.reduce((s, d) => s + d.income, 0);
+  const yearTotalExpenses = monthlyData.reduce((s, d) => s + d.expenses, 0);
+  const yearNet = yearTotalIncome - yearTotalExpenses;
 
   const monthTotal = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
-
-  // Pie chart data
   const pieData = categoryTotals.map((ct, i) => ({
     name: ct.category.name,
     value: ct.total,
     color: CHART_COLORS[i % CHART_COLORS.length],
   }));
 
-  if (isLoading) {
+  const barChartData = monthlyData.map((d) => ({
+    name: MONTH_SHORT[d.month],
+    Income: d.income,
+    Expenses: d.expenses,
+  }));
+
+  // ─── Handlers ───────────────────────────────────────────────────────────────
+  const handleMonthClick = (month: number) => {
+    setSelectedMonth(month);
+    setView("month");
+  };
+
+  const handleBackToYear = () => {
+    setView("year");
+  };
+
+  // ─── Year View ──────────────────────────────────────────────────────────────
+  if (view === "year") {
+    if (yearLoading) {
+      return (
+        <>
+          <Header title="Statistics" />
+          <div className="flex-1 flex items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          </div>
+        </>
+      );
+    }
+
+    return (
+      <>
+        <Header title="Statistics" />
+        <main className="flex-1 overflow-y-auto">
+          <div className="max-w-2xl lg:max-w-4xl mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
+            {/* Year selector */}
+            <div className="flex items-center justify-center gap-4">
+              <button
+                onClick={() => setSelectedYear((y) => y - 1)}
+                disabled={selectedYear <= minYear}
+                className="p-2 rounded-lg hover:bg-muted transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+              <h2 className="text-xl font-serif font-semibold tabular-nums">{selectedYear}</h2>
+              <button
+                onClick={() => setSelectedYear((y) => y + 1)}
+                disabled={selectedYear >= maxYear}
+                className="p-2 rounded-lg hover:bg-muted transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Yearly summary */}
+            <Card>
+              <CardContent className="pt-6">
+                <div className="grid grid-cols-3 gap-4 text-center">
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">Income</p>
+                    <p className="text-lg font-semibold text-emerald-600">{formatCurrency(yearTotalIncome)}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">Expenses</p>
+                    <p className="text-lg font-semibold text-red-500">{formatCurrency(yearTotalExpenses)}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">Net</p>
+                    <p className={`text-lg font-semibold ${yearNet >= 0 ? "text-emerald-600" : "text-red-500"}`}>
+                      {yearNet >= 0 ? "+" : ""}{formatCurrency(yearNet)}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* 12-month bar chart */}
+            <Card>
+              <CardContent className="pt-6">
+                <h3 className="font-serif text-lg font-semibold mb-4">Income vs Expenses</h3>
+                <ResponsiveContainer width="100%" height={250}>
+                  <BarChart data={barChartData}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="name" tick={{ fontSize: 11 }} />
+                    <YAxis
+                      tick={{ fontSize: 11 }}
+                      tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+                    />
+                    <Tooltip
+                      formatter={(value: number | undefined) => formatCurrency(value ?? 0)}
+                      contentStyle={{ borderRadius: "8px", fontSize: "12px" }}
+                    />
+                    <Legend wrapperStyle={{ fontSize: "12px" }} />
+                    <Bar dataKey="Income" fill="#059669" radius={[2, 2, 0, 0]} />
+                    <Bar dataKey="Expenses" fill="#ef4444" radius={[2, 2, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            {/* Monthly table */}
+            <Card>
+              <CardContent className="pt-6">
+                <h3 className="font-serif text-lg font-semibold mb-4">Monthly Breakdown</h3>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Month</TableHead>
+                      <TableHead className="text-right">Income</TableHead>
+                      <TableHead className="text-right">Expenses</TableHead>
+                      <TableHead className="text-right">Net</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {monthlyData.map((d) => {
+                      const net = d.income - d.expenses;
+                      return (
+                        <TableRow
+                          key={d.month}
+                          className="cursor-pointer"
+                          onClick={() => handleMonthClick(d.month)}
+                        >
+                          <TableCell className="font-medium">{MONTH_NAMES[d.month]}</TableCell>
+                          <TableCell className="text-right tabular-nums text-emerald-600">
+                            {formatCurrency(d.income)}
+                          </TableCell>
+                          <TableCell className="text-right tabular-nums text-red-500">
+                            {formatCurrency(d.expenses)}
+                          </TableCell>
+                          <TableCell className={`text-right tabular-nums font-medium ${net >= 0 ? "text-emerald-600" : "text-red-500"}`}>
+                            {net >= 0 ? "+" : ""}{formatCurrency(net)}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                  <TableFooter>
+                    <TableRow>
+                      <TableCell className="font-semibold">Total</TableCell>
+                      <TableCell className="text-right tabular-nums font-semibold text-emerald-600">
+                        {formatCurrency(yearTotalIncome)}
+                      </TableCell>
+                      <TableCell className="text-right tabular-nums font-semibold text-red-500">
+                        {formatCurrency(yearTotalExpenses)}
+                      </TableCell>
+                      <TableCell className={`text-right tabular-nums font-semibold ${yearNet >= 0 ? "text-emerald-600" : "text-red-500"}`}>
+                        {yearNet >= 0 ? "+" : ""}{formatCurrency(yearNet)}
+                      </TableCell>
+                    </TableRow>
+                  </TableFooter>
+                </Table>
+              </CardContent>
+            </Card>
+          </div>
+        </main>
+      </>
+    );
+  }
+
+  // ─── Month Detail View ──────────────────────────────────────────────────────
+  if (monthLoading) {
     return (
       <>
         <Header title="Statistics" />
@@ -123,12 +368,18 @@ export default function StatisticsPage() {
     <>
       <Header title="Statistics" />
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-2xl mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
-          <MonthYearPicker
-            month={selectedMonth}
-            year={selectedYear}
-            onChange={(m, y) => { setSelectedMonth(m); setSelectedYear(y); }}
-          />
+        <div className="max-w-2xl lg:max-w-4xl mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
+          {/* Back button + month label */}
+          <div className="space-y-1">
+            <button
+              onClick={handleBackToYear}
+              className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to {selectedYear}
+            </button>
+            <h2 className="text-xl font-serif font-semibold">{formatMonthYear(selectedMonth, selectedYear)}</h2>
+          </div>
 
           {/* Total */}
           <Card>
@@ -207,7 +458,7 @@ export default function StatisticsPage() {
             </Card>
           )}
 
-          {/* Top Subcategories */}
+          {/* Top Categories */}
           {categoryTotals.length > 0 && (
             <Card>
               <CardContent className="pt-6">

@@ -1,0 +1,74 @@
+{
+  "project": "Financial Tracker",
+  "trackId": "02_authentication",
+  "trackName": "Authentication",
+  "branchName": "track/02-authentication",
+  "description": "OTP-only authentication flow via Resend. Users enter email, receive a branded 6-digit code, and verify to create a session. Middleware protects all app routes by redirecting unauthenticated users to login.",
+  "status": "done",
+  "priority": 1,
+  "dependencies": ["01_infrastructure"],
+  "subDeliverables": [
+    {
+      "id": "02-SD-001",
+      "title": "OTP send endpoint",
+      "description": "API route that generates a 6-digit code, stores it in the otp_codes table with expiration, and sends it to the user's email via Resend.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "POST /api/auth/send-otp accepts email and generates 6-digit code",
+        "Code stored in otp_codes table with expires_at timestamp",
+        "Email sent via Resend with branded template"
+      ]
+    },
+    {
+      "id": "02-SD-002",
+      "title": "OTP verify endpoint",
+      "description": "API route that validates the submitted code against the database, creates or finds the user, and returns an authenticated session token.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "POST /api/auth/verify-otp validates code against otp_codes",
+        "Expired or used codes are rejected",
+        "New users created automatically on first login",
+        "Session token returned on successful verification"
+      ]
+    },
+    {
+      "id": "02-SD-003",
+      "title": "Login page",
+      "description": "Two-step login flow: step 1 collects email, step 2 collects OTP code. Auto-redirects to home if session already exists.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Step 1 shows email input with submit button",
+        "Step 2 shows OTP code input after email submitted",
+        "Existing sessions auto-redirect to home page",
+        "Error states displayed for invalid codes"
+      ]
+    },
+    {
+      "id": "02-SD-004",
+      "title": "Middleware route protection",
+      "description": "Next.js middleware that checks for valid Supabase session on every request and redirects unauthenticated users to the login page.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Unauthenticated requests to /app routes redirect to /login",
+        "Auth routes (/login, /api/auth/*) are accessible without session",
+        "Session refreshed on every request via cookies"
+      ]
+    },
+    {
+      "id": "02-SD-005",
+      "title": "OTP email branding config",
+      "description": "Configuration for branded OTP emails: sender address, subject line, primary/accent colors matching the app design system.",
+      "priority": 2,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Email sent from noreply@juanesngtz.com",
+        "Subject line includes app name",
+        "Email template uses primary blue and accent amber colors"
+      ]
+    }
+  ]
+}

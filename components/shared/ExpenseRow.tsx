@@ -13,7 +13,7 @@ interface ExpenseRowProps {
 export function ExpenseRow({ expense, category }: ExpenseRowProps) {
   return (
     <Link
-      href={`/expenses/${expense.id}`}
+      href={`/expenses/${expense.id}?from=expenses`}
       className="flex items-center gap-3 px-4 py-3 hover:bg-muted/50 transition-colors"
     >
       <span className="text-lg">{category?.emoji || category?.icon || "📦"}</span>

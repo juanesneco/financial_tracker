@@ -1,0 +1,61 @@
+{
+  "project": "Financial Tracker",
+  "trackId": "07_budgets",
+  "trackName": "Budgets",
+  "branchName": "track/07-budgets",
+  "description": "Category-based spending limits for the current month. Users set budget amounts per category and the app calculates actual spending against each budget. Progress bars show utilization and over-budget categories are visually highlighted.",
+  "status": "done",
+  "priority": 2,
+  "dependencies": ["04_expense_management"],
+  "subDeliverables": [
+    {
+      "id": "07-SD-001",
+      "title": "Budget CRUD",
+      "description": "Create, read, update, and delete budgets with category selection and amount. Category filter prevents duplicate budgets for the same category.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Create budget by selecting category and entering amount",
+        "Duplicate category budgets prevented",
+        "Edit budget amount inline",
+        "Delete budget with confirmation"
+      ]
+    },
+    {
+      "id": "07-SD-002",
+      "title": "Progress bar with spending vs budget",
+      "description": "Visual progress bar for each budget showing current month's actual spending as a proportion of the budget amount.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Progress bar fills proportionally to spending/budget ratio",
+        "Actual spend and budget amounts displayed as text",
+        "Percentage calculation shown"
+      ]
+    },
+    {
+      "id": "07-SD-003",
+      "title": "Over-budget visual alerts",
+      "description": "When spending exceeds the budget amount, the progress bar changes to destructive color and an alert indicator is shown.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Progress bar turns red/destructive when over 100%",
+        "Visual alert indicator on over-budget categories",
+        "Clear distinction between under and over budget"
+      ]
+    },
+    {
+      "id": "07-SD-004",
+      "title": "Current month scope",
+      "description": "Budget calculations scoped to the current calendar month, comparing expenses from the 1st to the last day of the month against budget amounts.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Expenses filtered to current calendar month only",
+        "Date range: 1st to last day of current month",
+        "Resets automatically on month change"
+      ]
+    }
+  ]
+}

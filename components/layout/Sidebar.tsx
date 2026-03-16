@@ -3,19 +3,17 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Receipt, BarChart3, Settings, Wallet, CreditCard, RefreshCw, Target, ArrowRightLeft, ArrowDownCircle, DollarSign, Palette } from "lucide-react";
+import { Home, BarChart3, Settings, Wallet, CreditCard, RefreshCw, ArrowRightLeft, ArrowDownCircle, DollarSign, Palette } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 
 const navItems = [
   { href: "/", icon: Home, label: "Home" },
+  { href: "/statistics", icon: BarChart3, label: "Statistics" },
   { href: "/balance", icon: ArrowRightLeft, label: "Balance Sheet" },
-  { href: "/expenses", icon: Receipt, label: "Expenses" },
-  { href: "/cards", icon: CreditCard, label: "Cards" },
   { href: "/subscriptions", icon: RefreshCw, label: "Subscriptions" },
-  { href: "/budgets", icon: Target, label: "Budgets" },
   { href: "/income", icon: DollarSign, label: "Income Sources" },
-  { href: "/statistics", icon: BarChart3, label: "Stats" },
+  { href: "/cards", icon: CreditCard, label: "Cards" },
   { href: "/settings", icon: Settings, label: "Settings" },
 ];
 
@@ -52,7 +50,7 @@ export function Sidebar() {
   }, [supabase]);
 
   return (
-    <aside className="hidden md:flex flex-col w-64 border-r bg-background/80 backdrop-blur-xl h-screen sticky top-0">
+    <aside className="hidden lg:flex flex-col w-64 border-r bg-background/80 backdrop-blur-xl h-screen sticky top-0">
       {/* Logo */}
       <div className="border-b">
         <div className="h-14 flex items-center px-4 md:px-6">
@@ -119,21 +117,14 @@ export function Sidebar() {
 
       {/* User section */}
       <div className="p-4 border-t">
-        <Link
-          href="/settings"
-          className={cn(
-            "flex items-center gap-3 px-2 py-2 rounded-lg transition-colors",
-            "hover:bg-muted",
-            pathname === "/settings" ? "bg-muted" : ""
-          )}
-        >
+        <div className="flex items-center gap-3 px-2 py-2">
           <div className="h-9 w-9 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-medium">
             {displayName ? displayName[0].toUpperCase() : "..."}
           </div>
           <p className="text-sm font-medium truncate">
             {displayName || "Loading..."}
           </p>
-        </Link>
+        </div>
       </div>
     </aside>
   );

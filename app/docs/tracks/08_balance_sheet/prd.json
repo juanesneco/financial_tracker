@@ -1,0 +1,76 @@
+{
+  "project": "Financial Tracker",
+  "trackId": "08_balance_sheet",
+  "trackName": "Balance Sheet",
+  "branchName": "track/08-balance-sheet",
+  "description": "Unified ledger view combining income and expense transactions. Summary cards show totals and net balance with color coding. Supports filtering by type, category, payment method, date range, and search. Dual layout with table on desktop and cards on mobile. Paginated at 50 items per page.",
+  "status": "done",
+  "priority": 1,
+  "dependencies": ["04_expense_management", "05_income_management"],
+  "subDeliverables": [
+    {
+      "id": "08-SD-001",
+      "title": "Combined income + expense transaction view",
+      "description": "Merge ft_expenses and ft_income_records into a single chronological timeline, distinguishing transaction types visually.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Income and expenses appear in single timeline",
+        "Transaction type visually distinguishable",
+        "Sorted by date descending"
+      ]
+    },
+    {
+      "id": "08-SD-002",
+      "title": "Summary cards",
+      "description": "Three summary cards at the top: total income, total expenses, and net balance. Net balance uses green for surplus and red for deficit.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Total income card with sum of income records",
+        "Total expenses card with sum of expenses",
+        "Net balance card with color coding (green/red)"
+      ]
+    },
+    {
+      "id": "08-SD-003",
+      "title": "Filters",
+      "description": "Filter controls for transaction type (income/expense/all), category, payment method, date range, and text search across title and note fields.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Type filter: income, expense, or all",
+        "Category filter dropdown",
+        "Payment method filter",
+        "Date range picker",
+        "Search matches title and note fields"
+      ]
+    },
+    {
+      "id": "08-SD-004",
+      "title": "Dual layout — table (desktop) / cards (mobile)",
+      "description": "Responsive layout using Table component on desktop (md:+) and card-based layout on mobile for optimal readability on each device.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Table layout visible on md: and above",
+        "Card layout visible below md: breakpoint",
+        "Both layouts show same transaction data",
+        "Payment method icons displayed in both layouts"
+      ]
+    },
+    {
+      "id": "08-SD-005",
+      "title": "Pagination",
+      "description": "Paginate combined transaction list at 50 items per page with page navigation controls.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "50 transactions per page",
+        "Page navigation controls (prev/next)",
+        "Current page indicator",
+        "Total count displayed"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "project": "Financial Tracker",
+  "trackId": "10_deposits",
+  "trackName": "Deposits",
+  "branchName": "track/10-deposits",
+  "description": "Lump-sum deposit tracking restricted to specific users (juanes and ivonne). Simple CRUD for recording deposits with amount, title, date, and notes. Displays running total of all deposits.",
+  "status": "done",
+  "priority": 2,
+  "dependencies": ["03_app_shell"],
+  "subDeliverables": [
+    {
+      "id": "10-SD-001",
+      "title": "Deposit CRUD",
+      "description": "Create, read, update, and delete deposits with fields: amount (required), title, date (defaults to today), and note.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Create deposit with amount (required)",
+        "Title, date, and note are optional",
+        "Date defaults to today",
+        "Deposits ordered by date descending"
+      ]
+    },
+    {
+      "id": "10-SD-002",
+      "title": "Total deposits display",
+      "description": "Summary card showing the running total of all deposit amounts at the top of the deposits page.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Total sums all deposit amounts",
+        "Displayed as summary card",
+        "Updates on create/delete"
+      ]
+    },
+    {
+      "id": "10-SD-003",
+      "title": "Access restriction",
+      "description": "Deposits page and sidebar link only accessible to users with display name 'juanes' or 'ivonne'. Other users cannot see or access the feature.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Page checks user display name on load",
+        "Sidebar link conditionally rendered",
+        "Unauthorized users cannot access the page"
+      ]
+    }
+  ]
+}

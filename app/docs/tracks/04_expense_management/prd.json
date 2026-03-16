@@ -1,0 +1,114 @@
+{
+  "project": "Financial Tracker",
+  "trackId": "04_expense_management",
+  "trackName": "Expense Management",
+  "branchName": "track/04-expense-management",
+  "description": "Core expense tracking with full CRUD: add form with amount, title, category/subcategory, payment method, card, date, notes, comments, and receipt upload. Expenses listed with search/filter/pagination grouped by date. Detail page with view/edit/delete modes. Category system with emoji icons.",
+  "status": "done",
+  "priority": 1,
+  "dependencies": ["03_app_shell"],
+  "subDeliverables": [
+    {
+      "id": "04-SD-001",
+      "title": "Add expense form",
+      "description": "Full expense form component with fields: amount (required), title, category (required), subcategory (conditional), date, note, comments, payment method (card/cash), card selector (conditional), and receipt file upload with preview.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Amount and category are required fields",
+        "Subcategory dropdown filtered by selected category",
+        "Card selector appears only when payment method is 'card'",
+        "Receipt upload shows image preview with delete option",
+        "Date defaults to today"
+      ]
+    },
+    {
+      "id": "04-SD-002",
+      "title": "Add expense page (mobile)",
+      "description": "Full-page add expense view for mobile, integrating the ExpenseForm component with proper layout and navigation.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Page renders ExpenseForm component",
+        "Back navigation to previous page",
+        "Success redirects to expenses list or home"
+      ]
+    },
+    {
+      "id": "04-SD-003",
+      "title": "Expenses list with filters",
+      "description": "Searchable, filterable list of expenses with controls for text search, category filter, payment method filter, and date range selection.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Text search filters by title and note",
+        "Category dropdown filters by expense category",
+        "Payment method filter (card/cash/all)",
+        "Date range picker for custom periods"
+      ]
+    },
+    {
+      "id": "04-SD-004",
+      "title": "Expenses grouped by date with pagination",
+      "description": "Expense list items grouped under date headers (Today, Yesterday, or formatted date). Paginated at 50 items per page.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Expenses grouped under date section headers",
+        "Date headers use relative labels (Today, Yesterday)",
+        "50 expenses per page with page navigation controls"
+      ]
+    },
+    {
+      "id": "04-SD-005",
+      "title": "Expense detail page with view/edit modes",
+      "description": "Individual expense detail view showing all fields. Edit mode allows inline modification of all expense fields.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "View mode displays all expense fields read-only",
+        "Edit mode enables inline editing of all fields",
+        "Supports ?from=home query param for back navigation",
+        "Receipt image displayed if present"
+      ]
+    },
+    {
+      "id": "04-SD-006",
+      "title": "Expense delete functionality",
+      "description": "Delete button with confirmation dialog on the expense detail page. Removes expense and redirects to list.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Delete button visible on expense detail page",
+        "Confirmation dialog prevents accidental deletion",
+        "Successful delete redirects to expenses list"
+      ]
+    },
+    {
+      "id": "04-SD-007",
+      "title": "Receipt upload to Supabase storage",
+      "description": "File input for receipt images uploaded to Supabase Storage. Preview shown after upload with option to remove.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "File input accepts image files",
+        "Image uploaded to Supabase Storage bucket",
+        "Preview thumbnail shown after upload",
+        "Delete button removes image from storage"
+      ]
+    },
+    {
+      "id": "04-SD-008",
+      "title": "Category and subcategory system with emojis",
+      "description": "Predefined categories and subcategories stored in ft_categories and ft_subcategories tables. Each category has an emoji icon for visual identification in lists and badges.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Categories loaded from ft_categories with emoji field",
+        "Subcategories filtered by parent category_id",
+        "CategoryBadge component displays emoji + name",
+        "Categories used consistently across forms and lists"
+      ]
+    }
+  ]
+}

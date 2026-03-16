@@ -1,0 +1,62 @@
+{
+  "project": "Financial Tracker",
+  "trackId": "05_income_management",
+  "trackName": "Income Management",
+  "branchName": "track/05-income-management",
+  "description": "Income tracking with two linked entities: income sources (clients/employers with legal details for invoicing) and income records (individual payments linked to a source with amount, date, and description).",
+  "status": "done",
+  "priority": 1,
+  "dependencies": ["03_app_shell"],
+  "subDeliverables": [
+    {
+      "id": "05-SD-001",
+      "title": "Income sources CRUD",
+      "description": "Full CRUD for income sources with fields: source name (required), initials, legal name, legal address, legal city/state/zip, and legal ID for invoice generation.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Create income source with source name (required)",
+        "Legal fields (name, address, city/state/zip, ID) are optional",
+        "Sources listed alphabetically by source name",
+        "Edit and delete operations supported"
+      ]
+    },
+    {
+      "id": "05-SD-002",
+      "title": "Income records form",
+      "description": "Form for recording income payments with fields: amount (required), income source (select), date, and description.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Amount is required field",
+        "Income source selectable from existing sources",
+        "Date defaults to today",
+        "Description is optional text field"
+      ]
+    },
+    {
+      "id": "05-SD-003",
+      "title": "Add income page",
+      "description": "Full-page add income view integrating the IncomeForm component with navigation and success handling.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Page renders IncomeForm component",
+        "Back navigation available",
+        "Success redirects appropriately"
+      ]
+    },
+    {
+      "id": "05-SD-004",
+      "title": "Income list page with source management",
+      "description": "Combined page showing income records list and income source management in sections.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Income records displayed in list format",
+        "Income sources manageable from same page",
+        "Initials displayed as avatar-style badges"
+      ]
+    }
+  ]
+}

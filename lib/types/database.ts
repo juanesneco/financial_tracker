@@ -149,6 +149,7 @@ export type Database = {
           last_four: string | null;
           card_type: "credit" | "debit" | null;
           label: string | null;
+          deactivated_at: string | null;
           original_glide_id: string | null;
           created_at: string;
           updated_at: string;
@@ -160,6 +161,7 @@ export type Database = {
           last_four?: string | null;
           card_type?: "credit" | "debit" | null;
           label?: string | null;
+          deactivated_at?: string | null;
           original_glide_id?: string | null;
           created_at?: string;
           updated_at?: string;
@@ -169,6 +171,7 @@ export type Database = {
           last_four?: string | null;
           card_type?: "credit" | "debit" | null;
           label?: string | null;
+          deactivated_at?: string | null;
           updated_at?: string;
         };
       };
@@ -211,6 +214,7 @@ export type Database = {
           start_date: string | null;
           end_date: string | null;
           is_active: boolean;
+          card_id: string | null;
           original_glide_id: string | null;
           created_at: string;
           updated_at: string;
@@ -225,6 +229,7 @@ export type Database = {
           start_date?: string | null;
           end_date?: string | null;
           is_active?: boolean;
+          card_id?: string | null;
           original_glide_id?: string | null;
           created_at?: string;
           updated_at?: string;
@@ -237,6 +242,7 @@ export type Database = {
           start_date?: string | null;
           end_date?: string | null;
           is_active?: boolean;
+          card_id?: string | null;
           updated_at?: string;
         };
       };

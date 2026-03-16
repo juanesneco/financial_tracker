@@ -1,0 +1,101 @@
+{
+  "project": "Financial Tracker",
+  "trackId": "03_app_shell",
+  "trackName": "App Shell",
+  "branchName": "track/03-app-shell",
+  "description": "Application chrome: root layout with Inter and DM Serif Display fonts, ThemeProvider, and Toaster. Responsive navigation with desktop sidebar (lg:1024px+) and mobile bottom nav with floating Add button. Header with back navigation and theme toggle. Responsive add behavior via useResponsiveAdd hook.",
+  "status": "done",
+  "priority": 1,
+  "dependencies": ["02_authentication"],
+  "subDeliverables": [
+    {
+      "id": "03-SD-001",
+      "title": "Root layout with fonts, ThemeProvider, Toaster",
+      "description": "Root layout.tsx loading Inter and DM Serif Display from Google Fonts, wrapping children in ThemeProvider for dark mode and Toaster for notifications.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Inter loaded as sans-serif body font",
+        "DM Serif Display loaded as serif heading font",
+        "ThemeProvider wraps the app with system theme detection",
+        "Toaster renders toast notifications globally"
+      ]
+    },
+    {
+      "id": "03-SD-002",
+      "title": "App layout with sidebar and mobile nav",
+      "description": "App-level layout that renders the desktop Sidebar and MobileNav components alongside the main content area with appropriate responsive padding.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Sidebar visible on lg: breakpoint and above",
+        "MobileNav visible below lg: breakpoint",
+        "Main content area has responsive padding (p-4 md:p-6)"
+      ]
+    },
+    {
+      "id": "03-SD-003",
+      "title": "Header component with back button and theme toggle",
+      "description": "Reusable header component showing page title, optional back button for navigation, and theme toggle button for light/dark mode switching.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Back button navigates to previous page or specified route",
+        "Theme toggle switches between light and dark mode",
+        "Page title displayed prominently"
+      ]
+    },
+    {
+      "id": "03-SD-004",
+      "title": "Sidebar navigation (desktop)",
+      "description": "Desktop sidebar with 16rem width showing navigation links: Home, Statistics, Balance Sheet, Subscriptions, Income Sources, Cards, Settings. Conditionally shows Deposits and Design Kit for authorized users.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Sidebar renders at lg: breakpoint with 16rem width",
+        "All main navigation links present and functional",
+        "Deposits link shown only for juanes/ivonne",
+        "Design Kit link shown only for admin users",
+        "Active route highlighted"
+      ]
+    },
+    {
+      "id": "03-SD-005",
+      "title": "Mobile bottom nav with floating Add button",
+      "description": "Bottom navigation bar for mobile with 5 items: Home, Balance, Add (floating), Statistics, More. Add button elevated with -mt-7 and accent amber styling.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "5 nav items rendered in bottom bar",
+        "Add button visually elevated above nav bar",
+        "Active item uses scale-110 animation",
+        "Hidden at lg: breakpoint when sidebar takes over"
+      ]
+    },
+    {
+      "id": "03-SD-006",
+      "title": "Responsive add behavior (useResponsiveAdd + AddSlideOver)",
+      "description": "Hook that detects viewport width: on desktop (lg:+) opens AddSlideOver sheet component, on mobile navigates to /add full page.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Desktop: clicking Add opens Sheet-based slide-over",
+        "Mobile: clicking Add navigates to /add page",
+        "useResponsiveAdd hook correctly detects breakpoint"
+      ]
+    },
+    {
+      "id": "03-SD-007",
+      "title": "Dark mode support via next-themes",
+      "description": "Full dark mode implementation using next-themes with system preference detection. All CSS custom properties have dark mode variants defined in globals.css.",
+      "priority": 2,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Dark mode toggleable via theme toggle in header",
+        "System preference detected on first visit",
+        "All color tokens have dark mode variants",
+        "No flash of unstyled content on page load"
+      ]
+    }
+  ]
+}

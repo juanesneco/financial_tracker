@@ -1,14 +1,35 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { Loader2, TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { Loader2, TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight, Search, Receipt, DollarSign } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { formatCurrency, formatDateShort, getMonthDateRange, formatMonthYear } from "@/lib/format-utils";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { AddSlideOver } from "@/components/shared/AddSlideOver";
+import { useResponsiveAdd } from "@/hooks/useResponsiveAdd";
 import type { Expense, Category, IncomeRecord, IncomeSource } from "@/lib/types";
+
+const PAGE_SIZE = 50;
 
 type BalanceEntry = {
   id: string;
@@ -18,29 +39,50 @@ type BalanceEntry = {
   date: string;
   category?: Category;
   source?: IncomeSource;
+  paymentMethod?: string | null;
 };
 
 export default function BalancePage() {
   const supabase = createClient();
+  const router = useRouter();
+  const { isDesktop } = useResponsiveAdd();
   const [isLoading, setIsLoading] = useState(true);
   const [entries, setEntries] = useState<BalanceEntry[]>([]);
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [categories, setCategories] = useState<Category[]>([]);
 
+  // Slide-over
+  const [slideOverOpen, setSlideOverOpen] = useState(false);
+  const [slideOverTab, setSlideOverTab] = useState<"expense" | "income">("expense");
+
+  // Month selector
   const now = new Date();
   const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
   const [selectedYear, setSelectedYear] = useState(now.getFullYear());
+
+  // Filters
+  const [search, setSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [paymentFilter, setPaymentFilter] = useState("");
+  const [typeFilter, setTypeFilter] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  // Pagination
+  const [page, setPage] = useState(0);
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
       const { start, end } = getMonthDateRange(selectedMonth, selectedYear);
+      const dateStart = startDate || start;
+      const dateEnd = endDate || end;
 
       const [catsRes, expensesRes, incomeRes, sourcesRes] = await Promise.all([
         supabase.from("ft_categories").select("*").order("display_order"),
-        supabase.from("ft_expenses").select("*").gte("date", start).lte("date", end).order("date", { ascending: false }),
-        supabase.from("ft_income_records").select("*").gte("date", start).lte("date", end).order("date", { ascending: false }),
+        supabase.from("ft_expenses").select("*").gte("date", dateStart).lte("date", dateEnd).order("date", { ascending: false }),
+        supabase.from("ft_income_records").select("*").gte("date", dateStart).lte("date", dateEnd).order("date", { ascending: false }),
         supabase.from("ft_income_sources").select("*"),
       ]);
 
@@ -50,12 +92,7 @@ export default function BalancePage() {
       const expenses = (expensesRes.data || []) as Expense[];
       const incomeRecords = (incomeRes.data || []) as IncomeRecord[];
 
-      const incTotal = incomeRecords.reduce((sum, r) => sum + Number(r.amount), 0);
-      const expTotal = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
-      setTotalIncome(incTotal);
-      setTotalExpenses(expTotal);
-
-      const combined: BalanceEntry[] = [
+      let combined: BalanceEntry[] = [
         ...incomeRecords.map((r) => ({
           id: r.id,
           type: "income" as const,
@@ -71,19 +108,50 @@ export default function BalancePage() {
           title: e.title || e.note || cats.find((c) => c.id === e.category_id)?.name || "Expense",
           date: e.date,
           category: cats.find((c) => c.id === e.category_id),
+          paymentMethod: e.payment_method,
         })),
       ];
 
+      // Apply filters
+      if (typeFilter === "income") {
+        combined = combined.filter((e) => e.type === "income");
+      } else if (typeFilter === "expense") {
+        combined = combined.filter((e) => e.type === "expense");
+      }
+
+      if (categoryFilter) {
+        combined = combined.filter((e) => e.type === "income" || e.category?.id === categoryFilter);
+      }
+
+      if (paymentFilter) {
+        combined = combined.filter((e) => e.type === "income" || e.paymentMethod === paymentFilter);
+      }
+
+      if (search) {
+        const q = search.toLowerCase();
+        combined = combined.filter((e) => e.title.toLowerCase().includes(q));
+      }
+
       combined.sort((a, b) => b.date.localeCompare(a.date));
+
+      const incTotal = combined.filter((e) => e.type === "income").reduce((sum, e) => sum + e.amount, 0);
+      const expTotal = combined.filter((e) => e.type === "expense").reduce((sum, e) => sum + e.amount, 0);
+      setTotalIncome(incTotal);
+      setTotalExpenses(expTotal);
+
       setEntries(combined);
     } finally {
       setIsLoading(false);
     }
-  }, [supabase, selectedMonth, selectedYear]);
+  }, [supabase, selectedMonth, selectedYear, search, categoryFilter, paymentFilter, typeFilter, startDate, endDate]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  useEffect(() => {
+    setPage(0);
+  }, [search, categoryFilter, paymentFilter, typeFilter, startDate, endDate]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -111,10 +179,23 @@ export default function BalancePage() {
     else setSelectedMonth(selectedMonth + 1);
   };
 
+  const handleAddClick = (tab: "expense" | "income") => {
+    if (isDesktop) {
+      setSlideOverTab(tab);
+      setSlideOverOpen(true);
+    } else {
+      router.push(tab === "expense" ? "/add" : "/add-income");
+    }
+  };
+
   const netBalance = totalIncome - totalExpenses;
 
-  // Group entries by date
-  const entriesByDate = entries.reduce((groups: Record<string, BalanceEntry[]>, entry) => {
+  // Pagination
+  const totalPages = Math.ceil(entries.length / PAGE_SIZE);
+  const paginatedEntries = entries.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+
+  // Group paginated entries by date
+  const entriesByDate = paginatedEntries.reduce((groups: Record<string, BalanceEntry[]>, entry) => {
     if (!groups[entry.date]) groups[entry.date] = [];
     groups[entry.date].push(entry);
     return groups;
@@ -135,7 +216,17 @@ export default function BalancePage() {
     <>
       <Header title="Balance Sheet" />
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-2xl mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
+        <div className="max-w-2xl lg:max-w-5xl mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
+          {/* Action buttons */}
+          <div className="flex gap-3">
+            <Button onClick={() => handleAddClick("expense")} variant="outline" className="gap-2">
+              <Receipt size={16} /> Add Expense
+            </Button>
+            <Button onClick={() => handleAddClick("income")} variant="outline" className="gap-2">
+              <DollarSign size={16} /> Add Income
+            </Button>
+          </div>
+
           {/* Month Selector */}
           <div className="flex items-center justify-between">
             <Button variant="ghost" size="sm" onClick={goToPreviousMonth}>&larr;</Button>
@@ -177,13 +268,144 @@ export default function BalancePage() {
             </Card>
           </div>
 
-          {/* Entries List */}
-          <div>
-            <h3 className="text-[0.8rem] uppercase tracking-[0.25em] font-semibold mb-3 text-primary font-sans fade-in fade-in-delay-1">Transactions</h3>
-            {entries.length === 0 ? (
+          {/* Filter Toolbar */}
+          <div className="space-y-3">
+            <div className="relative">
+              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Search transactions..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="pl-9"
+              />
+            </div>
+            <div className="flex gap-2 flex-wrap">
+              <Select value={typeFilter} onValueChange={(v) => setTypeFilter(v === "all" ? "" : v)}>
+                <SelectTrigger className="w-[130px]">
+                  <SelectValue placeholder="Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Types</SelectItem>
+                  <SelectItem value="expense">Expenses</SelectItem>
+                  <SelectItem value="income">Income</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Select value={categoryFilter} onValueChange={(v) => setCategoryFilter(v === "all" ? "" : v)}>
+                <SelectTrigger className="w-[160px]">
+                  <SelectValue placeholder="Category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  {categories.map((cat) => (
+                    <SelectItem key={cat.id} value={cat.id}>
+                      {cat.emoji || cat.icon} {cat.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select value={paymentFilter} onValueChange={(v) => setPaymentFilter(v === "all" ? "" : v)}>
+                <SelectTrigger className="w-[140px]">
+                  <SelectValue placeholder="Payment" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Methods</SelectItem>
+                  <SelectItem value="card">Card</SelectItem>
+                  <SelectItem value="cash">Cash</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="w-[140px]"
+                placeholder="From"
+              />
+              <Input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="w-[140px]"
+                placeholder="To"
+              />
+            </div>
+
+            <p className="text-xs text-muted-foreground">
+              {entries.length} transaction{entries.length !== 1 ? "s" : ""}
+            </p>
+          </div>
+
+          {/* Desktop Table View */}
+          <div className="hidden lg:block">
+            {paginatedEntries.length === 0 ? (
               <Card>
                 <CardContent className="py-8 text-center">
-                  <p className="text-muted-foreground">No transactions this month</p>
+                  <p className="text-muted-foreground">No transactions found</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Category / Source</TableHead>
+                      <TableHead>Title</TableHead>
+                      <TableHead>Method</TableHead>
+                      <TableHead className="text-right">Amount</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {paginatedEntries.map((entry) => (
+                      <TableRow
+                        key={entry.id}
+                        className="cursor-pointer hover:bg-muted/50"
+                        onClick={() => {
+                          if (entry.type === "expense") router.push(`/expenses/${entry.id}?from=balance`);
+                        }}
+                      >
+                        <TableCell className="text-muted-foreground text-sm">
+                          {formatDateShort(entry.date)}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            {entry.type === "income" ? (
+                              <div className="h-6 w-6 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+                                <ArrowDownRight size={12} className="text-emerald-600" />
+                              </div>
+                            ) : (
+                              <span className="text-sm">{entry.category?.emoji || entry.category?.icon || "📦"}</span>
+                            )}
+                            <span className="text-sm">
+                              {entry.type === "income"
+                                ? entry.source?.source_name || "Income"
+                                : entry.category?.name || "Expense"}
+                            </span>
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-sm font-medium">{entry.title}</TableCell>
+                        <TableCell className="text-sm text-muted-foreground capitalize">
+                          {entry.paymentMethod || "—"}
+                        </TableCell>
+                        <TableCell className={`text-right text-sm font-semibold tabular-nums ${entry.type === "income" ? "text-emerald-600" : "text-foreground"}`}>
+                          {entry.type === "income" ? "+" : "-"}{formatCurrency(entry.amount)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Card>
+            )}
+          </div>
+
+          {/* Mobile/Tablet Card View */}
+          <div className="lg:hidden">
+            {paginatedEntries.length === 0 ? (
+              <Card>
+                <CardContent className="py-8 text-center">
+                  <p className="text-muted-foreground">No transactions found</p>
                 </CardContent>
               </Card>
             ) : (
@@ -197,7 +419,7 @@ export default function BalancePage() {
                       {dateEntries.map((entry) => (
                         <Link
                           key={entry.id}
-                          href={entry.type === "expense" ? `/expenses/${entry.id}` : "#"}
+                          href={entry.type === "expense" ? `/expenses/${entry.id}?from=balance` : "#"}
                           className="flex items-center gap-3 px-4 py-3 hover:bg-muted/50 transition-colors"
                         >
                           {entry.type === "income" ? (
@@ -228,8 +450,41 @@ export default function BalancePage() {
               </div>
             )}
           </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between pt-4">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPage(Math.max(0, page - 1))}
+                disabled={page === 0}
+              >
+                Previous
+              </Button>
+              <p className="text-sm text-muted-foreground">
+                Page {page + 1} of {totalPages}
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPage(Math.min(totalPages - 1, page + 1))}
+                disabled={page >= totalPages - 1}
+              >
+                Next
+              </Button>
+            </div>
+          )}
         </div>
       </main>
+
+      {/* Desktop slide-over */}
+      <AddSlideOver
+        open={slideOverOpen}
+        onOpenChange={setSlideOverOpen}
+        defaultTab={slideOverTab}
+        onSuccess={fetchData}
+      />
     </>
   );
 }

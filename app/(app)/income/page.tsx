@@ -75,7 +75,7 @@ export default function IncomePage() {
     <>
       <Header title="Income" showBackButton />
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-lg mx-auto p-4 md:p-6 space-y-4">
+        <div className="max-w-lg lg:max-w-3xl mx-auto p-4 md:p-6 space-y-4">
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">{sources.length} source{sources.length !== 1 ? "s" : ""}</p>
             <Button size="sm" onClick={() => setShowForm(!showForm)}>

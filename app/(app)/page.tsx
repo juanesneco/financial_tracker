@@ -1,17 +1,22 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { Loader2, Plus, CreditCard, Banknote, Receipt, DollarSign, ArrowRightLeft } from "lucide-react";
+import { Loader2, Plus, CreditCard, Banknote, Receipt, DollarSign } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { formatCurrency, formatDateShort, getMonthDateRange, formatMonthYear } from "@/lib/format-utils";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { AddSlideOver } from "@/components/shared/AddSlideOver";
+import { useResponsiveAdd } from "@/hooks/useResponsiveAdd";
 import type { Expense, Category, Deposit, IncomeRecord, CategoryTotal } from "@/lib/types";
 
 export default function DashboardPage() {
   const supabase = createClient();
+  const router = useRouter();
+  const { isDesktop } = useResponsiveAdd();
   const [isLoading, setIsLoading] = useState(true);
   const [displayName, setDisplayName] = useState<string>("");
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -22,6 +27,10 @@ export default function DashboardPage() {
   const [depositsTotal, setDepositsTotal] = useState(0);
   const [incomeTotal, setIncomeTotal] = useState(0);
   const [categoryTotals, setCategoryTotals] = useState<CategoryTotal[]>([]);
+
+  // Slide-over state
+  const [slideOverOpen, setSlideOverOpen] = useState(false);
+  const [slideOverTab, setSlideOverTab] = useState<"expense" | "income">("expense");
 
   // Month/year selector
   const now = new Date();
@@ -34,7 +43,6 @@ export default function DashboardPage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      // Fetch profile
       const { data: profile } = await supabase
         .from("ft_profiles")
         .select("display_name")
@@ -46,7 +54,6 @@ export default function DashboardPage() {
         user.email?.split("@")[0] || "there"
       );
 
-      // Fetch categories
       const { data: cats } = await supabase
         .from("ft_categories")
         .select("*")
@@ -54,10 +61,8 @@ export default function DashboardPage() {
 
       setCategories(cats || []);
 
-      // Date range for selected month
       const { start, end } = getMonthDateRange(selectedMonth, selectedYear);
 
-      // Fetch expenses for month
       const { data: monthExpenses } = await supabase
         .from("ft_expenses")
         .select("*")
@@ -68,7 +73,6 @@ export default function DashboardPage() {
       const exps = (monthExpenses || []) as Expense[];
       setExpenses(exps);
 
-      // Fetch deposits for month
       const { data: monthDeposits } = await supabase
         .from("ft_deposits")
         .select("*")
@@ -79,7 +83,6 @@ export default function DashboardPage() {
       const deps = (monthDeposits || []) as Deposit[];
       setDeposits(deps);
 
-      // Fetch income records for month
       const { data: monthIncome } = await supabase
         .from("ft_income_records")
         .select("*")
@@ -90,7 +93,6 @@ export default function DashboardPage() {
       const incRecs = (monthIncome || []) as IncomeRecord[];
       setIncomeRecords(incRecs);
 
-      // Calculate totals
       const expTotal = exps.reduce((sum, e) => sum + Number(e.amount), 0);
       setMonthlyTotal(expTotal);
 
@@ -100,7 +102,6 @@ export default function DashboardPage() {
       const incTotal = incRecs.reduce((sum, r) => sum + Number(r.amount), 0);
       setIncomeTotal(incTotal);
 
-      // Category totals
       const catMap = new Map<string, { total: number; count: number }>();
       exps.forEach((e) => {
         const existing = catMap.get(e.category_id) || { total: 0, count: 0 };
@@ -164,7 +165,15 @@ export default function DashboardPage() {
     }
   };
 
-  // Group expenses by date
+  const handleAddClick = (tab: "expense" | "income") => {
+    if (isDesktop) {
+      setSlideOverTab(tab);
+      setSlideOverOpen(true);
+    } else {
+      router.push(tab === "expense" ? "/add" : "/add-income");
+    }
+  };
+
   const expensesByDate = expenses.reduce((groups: Record<string, Expense[]>, expense) => {
     const date = expense.date;
     if (!groups[date]) groups[date] = [];
@@ -189,7 +198,7 @@ export default function DashboardPage() {
     <>
       <Header title="Home" />
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-2xl mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
+        <div className="max-w-2xl lg:max-w-5xl mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
           {/* Greeting */}
           <div>
             <h2 className="font-serif text-2xl md:text-3xl">
@@ -197,9 +206,9 @@ export default function DashboardPage() {
             </h2>
           </div>
 
-          {/* Quick Actions */}
-          <div className="fade-in grid grid-cols-3 gap-3">
-            <Link href="/add" className="block">
+          {/* Quick Actions — 2 buttons */}
+          <div className="fade-in grid grid-cols-2 gap-3">
+            <button onClick={() => handleAddClick("expense")} className="block text-left">
               <Card className="hover:bg-muted/50 transition-colors transition-transform duration-200 hover:-translate-y-0.5 cursor-pointer">
                 <CardContent className="pt-5 pb-4 flex flex-col items-center gap-2">
                   <div className="h-11 w-11 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
@@ -208,8 +217,8 @@ export default function DashboardPage() {
                   <p className="text-xs font-medium text-center">Add Expense</p>
                 </CardContent>
               </Card>
-            </Link>
-            <Link href="/add-income" className="block">
+            </button>
+            <button onClick={() => handleAddClick("income")} className="block text-left">
               <Card className="hover:bg-muted/50 transition-colors transition-transform duration-200 hover:-translate-y-0.5 cursor-pointer">
                 <CardContent className="pt-5 pb-4 flex flex-col items-center gap-2">
                   <div className="h-11 w-11 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
@@ -218,17 +227,7 @@ export default function DashboardPage() {
                   <p className="text-xs font-medium text-center">Add Income</p>
                 </CardContent>
               </Card>
-            </Link>
-            <Link href="/balance" className="block">
-              <Card className="hover:bg-muted/50 transition-colors transition-transform duration-200 hover:-translate-y-0.5 cursor-pointer">
-                <CardContent className="pt-5 pb-4 flex flex-col items-center gap-2">
-                  <div className="h-11 w-11 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                    <ArrowRightLeft size={20} className="text-blue-600" />
-                  </div>
-                  <p className="text-xs font-medium text-center">Balance</p>
-                </CardContent>
-              </Card>
-            </Link>
+            </button>
           </div>
 
           {/* Month Selector */}
@@ -266,93 +265,102 @@ export default function DashboardPage() {
             </Card>
           </div>
 
-          {/* Category Breakdown */}
-          {categoryTotals.length > 0 && (
-            <div className="fade-in fade-in-delay-2">
-              <h3 className="text-[0.8rem] uppercase tracking-[0.25em] font-semibold mb-3 text-primary font-sans">By Category</h3>
-              <div className="grid grid-cols-2 gap-3">
-                {categoryTotals.slice(0, 6).map(({ category, total, count }) => (
-                  <Card key={category.id} className="py-3">
-                    <CardContent className="flex items-center gap-3">
-                      <span className="text-xl">{category.emoji || category.icon}</span>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-xs text-muted-foreground truncate">{category.name}</p>
-                        <p className="font-semibold text-sm">{formatCurrency(total)}</p>
-                        <p className="text-[10px] text-muted-foreground">{count} items</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Recent Expenses */}
-          <div className="fade-in fade-in-delay-2">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-[0.8rem] uppercase tracking-[0.25em] font-semibold text-primary font-sans">Recent Expenses</h3>
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="/add" className="gap-1">
-                  <Plus size={16} /> Add
-                </Link>
-              </Button>
-            </div>
-
-            {expenses.length === 0 ? (
-              <Card>
-                <CardContent className="py-8 text-center">
-                  <p className="text-muted-foreground mb-4">No expenses this month yet</p>
-                  <Button asChild>
-                    <Link href="/add">Add your first expense</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="space-y-4">
-                {Object.entries(expensesByDate).slice(0, 7).map(([date, dateExpenses]) => (
-                  <div key={date}>
-                    <p className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wider">
-                      {formatDateShort(date)}
-                    </p>
-                    <Card className="py-0 gap-0 divide-y">
-                      {dateExpenses.map((expense) => {
-                        const cat = getCategoryById(expense.category_id);
-                        return (
-                          <Link
-                            key={expense.id}
-                            href={`/expenses/${expense.id}`}
-                            className="flex items-center gap-3 px-4 py-3 hover:bg-muted/50 transition-colors"
-                          >
-                            <span className="text-lg">{cat?.emoji || cat?.icon || "📦"}</span>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium truncate">
-                                {expense.title || expense.note || cat?.name || "Expense"}
-                              </p>
-                              <p className="text-xs text-muted-foreground">{cat?.name}</p>
-                            </div>
-                            <div className="flex items-center gap-1.5">
-                              {expense.payment_method === "card" && <CreditCard size={12} className="text-muted-foreground" />}
-                              {expense.payment_method === "cash" && <Banknote size={12} className="text-muted-foreground" />}
-                              <p className="text-sm font-semibold tabular-nums">
-                                {formatCurrency(Number(expense.amount))}
-                              </p>
-                            </div>
-                          </Link>
-                        );
-                      })}
+          {/* Desktop two-column layout for category breakdown + recent expenses */}
+          <div className="lg:grid lg:grid-cols-2 lg:gap-6 space-y-6 lg:space-y-0">
+            {/* Category Breakdown */}
+            {categoryTotals.length > 0 && (
+              <div className="fade-in fade-in-delay-2">
+                <h3 className="text-[0.8rem] uppercase tracking-[0.25em] font-semibold mb-3 text-primary font-sans">By Category</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {categoryTotals.slice(0, 6).map(({ category, total, count }) => (
+                    <Card key={category.id} className="py-3">
+                      <CardContent className="flex items-center gap-3">
+                        <span className="text-xl">{category.emoji || category.icon}</span>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-xs text-muted-foreground truncate">{category.name}</p>
+                          <p className="font-semibold text-sm">{formatCurrency(total)}</p>
+                          <p className="text-[10px] text-muted-foreground">{count} items</p>
+                        </div>
+                      </CardContent>
                     </Card>
-                  </div>
-                ))}
-                {Object.keys(expensesByDate).length > 7 && (
-                  <Button variant="ghost" className="w-full" asChild>
-                    <Link href="/expenses">View all expenses</Link>
-                  </Button>
-                )}
+                  ))}
+                </div>
               </div>
             )}
+
+            {/* Recent Expenses */}
+            <div className="fade-in fade-in-delay-2">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-[0.8rem] uppercase tracking-[0.25em] font-semibold text-primary font-sans">Recent Expenses</h3>
+                <Button variant="ghost" size="sm" onClick={() => handleAddClick("expense")} className="gap-1">
+                  <Plus size={16} /> Add
+                </Button>
+              </div>
+
+              {expenses.length === 0 ? (
+                <Card>
+                  <CardContent className="py-8 text-center">
+                    <p className="text-muted-foreground mb-4">No expenses this month yet</p>
+                    <Button onClick={() => handleAddClick("expense")}>
+                      Add your first expense
+                    </Button>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="space-y-4">
+                  {Object.entries(expensesByDate).slice(0, 7).map(([date, dateExpenses]) => (
+                    <div key={date}>
+                      <p className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wider">
+                        {formatDateShort(date)}
+                      </p>
+                      <Card className="py-0 gap-0 divide-y">
+                        {dateExpenses.map((expense) => {
+                          const cat = getCategoryById(expense.category_id);
+                          return (
+                            <Link
+                              key={expense.id}
+                              href={`/expenses/${expense.id}?from=home`}
+                              className="flex items-center gap-3 px-4 py-3 hover:bg-muted/50 transition-colors"
+                            >
+                              <span className="text-lg">{cat?.emoji || cat?.icon || "📦"}</span>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium truncate">
+                                  {expense.title || expense.note || cat?.name || "Expense"}
+                                </p>
+                                <p className="text-xs text-muted-foreground">{cat?.name}</p>
+                              </div>
+                              <div className="flex items-center gap-1.5">
+                                {expense.payment_method === "card" && <CreditCard size={12} className="text-muted-foreground" />}
+                                {expense.payment_method === "cash" && <Banknote size={12} className="text-muted-foreground" />}
+                                <p className="text-sm font-semibold tabular-nums">
+                                  {formatCurrency(Number(expense.amount))}
+                                </p>
+                              </div>
+                            </Link>
+                          );
+                        })}
+                      </Card>
+                    </div>
+                  ))}
+                  {Object.keys(expensesByDate).length > 7 && (
+                    <Button variant="ghost" className="w-full" asChild>
+                      <Link href="/balance">View all expenses</Link>
+                    </Button>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </main>
+
+      {/* Desktop slide-over */}
+      <AddSlideOver
+        open={slideOverOpen}
+        onOpenChange={setSlideOverOpen}
+        defaultTab={slideOverTab}
+        onSuccess={fetchData}
+      />
     </>
   );
 }

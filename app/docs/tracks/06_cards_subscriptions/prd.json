@@ -1,0 +1,86 @@
+{
+  "project": "Financial Tracker",
+  "trackId": "06_cards_subscriptions",
+  "trackName": "Cards & Subscriptions",
+  "branchName": "track/06-cards-subscriptions",
+  "description": "Payment card management and recurring subscription tracking. Cards store bank, last four digits, and type. Subscriptions link to cards with title, amount, renewal day, and active status. Cards with active subscriptions cannot be deleted. Subscriptions grouped by card in accordion view.",
+  "status": "done",
+  "priority": 1,
+  "dependencies": ["03_app_shell"],
+  "subDeliverables": [
+    {
+      "id": "06-SD-001",
+      "title": "Cards CRUD",
+      "description": "Full CRUD for payment cards with fields: bank name, last four digits, and type (credit/debit). Auto-generated label combines all fields.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Create card with bank, last 4 digits, and type",
+        "Label auto-generated as '{Bank} {Type} ({Last4})'",
+        "Cards ordered by bank name",
+        "Edit and delete operations supported"
+      ]
+    },
+    {
+      "id": "06-SD-002",
+      "title": "Subscriptions CRUD",
+      "description": "Full CRUD for recurring subscriptions with fields: title, amount, renewal day of month, card assignment, and active/inactive status.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Create subscription with title, amount, renewal day, and card",
+        "Edit via modal dialog",
+        "Delete with confirmation",
+        "Sort by renewal day or title"
+      ]
+    },
+    {
+      "id": "06-SD-003",
+      "title": "Subscriptions grouped by card in accordion",
+      "description": "Subscriptions organized by their assigned card using Accordion component, with each card as a collapsible section.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Accordion sections for each card with subscriptions",
+        "Subscription count shown per card",
+        "Expand/collapse for each card group"
+      ]
+    },
+    {
+      "id": "06-SD-004",
+      "title": "Active/inactive toggle for subscriptions",
+      "description": "Toggle switch to mark subscriptions as active or inactive. Inactive subscriptions excluded from monthly total calculations.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Toggle switches subscription is_active status",
+        "Visual distinction between active and inactive",
+        "Inactive excluded from monthly total"
+      ]
+    },
+    {
+      "id": "06-SD-005",
+      "title": "Card deletion protection",
+      "description": "Prevent deletion of cards that have active subscriptions assigned to them. Show warning message explaining why deletion is blocked.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Delete blocked if card has active subscriptions",
+        "Warning message explains the restriction",
+        "Cards with no subscriptions can be deleted normally"
+      ]
+    },
+    {
+      "id": "06-SD-006",
+      "title": "Active monthly total calculation",
+      "description": "Display total monthly cost of all active subscriptions as a summary figure at the top of the subscriptions page.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Total sums all active subscription amounts",
+        "Displayed prominently as summary card",
+        "Updates when subscriptions are toggled active/inactive"
+      ]
+    }
+  ]
+}

@@ -92,7 +92,7 @@ export default function ExpensesPage() {
     <>
       <Header title="Expenses" />
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-2xl mx-auto p-4 md:p-6 space-y-4">
+        <div className="max-w-2xl lg:max-w-5xl mx-auto p-4 md:p-6 space-y-4">
           {/* Search */}
           <div className="relative">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -174,7 +174,7 @@ export default function ExpensesPage() {
                       return (
                         <Link
                           key={expense.id}
-                          href={`/expenses/${expense.id}`}
+                          href={`/expenses/${expense.id}?from=expenses`}
                           className="flex items-center gap-3 px-4 py-3 hover:bg-muted/50 transition-colors"
                         >
                           <span className="text-lg">{cat?.emoji || cat?.icon || "📦"}</span>
