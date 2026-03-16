@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { Loader2, TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight, Search, Receipt, DollarSign } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -63,11 +63,21 @@ export default function BalancePage() {
 
   // Filters
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [paymentFilter, setPaymentFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setDebouncedSearch(value);
+    }, 300);
+  };
 
   // Pagination
   const [page, setPage] = useState(0);
@@ -127,8 +137,8 @@ export default function BalancePage() {
         combined = combined.filter((e) => e.type === "income" || e.paymentMethod === paymentFilter);
       }
 
-      if (search) {
-        const q = search.toLowerCase();
+      if (debouncedSearch) {
+        const q = debouncedSearch.toLowerCase();
         combined = combined.filter((e) => e.title.toLowerCase().includes(q));
       }
 
@@ -143,7 +153,7 @@ export default function BalancePage() {
     } finally {
       setIsLoading(false);
     }
-  }, [supabase, selectedMonth, selectedYear, search, categoryFilter, paymentFilter, typeFilter, startDate, endDate]);
+  }, [supabase, selectedMonth, selectedYear, debouncedSearch, categoryFilter, paymentFilter, typeFilter, startDate, endDate]);
 
   useEffect(() => {
     fetchData();
@@ -151,7 +161,7 @@ export default function BalancePage() {
 
   useEffect(() => {
     setPage(0);
-  }, [search, categoryFilter, paymentFilter, typeFilter, startDate, endDate]);
+  }, [debouncedSearch, categoryFilter, paymentFilter, typeFilter, startDate, endDate]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -281,7 +291,7 @@ export default function BalancePage() {
               <Input
                 placeholder="Search transactions..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 className="pl-9"
               />
             </div>
@@ -322,23 +332,25 @@ export default function BalancePage() {
                 </SelectContent>
               </Select>
 
-              <div className="flex flex-col gap-1">
-                <span className="text-xs text-muted-foreground">From</span>
-                <Input
-                  type="date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  className="w-[140px]"
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-xs text-muted-foreground">To</span>
-                <Input
-                  type="date"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  className="w-[140px]"
-                />
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <div className="flex items-center gap-1.5 flex-1 sm:flex-none">
+                  <span className="text-xs text-muted-foreground shrink-0">From</span>
+                  <Input
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    className="w-full sm:w-[140px]"
+                  />
+                </div>
+                <div className="flex items-center gap-1.5 flex-1 sm:flex-none">
+                  <span className="text-xs text-muted-foreground shrink-0">To</span>
+                  <Input
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    className="w-full sm:w-[140px]"
+                  />
+                </div>
               </div>
             </div>
 

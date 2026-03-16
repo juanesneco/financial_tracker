@@ -214,7 +214,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select a category" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent position="popper" className="max-h-[240px]">
             {categories.map((cat) => (
               <SelectItem key={cat.id} value={cat.id}>
                 {cat.emoji || cat.icon} {cat.name}
@@ -232,7 +232,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Optional" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent position="popper" className="max-h-[240px]">
               {filteredSubcategories.map((sub) => (
                 <SelectItem key={sub.id} value={sub.id}>
                   {sub.emoji ? `${sub.emoji} ` : ""}{sub.name}

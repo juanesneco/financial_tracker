@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { Loader2, Search, CreditCard, Banknote } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
@@ -30,10 +30,21 @@ export default function ExpensesPage() {
 
   // Filters
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [paymentFilter, setPaymentFilter] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setDebouncedSearch(value);
+      setPage(0);
+    }, 300);
+  };
 
   const fetchExpenses = useCallback(async () => {
     setIsLoading(true);
@@ -46,7 +57,7 @@ export default function ExpensesPage() {
       if (endDate) query = query.lte("date", endDate);
       if (categoryFilter) query = query.eq("category_id", categoryFilter);
       if (paymentFilter) query = query.eq("payment_method", paymentFilter);
-      if (search) query = query.or(`title.ilike.%${search}%,note.ilike.%${search}%`);
+      if (debouncedSearch) query = query.or(`title.ilike.%${debouncedSearch}%,note.ilike.%${debouncedSearch}%`);
 
       query = query
         .order("date", { ascending: false })
@@ -60,7 +71,7 @@ export default function ExpensesPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [supabase, page, search, categoryFilter, paymentFilter, startDate, endDate]);
+  }, [supabase, page, debouncedSearch, categoryFilter, paymentFilter, startDate, endDate]);
 
   useEffect(() => {
     async function fetchCategories() {
@@ -99,7 +110,7 @@ export default function ExpensesPage() {
             <Input
               placeholder="Search expenses..."
               value={search}
-              onChange={(e) => { setSearch(e.target.value); setPage(0); }}
+              onChange={(e) => handleSearchChange(e.target.value)}
               className="pl-9"
             />
           </div>
