@@ -14,6 +14,7 @@ import {
   PieChart, Pie, Cell, ResponsiveContainer, Tooltip,
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend,
 } from "recharts";
+import { BlurredAmount } from "@/components/shared/BlurredAmount";
 import type { Expense, Category, CategoryTotal } from "@/lib/types";
 
 const CHART_COLORS = [
@@ -41,6 +42,9 @@ interface MonthlyData {
 export default function StatisticsPage() {
   const supabase = createClient();
   const now = new Date();
+
+  // Blur toggle for totals
+  const [totalsRevealed, setTotalsRevealed] = useState(false);
 
   // View state
   const [view, setView] = useState<"year" | "month">("year");
@@ -254,21 +258,27 @@ export default function StatisticsPage() {
                   <div className="min-w-0 overflow-hidden">
                     <p className="text-xs text-muted-foreground mb-1">Income</p>
                     <div className="min-w-0 w-full overflow-hidden">
-                      <p className="currency-display text-xs sm:text-sm md:text-lg font-semibold text-emerald-600">{formatCurrency(yearTotalIncome)}</p>
+                      <BlurredAmount revealed={totalsRevealed} onToggle={() => setTotalsRevealed(!totalsRevealed)}>
+                        <p className="currency-display text-xs sm:text-sm md:text-lg font-semibold text-emerald-600">{formatCurrency(yearTotalIncome)}</p>
+                      </BlurredAmount>
                     </div>
                   </div>
                   <div className="min-w-0 overflow-hidden">
                     <p className="text-xs text-muted-foreground mb-1">Expenses</p>
                     <div className="min-w-0 w-full overflow-hidden">
-                      <p className="currency-display text-xs sm:text-sm md:text-lg font-semibold text-red-500">{formatCurrency(yearTotalExpenses)}</p>
+                      <BlurredAmount revealed={totalsRevealed} onToggle={() => setTotalsRevealed(!totalsRevealed)}>
+                        <p className="currency-display text-xs sm:text-sm md:text-lg font-semibold text-red-500">{formatCurrency(yearTotalExpenses)}</p>
+                      </BlurredAmount>
                     </div>
                   </div>
                   <div className="min-w-0 overflow-hidden">
                     <p className="text-xs text-muted-foreground mb-1">Net</p>
                     <div className="min-w-0 w-full overflow-hidden">
-                      <p className={`currency-display text-xs sm:text-sm md:text-lg font-semibold ${yearNet >= 0 ? "text-emerald-600" : "text-red-500"}`}>
-                        {yearNet >= 0 ? "+" : ""}{formatCurrency(yearNet)}
-                      </p>
+                      <BlurredAmount revealed={totalsRevealed} onToggle={() => setTotalsRevealed(!totalsRevealed)}>
+                        <p className={`currency-display text-xs sm:text-sm md:text-lg font-semibold ${yearNet >= 0 ? "text-emerald-600" : "text-red-500"}`}>
+                          {yearNet >= 0 ? "+" : ""}{formatCurrency(yearNet)}
+                        </p>
+                      </BlurredAmount>
                     </div>
                   </div>
                 </div>
@@ -324,13 +334,19 @@ export default function StatisticsPage() {
                         >
                           <TableCell className="font-medium text-xs md:text-sm">{MONTH_NAMES[d.month]}</TableCell>
                           <TableCell className="text-right tabular-nums text-emerald-600 text-xs md:text-sm">
-                            {formatCurrency(d.income)}
+                            <BlurredAmount revealed={totalsRevealed} onToggle={() => setTotalsRevealed(!totalsRevealed)}>
+                              {formatCurrency(d.income)}
+                            </BlurredAmount>
                           </TableCell>
                           <TableCell className="text-right tabular-nums text-red-500 text-xs md:text-sm">
-                            {formatCurrency(d.expenses)}
+                            <BlurredAmount revealed={totalsRevealed} onToggle={() => setTotalsRevealed(!totalsRevealed)}>
+                              {formatCurrency(d.expenses)}
+                            </BlurredAmount>
                           </TableCell>
                           <TableCell className={`text-right tabular-nums font-medium text-xs md:text-sm ${net >= 0 ? "text-emerald-600" : "text-red-500"}`}>
-                            {net >= 0 ? "+" : ""}{formatCurrency(net)}
+                            <BlurredAmount revealed={totalsRevealed} onToggle={() => setTotalsRevealed(!totalsRevealed)}>
+                              {net >= 0 ? "+" : ""}{formatCurrency(net)}
+                            </BlurredAmount>
                           </TableCell>
                         </TableRow>
                       );
@@ -340,13 +356,19 @@ export default function StatisticsPage() {
                     <TableRow>
                       <TableCell className="font-semibold text-xs md:text-sm">Total</TableCell>
                       <TableCell className="text-right tabular-nums font-semibold text-emerald-600 text-xs md:text-sm min-w-0 whitespace-nowrap">
-                        {formatCurrency(yearTotalIncome)}
+                        <BlurredAmount revealed={totalsRevealed} onToggle={() => setTotalsRevealed(!totalsRevealed)}>
+                          {formatCurrency(yearTotalIncome)}
+                        </BlurredAmount>
                       </TableCell>
                       <TableCell className="text-right tabular-nums font-semibold text-red-500 text-xs md:text-sm min-w-0 whitespace-nowrap">
-                        {formatCurrency(yearTotalExpenses)}
+                        <BlurredAmount revealed={totalsRevealed} onToggle={() => setTotalsRevealed(!totalsRevealed)}>
+                          {formatCurrency(yearTotalExpenses)}
+                        </BlurredAmount>
                       </TableCell>
                       <TableCell className={`text-right tabular-nums font-semibold text-xs md:text-sm min-w-0 whitespace-nowrap ${yearNet >= 0 ? "text-emerald-600" : "text-red-500"}`}>
-                        {yearNet >= 0 ? "+" : ""}{formatCurrency(yearNet)}
+                        <BlurredAmount revealed={totalsRevealed} onToggle={() => setTotalsRevealed(!totalsRevealed)}>
+                          {yearNet >= 0 ? "+" : ""}{formatCurrency(yearNet)}
+                        </BlurredAmount>
                       </TableCell>
                     </TableRow>
                   </TableFooter>

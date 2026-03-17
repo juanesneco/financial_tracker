@@ -10,6 +10,7 @@ import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AddSlideOver } from "@/components/shared/AddSlideOver";
+import { BlurredAmount } from "@/components/shared/BlurredAmount";
 import { useResponsiveAdd } from "@/hooks/useResponsiveAdd";
 import type { Expense, Category, Deposit, IncomeRecord, CategoryTotal } from "@/lib/types";
 
@@ -27,6 +28,9 @@ export default function DashboardPage() {
   const [depositsTotal, setDepositsTotal] = useState(0);
   const [incomeTotal, setIncomeTotal] = useState(0);
   const [categoryTotals, setCategoryTotals] = useState<CategoryTotal[]>([]);
+
+  // Blur toggle for summary totals
+  const [totalsRevealed, setTotalsRevealed] = useState(false);
 
   // Slide-over state
   const [slideOverOpen, setSlideOverOpen] = useState(false);
@@ -243,9 +247,11 @@ export default function DashboardPage() {
               <CardContent className="pt-5 pb-4 min-w-0">
                 <p className="text-xs text-muted-foreground mb-1">Income</p>
                 <div className="min-w-0 w-full overflow-hidden">
-                  <p className="currency-display text-xs sm:text-sm md:text-lg font-serif font-semibold text-emerald-600">
-                    {formatCurrency(incomeTotal)}
-                  </p>
+                  <BlurredAmount revealed={totalsRevealed} onToggle={() => setTotalsRevealed(!totalsRevealed)}>
+                    <p className="currency-display text-xs sm:text-sm md:text-lg font-serif font-semibold text-emerald-600">
+                      {formatCurrency(incomeTotal)}
+                    </p>
+                  </BlurredAmount>
                 </div>
               </CardContent>
             </Card>
@@ -253,9 +259,11 @@ export default function DashboardPage() {
               <CardContent className="pt-5 pb-4 min-w-0">
                 <p className="text-xs text-muted-foreground mb-1">Expenses</p>
                 <div className="min-w-0 w-full overflow-hidden">
-                  <p className="currency-display text-xs sm:text-sm md:text-lg font-serif font-semibold text-red-500">
-                    {formatCurrency(monthlyTotal)}
-                  </p>
+                  <BlurredAmount revealed={totalsRevealed} onToggle={() => setTotalsRevealed(!totalsRevealed)}>
+                    <p className="currency-display text-xs sm:text-sm md:text-lg font-serif font-semibold text-red-500">
+                      {formatCurrency(monthlyTotal)}
+                    </p>
+                  </BlurredAmount>
                 </div>
               </CardContent>
             </Card>
@@ -263,9 +271,11 @@ export default function DashboardPage() {
               <CardContent className="pt-5 pb-4 min-w-0">
                 <p className="text-xs text-muted-foreground mb-1">Net</p>
                 <div className="min-w-0 w-full overflow-hidden">
-                  <p className={`currency-display text-xs sm:text-sm md:text-lg font-serif font-semibold ${incomeTotal - monthlyTotal >= 0 ? "text-emerald-600" : "text-red-500"}`}>
-                    {incomeTotal - monthlyTotal >= 0 ? "+" : ""}{formatCurrency(incomeTotal - monthlyTotal)}
-                  </p>
+                  <BlurredAmount revealed={totalsRevealed} onToggle={() => setTotalsRevealed(!totalsRevealed)}>
+                    <p className={`currency-display text-xs sm:text-sm md:text-lg font-serif font-semibold ${incomeTotal - monthlyTotal >= 0 ? "text-emerald-600" : "text-red-500"}`}>
+                      {incomeTotal - monthlyTotal >= 0 ? "+" : ""}{formatCurrency(incomeTotal - monthlyTotal)}
+                    </p>
+                  </BlurredAmount>
                 </div>
               </CardContent>
             </Card>
