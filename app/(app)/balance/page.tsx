@@ -58,9 +58,9 @@ export default function BalancePage() {
   const [slideOverOpen, setSlideOverOpen] = useState(false);
   const [slideOverTab, setSlideOverTab] = useState<"expense" | "income">("expense");
 
-  // Month selector
-  const now = new Date();
-  const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
+  // Month selector (null = all time)
+  const [now] = useState(() => new Date());
+  const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
   const [selectedYear, setSelectedYear] = useState(now.getFullYear());
 
   // Filters
@@ -87,22 +87,46 @@ export default function BalancePage() {
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const { start, end } = getMonthDateRange(selectedMonth, selectedYear);
-      const dateStart = startDate || start;
-      const dateEnd = endDate || end;
+      // Build date range: use custom dates if set, else month if selected, else all time
+      let dateStart: string | null = null;
+      let dateEnd: string | null = null;
+      if (startDate || endDate) {
+        dateStart = startDate || null;
+        dateEnd = endDate || null;
+      } else if (selectedMonth !== null) {
+        const range = getMonthDateRange(selectedMonth, selectedYear);
+        dateStart = range.start;
+        dateEnd = range.end;
+      }
 
-      const [catsRes, expensesRes, incomeRes, sourcesRes] = await Promise.all([
+      // Helper to fetch all rows (PostgREST caps at 1000 per request)
+      const fetchAll = async <T,>(table: string, dateCol: string): Promise<T[]> => {
+        const PAGE = 1000;
+        let allRows: T[] = [];
+        let from = 0;
+        while (true) {
+          let q = supabase.from(table).select("*").order("date", { ascending: false }).range(from, from + PAGE - 1);
+          if (dateStart) q = q.gte(dateCol, dateStart);
+          if (dateEnd) q = q.lte(dateCol, dateEnd);
+          const { data } = await q;
+          const rows = (data || []) as T[];
+          allRows = allRows.concat(rows);
+          if (rows.length < PAGE) break;
+          from += PAGE;
+        }
+        return allRows;
+      };
+
+      const [catsRes, expenses, incomeRecords, sourcesRes] = await Promise.all([
         supabase.from("ft_categories").select("*").order("display_order"),
-        supabase.from("ft_expenses").select("*").gte("date", dateStart).lte("date", dateEnd).order("date", { ascending: false }),
-        supabase.from("ft_income_records").select("*").gte("date", dateStart).lte("date", dateEnd).order("date", { ascending: false }),
+        fetchAll<Expense>("ft_expenses", "date"),
+        fetchAll<IncomeRecord>("ft_income_records", "date"),
         supabase.from("ft_income_sources").select("*"),
       ]);
 
       const cats = (catsRes.data || []) as Category[];
       setCategories(cats);
       const sources = (sourcesRes.data || []) as IncomeSource[];
-      const expenses = (expensesRes.data || []) as Expense[];
-      const incomeRecords = (incomeRes.data || []) as IncomeRecord[];
 
       let combined: BalanceEntry[] = [
         ...incomeRecords.map((r) => ({
@@ -163,7 +187,7 @@ export default function BalancePage() {
 
   useEffect(() => {
     setPage(0);
-  }, [debouncedSearch, categoryFilter, paymentFilter, typeFilter, startDate, endDate]);
+  }, [debouncedSearch, categoryFilter, paymentFilter, typeFilter, startDate, endDate, selectedMonth, selectedYear]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -182,11 +206,13 @@ export default function BalancePage() {
   }, [isLoading]);
 
   const goToPreviousMonth = () => {
+    if (selectedMonth === null) { setSelectedMonth(now.getMonth()); setSelectedYear(now.getFullYear()); return; }
     if (selectedMonth === 0) { setSelectedMonth(11); setSelectedYear(selectedYear - 1); }
     else setSelectedMonth(selectedMonth - 1);
   };
 
   const goToNextMonth = () => {
+    if (selectedMonth === null) { setSelectedMonth(now.getMonth()); setSelectedYear(now.getFullYear()); return; }
     if (selectedMonth === 11) { setSelectedMonth(0); setSelectedYear(selectedYear + 1); }
     else setSelectedMonth(selectedMonth + 1);
   };
@@ -232,7 +258,9 @@ export default function BalancePage() {
           {/* Month Selector */}
           <div className="flex items-center justify-between">
             <Button variant="ghost" size="sm" onClick={goToPreviousMonth}>&larr;</Button>
-            <p className="text-sm font-medium">{formatMonthYear(selectedMonth, selectedYear)}</p>
+            <button onClick={() => setSelectedMonth(null)} className="text-sm font-medium hover:text-primary transition-colors">
+              {selectedMonth !== null ? formatMonthYear(selectedMonth, selectedYear) : "All Time"}
+            </button>
             <Button variant="ghost" size="sm" onClick={goToNextMonth}>&rarr;</Button>
           </div>
 
