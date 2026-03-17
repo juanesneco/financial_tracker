@@ -67,6 +67,7 @@ export interface ExpenseWithCategory extends Expense {
   category?: Category;
   subcategory?: Subcategory;
   card?: Card;
+  subscription?: Subscription;
 }
 
 export interface BudgetWithProgress extends Budget {

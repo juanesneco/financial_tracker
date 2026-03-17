@@ -40,6 +40,7 @@ export type Database = {
           display_order: number;
           emoji: string | null;
           budget_default: number | null;
+          is_displayed: boolean;
           user_id: string | null;
           original_glide_id: string | null;
           created_at: string;
@@ -52,6 +53,7 @@ export type Database = {
           display_order?: number;
           emoji?: string | null;
           budget_default?: number | null;
+          is_displayed?: boolean;
           user_id?: string | null;
           original_glide_id?: string | null;
           created_at?: string;
@@ -63,6 +65,7 @@ export type Database = {
           display_order?: number;
           emoji?: string | null;
           budget_default?: number | null;
+          is_displayed?: boolean;
           user_id?: string | null;
         };
       };
@@ -107,6 +110,7 @@ export type Database = {
           note: string | null;
           payment_method: "card" | "cash" | null;
           card_id: string | null;
+          subscription_id: string | null;
           currency: string;
           receipt_url: string | null;
           original_glide_id: string | null;
@@ -124,6 +128,7 @@ export type Database = {
           note?: string | null;
           payment_method?: "card" | "cash" | null;
           card_id?: string | null;
+          subscription_id?: string | null;
           currency?: string;
           receipt_url?: string | null;
           original_glide_id?: string | null;
@@ -139,6 +144,7 @@ export type Database = {
           note?: string | null;
           payment_method?: "card" | "cash" | null;
           card_id?: string | null;
+          subscription_id?: string | null;
           currency?: string;
           receipt_url?: string | null;
           updated_at?: string;

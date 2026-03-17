@@ -47,7 +47,9 @@ export function useCategories(): UseCategoriesReturn {
     fetchAll();
   }, [fetchAll]);
 
-  const visibleCategories = categories.filter((c) => !hiddenCategoryIds.has(c.id));
+  const visibleCategories = categories.filter(
+    (c) => c.is_displayed !== false && !hiddenCategoryIds.has(c.id)
+  );
 
   const hide = useCallback(async (categoryId: string) => {
     const { data: { user } } = await supabase.auth.getUser();

@@ -134,6 +134,7 @@ export default function SubscriptionsPage() {
   const toggleActive = async (id: string, currentStatus: boolean) => {
     const { error } = await supabase.from("ft_subscriptions").update({ is_active: !currentStatus }).eq("id", id);
     if (error) { toast.error("Failed to update"); return; }
+    toast.success(currentStatus ? "Subscription paused" : "Subscription activated");
     fetchData();
   };
 

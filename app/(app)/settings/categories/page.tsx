@@ -20,6 +20,8 @@ import {
   Trash2,
   ChevronDown,
   ChevronRight,
+  ToggleLeft,
+  ToggleRight,
 } from "lucide-react";
 import type { Profile } from "@/lib/types";
 
@@ -224,6 +226,19 @@ export default function CategoriesSettingsPage() {
     refetch();
   };
 
+  const handleToggleDisplayed = async (id: string, currentValue: boolean) => {
+    const { error } = await supabase
+      .from("ft_categories")
+      .update({ is_displayed: !currentValue })
+      .eq("id", id);
+    if (error) {
+      toast.error("Failed to update category");
+      return;
+    }
+    toast.success(!currentValue ? "Category shown in dropdowns" : "Category hidden from dropdowns");
+    refetch();
+  };
+
   const sortedCategories = [...categories].sort((a, b) => a.name.localeCompare(b.name));
 
   const renderAddSubcategory = (categoryId: string) =>
@@ -373,11 +388,12 @@ export default function CategoriesSettingsPage() {
                 .filter((s) => s.category_id === cat.id)
                 .sort((a, b) => a.name.localeCompare(b.name));
               const canEdit = !isUniversal || profile?.is_super_admin;
+              const isNotDisplayed = cat.is_displayed === false;
 
               return (
                 <Card
                   key={cat.id}
-                  className={isHidden ? "opacity-50" : ""}
+                  className={isHidden || isNotDisplayed ? "opacity-50" : ""}
                 >
                   <CardContent className="pt-4 pb-4 space-y-0">
                     <div className="flex items-center gap-3">
@@ -403,8 +419,18 @@ export default function CategoriesSettingsPage() {
                         <p className="text-xs text-muted-foreground">
                           {isUniversal ? "Universal" : "Custom"} ·{" "}
                           {catSubs.length} subcategories
+                          {isNotDisplayed && " · Hidden from dropdowns"}
                         </p>
                       </div>
+                      {canEdit && (
+                        <button
+                          onClick={() => handleToggleDisplayed(cat.id, cat.is_displayed !== false)}
+                          className={`p-2 transition-colors ${cat.is_displayed !== false ? "text-emerald-600 hover:text-muted-foreground" : "text-muted-foreground hover:text-emerald-600"}`}
+                          title={cat.is_displayed !== false ? "Hide from dropdowns" : "Show in dropdowns"}
+                        >
+                          {cat.is_displayed !== false ? <ToggleRight size={18} /> : <ToggleLeft size={18} />}
+                        </button>
+                      )}
                       {isUniversal && (
                         <button
                           onClick={() =>
@@ -488,6 +514,7 @@ export default function CategoriesSettingsPage() {
                     <th className="text-left pb-3 font-medium">Category</th>
                     <th className="text-left pb-3 font-medium">Type</th>
                     <th className="text-right pb-3 font-medium">Subcategories</th>
+                    <th className="text-center pb-3 font-medium">Displayed</th>
                     <th className="text-right pb-3 font-medium">Visibility</th>
                     <th className="text-right pb-3 font-medium w-12"></th>
                   </tr>
@@ -501,10 +528,11 @@ export default function CategoriesSettingsPage() {
                       .filter((s) => s.category_id === cat.id)
                       .sort((a, b) => a.name.localeCompare(b.name));
                     const canEdit = !isUniversal || profile?.is_super_admin;
+                    const isNotDisplayed = cat.is_displayed === false;
 
                     return (
                       <React.Fragment key={cat.id}>
-                        <tr className={`${isHidden ? "opacity-50" : ""} hover:bg-muted/30`}>
+                        <tr className={`${isHidden || isNotDisplayed ? "opacity-50" : ""} hover:bg-muted/30`}>
                           <td className="py-3 pr-2">
                             <button
                               onClick={() => setExpanded(isExpanded ? null : cat.id)}
@@ -526,6 +554,17 @@ export default function CategoriesSettingsPage() {
                           </td>
                           <td className="py-3 pr-4 text-sm text-muted-foreground text-right tabular-nums">
                             {catSubs.length}
+                          </td>
+                          <td className="py-3 pr-4 text-center">
+                            {canEdit && (
+                              <button
+                                onClick={() => handleToggleDisplayed(cat.id, cat.is_displayed !== false)}
+                                className={`p-1 transition-colors ${cat.is_displayed !== false ? "text-emerald-600 hover:text-muted-foreground" : "text-muted-foreground hover:text-emerald-600"}`}
+                                title={cat.is_displayed !== false ? "Hide from dropdowns" : "Show in dropdowns"}
+                              >
+                                {cat.is_displayed !== false ? <ToggleRight size={18} /> : <ToggleLeft size={18} />}
+                              </button>
+                            )}
                           </td>
                           <td className="py-3 pr-4 text-right">
                             {isUniversal && (
