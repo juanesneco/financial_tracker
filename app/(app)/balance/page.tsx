@@ -229,16 +229,6 @@ export default function BalancePage() {
       <Header title="Balance Sheet" />
       <main className="flex-1 overflow-y-auto">
         <div className="max-w-2xl lg:max-w-full mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
-          {/* Action buttons — desktop only (mobile uses bottom nav + button) */}
-          <div className="hidden lg:flex gap-3">
-            <Button onClick={() => handleAddClick("expense")} variant="outline" className="gap-2">
-              <Receipt size={16} /> Add Expense
-            </Button>
-            <Button onClick={() => handleAddClick("income")} variant="outline" className="gap-2">
-              <DollarSign size={16} /> Add Income
-            </Button>
-          </div>
-
           {/* Month Selector */}
           <div className="flex items-center justify-between">
             <Button variant="ghost" size="sm" onClick={goToPreviousMonth}>&larr;</Button>
@@ -353,6 +343,19 @@ export default function BalancePage() {
                     className="w-full sm:w-[140px]"
                   />
                 </div>
+              </div>
+
+              {/* Vertical divider — desktop only */}
+              <div className="hidden lg:block w-px h-6 bg-border self-center" />
+
+              {/* Add buttons — desktop only */}
+              <div className="hidden lg:flex items-center gap-2 ml-auto">
+                <Button onClick={() => handleAddClick("expense")} variant="outline" size="sm" className="gap-2">
+                  <Receipt size={16} /> Add Expense
+                </Button>
+                <Button onClick={() => handleAddClick("income")} variant="outline" size="sm" className="gap-2">
+                  <DollarSign size={16} /> Add Income
+                </Button>
               </div>
             </div>
 
