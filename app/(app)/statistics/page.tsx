@@ -227,7 +227,7 @@ export default function StatisticsPage() {
       <>
         <Header title="Statistics" />
         <main className="flex-1 overflow-y-auto">
-          <div className="max-w-2xl lg:max-w-4xl mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
+          <div className="max-w-2xl lg:max-w-full mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
             {/* Year selector */}
             <div className="flex items-center justify-center gap-4">
               <button
@@ -376,7 +376,7 @@ export default function StatisticsPage() {
     <>
       <Header title="Statistics" />
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-2xl lg:max-w-4xl mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
+        <div className="max-w-2xl lg:max-w-full mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
           {/* Back button + month label */}
           <div className="space-y-1">
             <button

@@ -50,6 +50,14 @@ export function IncomeForm({ onSuccess, onCancel, isSheet }: IncomeFormProps) {
     fetchSources();
   }, [supabase]);
 
+  // Redirect to income sources page when user has none (new users must add sources first)
+  useEffect(() => {
+    if (!isLoading && sources.length === 0) {
+      onCancel?.();
+      router.push("/income");
+    }
+  }, [isLoading, sources.length, router, onCancel]);
+
   const resetForm = () => {
     setAmount("");
     setSourceId("");
@@ -59,8 +67,8 @@ export function IncomeForm({ onSuccess, onCancel, isSheet }: IncomeFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!amount || !date) {
-      toast.error("Amount and date are required");
+    if (!date || !sourceId || !description.trim() || !amount) {
+      toast.error("Please fill in all required fields");
       return;
     }
 
@@ -102,9 +110,64 @@ export function IncomeForm({ onSuccess, onCancel, isSheet }: IncomeFormProps) {
     );
   }
 
+  // No income sources: useEffect redirects to /income; show brief message while redirecting
+  if (sources.length === 0) {
+    return (
+      <div className="flex-1 flex items-center justify-center py-12">
+        <p className="text-sm text-muted-foreground">Redirecting to add income sources…</p>
+      </div>
+    );
+  }
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Amount */}
+      {/* 1. Date */}
+      <div className="space-y-2">
+        <Label htmlFor="income-date">Date *</Label>
+        <Input
+          id="income-date"
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          required
+          disabled={isSubmitting}
+          className="h-11 py-2.5 md:h-9 md:py-1"
+        />
+      </div>
+
+      {/* 2. Source */}
+      <div className="space-y-2">
+        <Label>Source *</Label>
+        <Select value={sourceId} onValueChange={setSourceId} disabled={isSubmitting}>
+          <SelectTrigger className="w-full h-11 md:h-9">
+            <SelectValue placeholder="Select a source" />
+          </SelectTrigger>
+          <SelectContent position="popper" className="max-h-[240px]">
+            {sources.map((source) => (
+              <SelectItem key={source.id} value={source.id}>
+                {source.initials ? `${source.initials} — ` : ""}{source.source_name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* 3. Description */}
+      <div className="space-y-2">
+        <Label htmlFor="income-description">Description *</Label>
+        <Textarea
+          id="income-description"
+          placeholder="e.g., March paycheck"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+          disabled={isSubmitting}
+          rows={2}
+          className="py-3 min-h-[72px] md:min-h-[64px]"
+        />
+      </div>
+
+      {/* 4. Amount */}
       <div className="space-y-2">
         <Label htmlFor="income-amount">Amount *</Label>
         <Input
@@ -118,50 +181,7 @@ export function IncomeForm({ onSuccess, onCancel, isSheet }: IncomeFormProps) {
           onChange={(e) => setAmount(e.target.value)}
           required
           disabled={isSubmitting}
-          className="text-2xl h-14 font-semibold"
-        />
-      </div>
-
-      {/* Income Source */}
-      <div className="space-y-2">
-        <Label>Source</Label>
-        <Select value={sourceId} onValueChange={setSourceId} disabled={isSubmitting}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select a source (optional)" />
-          </SelectTrigger>
-          <SelectContent>
-            {sources.map((source) => (
-              <SelectItem key={source.id} value={source.id}>
-                {source.initials ? `${source.initials} — ` : ""}{source.source_name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Date */}
-      <div className="space-y-2">
-        <Label htmlFor="income-date">Date *</Label>
-        <Input
-          id="income-date"
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          required
-          disabled={isSubmitting}
-        />
-      </div>
-
-      {/* Description */}
-      <div className="space-y-2">
-        <Label htmlFor="income-description">Description</Label>
-        <Textarea
-          id="income-description"
-          placeholder="e.g., March paycheck"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          disabled={isSubmitting}
-          rows={2}
+          className="text-2xl h-14 font-semibold px-4 py-3"
         />
       </div>
 
@@ -175,7 +195,7 @@ export function IncomeForm({ onSuccess, onCancel, isSheet }: IncomeFormProps) {
         <Button
           type="submit"
           className={isSheet ? "flex-1" : "w-full h-12 text-base"}
-          disabled={isSubmitting || !amount}
+          disabled={isSubmitting || !date || !sourceId || !description.trim() || !amount}
         >
           {isSubmitting ? (
             <>

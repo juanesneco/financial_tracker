@@ -8,7 +8,7 @@ export default function AddIncomePage() {
     <>
       <Header title="Add Income" showBackButton />
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-lg mx-auto p-4 md:p-6">
+        <div className="max-w-lg lg:max-w-full mx-auto p-4 md:p-6">
           <IncomeForm />
         </div>
       </main>

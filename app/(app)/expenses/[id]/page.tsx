@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import type { Expense, Category, Subcategory, Card as CardType } from "@/lib/types";
+import { useCategories } from "@/hooks/useCategories";
 
 export default function ExpenseDetailPage() {
   const router = useRouter();
@@ -30,10 +31,14 @@ export default function ExpenseDetailPage() {
   const expenseId = params.id as string;
 
   const fromParam = searchParams.get("from");
+  const subcategoryIdParam = searchParams.get("subcategoryId");
   const originMap: Record<string, { label: string; href: string }> = {
     home: { label: "Home", href: "/" },
     expenses: { label: "Expenses", href: "/expenses" },
     balance: { label: "Balance", href: "/balance" },
+    ...(subcategoryIdParam
+      ? { subcategory: { label: "Subcategory", href: `/settings/categories/subcategory/${subcategoryIdParam}` } }
+      : {}),
   };
   const origin = originMap[fromParam || ""] || originMap.expenses;
 
@@ -42,9 +47,9 @@ export default function ExpenseDetailPage() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
+  const { categories, visibleCategories, subcategories } = useCategories();
+
   const [expense, setExpense] = useState<Expense | null>(null);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const [cards, setCards] = useState<CardType[]>([]);
 
   // Edit form state
@@ -54,7 +59,6 @@ export default function ExpenseDetailPage() {
   const [subcategoryId, setSubcategoryId] = useState("");
   const [date, setDate] = useState("");
   const [note, setNote] = useState("");
-  const [comments, setComments] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
   const [cardId, setCardId] = useState("");
 
@@ -63,13 +67,9 @@ export default function ExpenseDetailPage() {
       try {
         const [
           { data: exp },
-          { data: cats },
-          { data: subs },
           { data: userCards },
         ] = await Promise.all([
           supabase.from("ft_expenses").select("*").eq("id", expenseId).single(),
-          supabase.from("ft_categories").select("*").order("display_order"),
-          supabase.from("ft_subcategories").select("*").order("display_order"),
           supabase.from("ft_cards").select("*").order("bank"),
         ]);
 
@@ -81,8 +81,6 @@ export default function ExpenseDetailPage() {
 
         const e = exp as Expense;
         setExpense(e);
-        setCategories((cats || []) as Category[]);
-        setSubcategories((subs || []) as Subcategory[]);
         setCards((userCards || []) as CardType[]);
 
         // Initialize form
@@ -92,7 +90,6 @@ export default function ExpenseDetailPage() {
         setSubcategoryId(e.subcategory_id || "");
         setDate(e.date);
         setNote(e.note || "");
-        setComments(e.comments || "");
         setPaymentMethod(e.payment_method || "");
         setCardId(e.card_id || "");
       } finally {
@@ -110,7 +107,7 @@ export default function ExpenseDetailPage() {
   const filteredSubcategories = subcategories.filter(s => s.category_id === categoryId);
 
   const handleSave = async () => {
-    if (!amount || !categoryId || !date) {
+    if (!title.trim() || !amount || !categoryId || !date) {
       toast.error("Please fill required fields");
       return;
     }
@@ -125,8 +122,7 @@ export default function ExpenseDetailPage() {
           category_id: categoryId,
           subcategory_id: subcategoryId || null,
           date,
-          note: note || null,
-          comments: comments || null,
+          note: note.trim() || null,
           payment_method: paymentMethod || null,
           card_id: cardId || null,
         })
@@ -188,41 +184,33 @@ export default function ExpenseDetailPage() {
       <>
         <Header title="Edit Expense" showBackButton />
         <main className="flex-1 overflow-y-auto">
-          <div className="max-w-lg mx-auto p-4 md:p-6 space-y-6">
+          <div className="max-w-lg lg:max-w-full mx-auto p-4 md:p-6 space-y-6">
+            {/* 1. Date */}
             <div className="space-y-2">
-              <Label>Amount *</Label>
-              <Input
-                type="number"
-                step="0.01"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                className="text-2xl h-14 font-semibold"
-              />
+              <Label>Date *</Label>
+              <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="h-11 py-2.5 md:h-9 md:py-1" />
             </div>
 
-            <div className="space-y-2">
-              <Label>Title</Label>
-              <Input value={title} onChange={(e) => setTitle(e.target.value)} />
-            </div>
-
+            {/* 2. Category */}
             <div className="space-y-2">
               <Label>Category *</Label>
               <Select value={categoryId} onValueChange={(v) => { setCategoryId(v); setSubcategoryId(""); }}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  {categories.map((c) => (
+                <SelectTrigger className="w-full h-11 md:h-9"><SelectValue /></SelectTrigger>
+                <SelectContent position="popper" className="max-h-[240px]">
+                  {visibleCategories.map((c) => (
                     <SelectItem key={c.id} value={c.id}>{c.emoji || c.icon} {c.name}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
 
+            {/* 3. Subcategory */}
             {filteredSubcategories.length > 0 && (
               <div className="space-y-2">
                 <Label>Subcategory</Label>
                 <Select value={subcategoryId} onValueChange={setSubcategoryId}>
-                  <SelectTrigger><SelectValue placeholder="Optional" /></SelectTrigger>
-                  <SelectContent>
+                  <SelectTrigger className="w-full h-11 md:h-9"><SelectValue placeholder="Optional" /></SelectTrigger>
+                  <SelectContent position="popper" className="max-h-[240px]">
                     {filteredSubcategories.map((s) => (
                       <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>
                     ))}
@@ -231,10 +219,29 @@ export default function ExpenseDetailPage() {
               </div>
             )}
 
+            {/* 4. Title */}
+            <div className="space-y-2">
+              <Label>Title *</Label>
+              <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="What was this for?" required className="h-11 py-2.5 md:h-9 md:py-1" />
+            </div>
+
+            {/* 5. Amount */}
+            <div className="space-y-2">
+              <Label>Amount *</Label>
+              <Input
+                type="number"
+                step="0.01"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                className="text-2xl h-14 font-semibold px-4 py-3"
+              />
+            </div>
+
+            {/* 6. Payment Method */}
             <div className="space-y-2">
               <Label>Payment Method</Label>
               <Select value={paymentMethod} onValueChange={(v) => { setPaymentMethod(v); if (v !== "card") setCardId(""); }}>
-                <SelectTrigger><SelectValue placeholder="Optional" /></SelectTrigger>
+                <SelectTrigger className="w-full h-11 md:h-9"><SelectValue placeholder="Optional" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="card">Card</SelectItem>
                   <SelectItem value="cash">Cash</SelectItem>
@@ -242,9 +249,8 @@ export default function ExpenseDetailPage() {
               </Select>
             </div>
 
+            {/* Card Selector */}
             {paymentMethod === "card" && cards.length > 0 && (() => {
-              // Show active cards (no deactivated_at) + the currently assigned card +
-              // deactivated cards that were still active on the expense date
               const availableCards = cards.filter(c =>
                 !c.deactivated_at ||
                 c.id === cardId ||
@@ -254,7 +260,7 @@ export default function ExpenseDetailPage() {
                 <div className="space-y-2">
                   <Label>Card</Label>
                   <Select value={cardId} onValueChange={setCardId}>
-                    <SelectTrigger><SelectValue placeholder="Select card" /></SelectTrigger>
+                    <SelectTrigger className="w-full h-11 md:h-9"><SelectValue placeholder="Select card" /></SelectTrigger>
                     <SelectContent>
                       {availableCards.map((c) => (
                         <SelectItem key={c.id} value={c.id}>
@@ -267,19 +273,10 @@ export default function ExpenseDetailPage() {
               ) : null;
             })()}
 
+            {/* Notes */}
             <div className="space-y-2">
-              <Label>Date *</Label>
-              <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-            </div>
-
-            <div className="space-y-2">
-              <Label>Note</Label>
-              <Textarea value={note} onChange={(e) => setNote(e.target.value)} rows={2} />
-            </div>
-
-            <div className="space-y-2">
-              <Label>Comments</Label>
-              <Textarea value={comments} onChange={(e) => setComments(e.target.value)} rows={2} />
+              <Label>Notes</Label>
+              <Textarea value={note} onChange={(e) => setNote(e.target.value)} rows={2} placeholder="Additional details (optional)" className="py-3 min-h-[72px] md:min-h-[64px]" />
             </div>
 
             <div className="flex gap-3">
@@ -298,9 +295,9 @@ export default function ExpenseDetailPage() {
 
   return (
     <>
-      <Header title="Expense" showBackButton />
+      <Header title="Expense" showBackButton backHref={origin.href} />
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-lg mx-auto p-4 md:p-6 space-y-6">
+        <div className="max-w-lg lg:max-w-full mx-auto p-4 md:p-6 space-y-6">
           {/* Breadcrumbs */}
           <nav className="flex items-center gap-1 text-sm text-muted-foreground">
             <Link href={origin.href} className="hover:text-foreground transition-colors">
@@ -367,15 +364,8 @@ export default function ExpenseDetailPage() {
 
               {expense.note && (
                 <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Note</p>
-                  <p className="text-sm">{expense.note}</p>
-                </div>
-              )}
-
-              {expense.comments && (
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Comments</p>
-                  <p className="text-sm">{expense.comments}</p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Notes</p>
+                  <p className="text-sm whitespace-pre-wrap">{expense.note}</p>
                 </div>
               )}
 

@@ -1,48 +1,90 @@
 {
   "project": "Financial Tracker",
   "trackId": "10_deposits",
-  "trackName": "Deposits",
+  "trackName": "Juanes Tab (formerly Deposits)",
   "branchName": "track/10-deposits",
-  "description": "Lump-sum deposit tracking restricted to specific users (juanes and ivonne). Simple CRUD for recording deposits with amount, title, date, and notes. Displays running total of all deposits.",
+  "description": "Cross-account financial view for Juanes showing deposits received from Ivonne and expenses made on Ivonne's behalf, with all-time and yearly summaries, monthly breakdown table, and filtered transaction lists. Access restricted to Juanes only.",
   "status": "done",
   "priority": 2,
   "dependencies": ["03_app_shell"],
   "subDeliverables": [
     {
       "id": "10-SD-001",
-      "title": "Deposit CRUD",
-      "description": "Create, read, update, and delete deposits with fields: amount (required), title, date (defaults to today), and note.",
+      "title": "Database functions for cross-account access",
+      "description": "Two PostgreSQL functions: get_ivonne_deposits (SECURITY INVOKER, returns Juanes' own deposits) and get_ivonne_expenses (SECURITY DEFINER, returns Ivonne's expenses bypassing RLS with Juanes-only guard). Public schema wrappers for PostgREST.",
       "priority": 1,
       "passes": true,
       "acceptanceCriteria": [
-        "Create deposit with amount (required)",
-        "Title, date, and note are optional",
-        "Date defaults to today",
-        "Deposits ordered by date descending"
+        "get_ivonne_deposits returns deposits for auth.uid()",
+        "get_ivonne_expenses returns expenses under Ivonne's user_id",
+        "get_ivonne_expenses raises exception if caller is not Juanes",
+        "Public wrappers delegate to schema-qualified functions",
+        "Migration file: 00008_juanes_tab_functions.sql"
       ]
     },
     {
       "id": "10-SD-002",
-      "title": "Total deposits display",
-      "description": "Summary card showing the running total of all deposit amounts at the top of the deposits page.",
+      "title": "RPC query wrappers",
+      "description": "TypeScript functions in queries.ts that call supabase.rpc() for both database functions.",
       "priority": 1,
       "passes": true,
       "acceptanceCriteria": [
-        "Total sums all deposit amounts",
-        "Displayed as summary card",
-        "Updates on create/delete"
+        "getIvonneDeposits calls rpc('get_ivonne_deposits')",
+        "getIvonneExpenses calls rpc('get_ivonne_expenses')"
       ]
     },
     {
       "id": "10-SD-003",
-      "title": "Access restriction",
-      "description": "Deposits page and sidebar link only accessible to users with display name 'juanes' or 'ivonne'. Other users cannot see or access the feature.",
+      "title": "All-time summary card",
+      "description": "Summary card at the top of the Juanes page showing total deposits from Ivonne (green), total expenses for Ivonne (red), net balance, and record counts.",
       "priority": 1,
       "passes": true,
       "acceptanceCriteria": [
-        "Page checks user display name on load",
-        "Sidebar link conditionally rendered",
-        "Unauthorized users cannot access the page"
+        "Deposits total displayed in green with + prefix",
+        "Expenses total displayed in red with - prefix",
+        "Net balance colored green/red based on sign",
+        "Deposit and expense counts shown"
+      ]
+    },
+    {
+      "id": "10-SD-004",
+      "title": "Year selector and yearly summary",
+      "description": "Chevron-based year navigation (min/max derived from data) with a 3-column summary card showing yearly deposits, expenses, and net.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Year selector with left/right chevron buttons",
+        "Buttons disabled at min/max year boundaries",
+        "Yearly summary shows deposits, expenses, net in 3-column grid",
+        "Values update when year changes"
+      ]
+    },
+    {
+      "id": "10-SD-005",
+      "title": "Monthly breakdown table",
+      "description": "12-row table showing deposits, expenses, and net per month for the selected year, with a totals footer row. Data computed client-side from the full dataset using useMemo.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "One row per month (January–December)",
+        "Columns: Month, Deposits (green), Expenses (red), Net (green/red)",
+        "Footer row with yearly totals",
+        "Table updates when year selector changes",
+        "Responsive overflow handling"
+      ]
+    },
+    {
+      "id": "10-SD-006",
+      "title": "Access restriction (Juanes only)",
+      "description": "Sidebar and mobile nav show 'Juanes' link at /juanes only when display_name includes 'juanes'. Ivonne and all other users see nothing.",
+      "priority": 1,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Sidebar shows Juanes link only for Juanes",
+        "Mobile nav More menu shows Juanes link only for Juanes",
+        "isMoreActive array includes /juanes path",
+        "Ivonne no longer sees a Deposits link",
+        "Other users see no additional nav items"
       ]
     }
   ]

@@ -1,14 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { ExpenseForm } from "@/components/forms/ExpenseForm";
 import { IncomeForm } from "@/components/forms/IncomeForm";
 
@@ -25,8 +22,6 @@ export function AddSlideOver({
   defaultTab = "expense",
   onSuccess,
 }: AddSlideOverProps) {
-  const [activeTab, setActiveTab] = useState<"expense" | "income">(defaultTab);
-
   const handleSuccess = () => {
     onOpenChange(false);
     onSuccess?.();
@@ -40,40 +35,18 @@ export function AddSlideOver({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
         <SheetHeader>
-          <SheetTitle>Add Transaction</SheetTitle>
+          <SheetTitle>
+            {defaultTab === "expense" ? "Add Expense" : "Add Income"}
+          </SheetTitle>
         </SheetHeader>
 
-        {/* Tab toggle */}
-        <div className="flex gap-1 p-1 bg-muted rounded-lg mt-4 mb-6">
-          <Button
-            variant="ghost"
-            size="sm"
-            className={cn(
-              "flex-1 rounded-md",
-              activeTab === "expense" && "bg-background shadow-sm"
-            )}
-            onClick={() => setActiveTab("expense")}
-          >
-            Expense
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className={cn(
-              "flex-1 rounded-md",
-              activeTab === "income" && "bg-background shadow-sm"
-            )}
-            onClick={() => setActiveTab("income")}
-          >
-            Income
-          </Button>
+        <div className="px-4 pb-6 md:px-6 mt-4">
+          {defaultTab === "expense" ? (
+            <ExpenseForm isSheet onSuccess={handleSuccess} onCancel={handleCancel} />
+          ) : (
+            <IncomeForm isSheet onSuccess={handleSuccess} onCancel={handleCancel} />
+          )}
         </div>
-
-        {activeTab === "expense" ? (
-          <ExpenseForm isSheet onSuccess={handleSuccess} onCancel={handleCancel} />
-        ) : (
-          <IncomeForm isSheet onSuccess={handleSuccess} onCancel={handleCancel} />
-        )}
       </SheetContent>
     </Sheet>
   );

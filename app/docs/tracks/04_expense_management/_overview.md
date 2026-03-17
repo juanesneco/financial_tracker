@@ -47,3 +47,7 @@ Core expense tracking: a full form with amount, title, category/subcategory, pay
 - Expense detail page supports `?from=home` for back navigation
 - Pagination at 50 expenses per page
 - Date grouping uses "Today" / "Yesterday" / formatted date labels
+
+## TODO
+
+- **Category display filter:** Add an `is_displayed` boolean column (default `true`) to `ft_categories` via DB migration. Then filter `categories.filter(c => c.is_displayed)` in all dropdowns and filter bars (ExpenseForm, expenses page, balance page, statistics). This lets us hide categories from the UI without deleting them or breaking historical expense references.

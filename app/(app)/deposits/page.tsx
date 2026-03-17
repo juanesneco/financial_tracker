@@ -86,7 +86,7 @@ export default function DepositsPage() {
     <>
       <Header title="Deposits" showBackButton />
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-lg mx-auto p-4 md:p-6 space-y-4">
+        <div className="max-w-lg lg:max-w-full mx-auto p-4 md:p-6 space-y-4">
           <Card>
             <CardContent className="pt-6">
               <p className="text-sm text-muted-foreground mb-1">Total Deposits</p>

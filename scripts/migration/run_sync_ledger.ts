@@ -154,7 +154,7 @@ async function main() {
       const paymentMethod = pm === "card" || pm === "cash" ? pm : null;
 
       const title = (row["title"] || "").trim() || null;
-      const comments = (row["comments"] || "").trim() || null;
+      const commentsFromCsv = (row["comments"] || "").trim() || null;
 
       newExpenses.push({
         user_id: userId,
@@ -163,10 +163,9 @@ async function main() {
         subcategory_id: subcategoryId,
         date,
         title,
-        note: title,
+        note: commentsFromCsv || title,
         payment_method: paymentMethod,
         card_id: cardId,
-        comments,
         currency: "MXN",
         original_glide_id: glideId,
       });

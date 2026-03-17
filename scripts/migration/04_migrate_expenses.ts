@@ -46,7 +46,7 @@ export async function migrateExpenses() {
     const amountStr = row["expense_MXN"]?.trim() || row["amount/show"]?.trim();
     const glideCardId = row["keys/cardID"]?.trim() || null;
     const paymentMethod = row["payment_method"]?.trim()?.toLowerCase() || null;
-    const comments = row["comments"]?.trim() || null;
+    const commentsFromCsv = row["comments"]?.trim() || null;
 
     // Parse amount
     const amount = parseFloat(amountStr?.replace(/,/g, "") || "0");
@@ -117,10 +117,9 @@ export async function migrateExpenses() {
       subcategory_id: subcategoryId,
       date,
       title,
-      note: title, // use title as note for backwards compatibility
+      note: commentsFromCsv || title, // CSV comments or title as note
       payment_method: validPaymentMethod,
       card_id: cardId,
-      comments,
       currency: "MXN",
       original_glide_id: glideId,
     });

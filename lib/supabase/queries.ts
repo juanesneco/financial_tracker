@@ -12,6 +12,10 @@ import type {
   IncomeSourceInsert,
   IncomeSourceUpdate,
   IncomeRecordInsert,
+  CategoryInsert,
+  CategoryUpdate,
+  SubcategoryInsert,
+  SubcategoryUpdate,
   Profile,
 } from "@/lib/types";
 
@@ -38,6 +42,57 @@ export async function getCategories(supabase: Client) {
 
 export async function getSubcategories(supabase: Client) {
   return supabase.from("ft_subcategories").select("*").order("display_order");
+}
+
+// ─── Hidden Categories ───────────────────────────────────────────────────────
+
+export async function getUserHiddenCategories(supabase: Client, userId: string) {
+  return supabase
+    .from("ft_user_hidden_categories")
+    .select("category_id")
+    .eq("user_id", userId);
+}
+
+export async function hideCategory(supabase: Client, userId: string, categoryId: string) {
+  return supabase
+    .from("ft_user_hidden_categories")
+    .insert({ user_id: userId, category_id: categoryId });
+}
+
+export async function unhideCategory(supabase: Client, userId: string, categoryId: string) {
+  return supabase
+    .from("ft_user_hidden_categories")
+    .delete()
+    .eq("user_id", userId)
+    .eq("category_id", categoryId);
+}
+
+// ─── Category CRUD ───────────────────────────────────────────────────────────
+
+export async function insertCategory(supabase: Client, data: CategoryInsert) {
+  return supabase.from("ft_categories").insert(data).select().single();
+}
+
+export async function updateCategory(supabase: Client, id: string, data: CategoryUpdate) {
+  return supabase.from("ft_categories").update(data).eq("id", id).select().single();
+}
+
+export async function deleteCategory(supabase: Client, id: string) {
+  return supabase.from("ft_categories").delete().eq("id", id);
+}
+
+// ─── Subcategory CRUD ────────────────────────────────────────────────────────
+
+export async function insertSubcategory(supabase: Client, data: SubcategoryInsert) {
+  return supabase.from("ft_subcategories").insert(data).select().single();
+}
+
+export async function updateSubcategory(supabase: Client, id: string, data: SubcategoryUpdate) {
+  return supabase.from("ft_subcategories").update(data).eq("id", id).select().single();
+}
+
+export async function deleteSubcategory(supabase: Client, id: string) {
+  return supabase.from("ft_subcategories").delete().eq("id", id);
 }
 
 // ─── Expenses ─────────────────────────────────────────────────────────────────
@@ -111,6 +166,16 @@ export async function insertDeposit(supabase: Client, deposit: DepositInsert) {
 
 export async function deleteDeposit(supabase: Client, id: string) {
   return supabase.from("ft_deposits").delete().eq("id", id);
+}
+
+// ─── Juanes Tab (Ivonne cross-account) ────────────────────────────────────────
+
+export async function getIvonneDeposits(supabase: Client) {
+  return supabase.rpc("get_ivonne_deposits");
+}
+
+export async function getIvonneExpenses(supabase: Client) {
+  return supabase.rpc("get_ivonne_expenses");
 }
 
 // ─── Cards ────────────────────────────────────────────────────────────────────

@@ -16,7 +16,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Expense, Category } from "@/lib/types";
+import type { Expense } from "@/lib/types";
+import { useCategories } from "@/hooks/useCategories";
 
 const PAGE_SIZE = 50;
 
@@ -24,7 +25,7 @@ export default function ExpensesPage() {
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const { categories, visibleCategories } = useCategories();
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(0);
 
@@ -74,17 +75,6 @@ export default function ExpensesPage() {
   }, [supabase, page, debouncedSearch, categoryFilter, paymentFilter, startDate, endDate]);
 
   useEffect(() => {
-    async function fetchCategories() {
-      const { data: cats } = await supabase
-        .from("ft_categories")
-        .select("*")
-        .order("display_order");
-      setCategories((cats || []) as Category[]);
-    }
-    fetchCategories();
-  }, [supabase]);
-
-  useEffect(() => {
     fetchExpenses();
   }, [fetchExpenses]);
 
@@ -103,7 +93,7 @@ export default function ExpensesPage() {
     <>
       <Header title="Expenses" />
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-2xl lg:max-w-5xl mx-auto p-4 md:p-6 space-y-4">
+        <div className="max-w-2xl lg:max-w-full mx-auto p-4 md:p-6 space-y-4">
           {/* Search */}
           <div className="relative">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -123,7 +113,7 @@ export default function ExpensesPage() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Categories</SelectItem>
-                {categories.map((cat) => (
+                {visibleCategories.map((cat) => (
                   <SelectItem key={cat.id} value={cat.id}>
                     {cat.emoji || cat.icon} {cat.name}
                   </SelectItem>

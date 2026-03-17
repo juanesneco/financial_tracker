@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, LogOut } from "lucide-react";
+import { Loader2, LogOut, Settings2 } from "lucide-react";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -80,7 +81,7 @@ export default function SettingsPage() {
     <>
       <Header title="Settings" />
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-lg lg:max-w-2xl mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
+        <div className="max-w-lg lg:max-w-full mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
           {/* Profile */}
           <Card>
             <CardContent className="pt-6 space-y-4">
@@ -116,6 +117,21 @@ export default function SettingsPage() {
               <Button onClick={handleSave} disabled={isSaving} className="w-full">
                 {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : "Save Changes"}
               </Button>
+            </CardContent>
+          </Card>
+
+          {/* Categories */}
+          <Card>
+            <CardContent className="pt-6 space-y-2">
+              <h3 className="font-serif text-lg font-semibold">Categories</h3>
+              <p className="text-sm text-muted-foreground">
+                Manage which categories appear in your dropdowns
+              </p>
+              <Link href="/settings/categories">
+                <Button variant="outline" className="w-full gap-2">
+                  <Settings2 size={16} /> Manage Categories
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 

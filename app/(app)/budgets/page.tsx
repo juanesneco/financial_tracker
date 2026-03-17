@@ -13,6 +13,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
+import { useCategories } from "@/hooks/useCategories";
 import type { Budget, Category, Expense } from "@/lib/types";
 
 export default function BudgetsPage() {
@@ -24,6 +25,7 @@ export default function BudgetsPage() {
   const [showForm, setShowForm] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
+  const { visibleCategories } = useCategories();
   const [categoryId, setCategoryId] = useState("");
   const [amount, setAmount] = useState("");
 
@@ -98,7 +100,7 @@ export default function BudgetsPage() {
     <>
       <Header title="Budgets" showBackButton />
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-lg mx-auto p-4 md:p-6 space-y-4">
+        <div className="max-w-lg lg:max-w-full mx-auto p-4 md:p-6 space-y-4">
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">{budgets.length} budget{budgets.length !== 1 ? "s" : ""}</p>
             <Button size="sm" onClick={() => setShowForm(!showForm)}>
@@ -114,7 +116,7 @@ export default function BudgetsPage() {
                   <Select value={categoryId} onValueChange={setCategoryId}>
                     <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
                     <SelectContent>
-                      {categories.map((cat) => (
+                      {visibleCategories.map((cat) => (
                         <SelectItem key={cat.id} value={cat.id}>
                           {cat.emoji || cat.icon} {cat.name}
                         </SelectItem>

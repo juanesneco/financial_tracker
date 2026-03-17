@@ -17,14 +17,12 @@ const navItems = [
   { href: "/settings", icon: Settings, label: "Settings" },
 ];
 
-const DEPOSITS_ALLOWED_NAMES = ["juanes", "ivonne"];
-
 export function Sidebar() {
   const pathname = usePathname();
   const supabase = createClient();
   const [displayName, setDisplayName] = useState<string | null>(null);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
-  const [canSeeDeposits, setCanSeeDeposits] = useState(false);
+  const [isJuanes, setIsJuanes] = useState(false);
 
   useEffect(() => {
     async function getUser() {
@@ -43,7 +41,7 @@ export function Sidebar() {
         );
         setIsSuperAdmin(profile?.is_super_admin === true);
         const name = (profile?.display_name || "").toLowerCase();
-        setCanSeeDeposits(DEPOSITS_ALLOWED_NAMES.some((n) => name.includes(n)));
+        setIsJuanes(name.includes("juanes"));
       }
     }
     getUser();
@@ -82,19 +80,19 @@ export function Sidebar() {
           );
         })}
 
-        {/* Deposits — restricted to Juanes/Ivonne */}
-        {canSeeDeposits && (
+        {/* Juanes tab — only visible to Juanes */}
+        {isJuanes && (
           <Link
-            href="/deposits"
+            href="/juanes"
             className={cn(
               "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors",
-              pathname === "/deposits" || pathname.startsWith("/deposits/")
+              pathname === "/juanes" || pathname.startsWith("/juanes/")
                 ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground"
             )}
           >
             <ArrowDownCircle size={20} />
-            Deposits
+            Juanes
           </Link>
         )}
 

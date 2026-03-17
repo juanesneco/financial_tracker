@@ -207,7 +207,7 @@ export default function SubscriptionsPage() {
     <>
       <Header title="Subscriptions" showBackButton />
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-lg lg:max-w-3xl mx-auto p-4 md:p-6 space-y-4">
+        <div className="max-w-lg lg:max-w-full mx-auto p-4 md:p-6 space-y-4">
           {/* Monthly total */}
           <Card>
             <CardContent className="pt-6">

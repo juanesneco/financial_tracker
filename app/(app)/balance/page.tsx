@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/table";
 import { AddSlideOver } from "@/components/shared/AddSlideOver";
 import { useResponsiveAdd } from "@/hooks/useResponsiveAdd";
+import { useCategories } from "@/hooks/useCategories";
 import type { Expense, Category, IncomeRecord, IncomeSource } from "@/lib/types";
 
 const PAGE_SIZE = 50;
@@ -46,6 +47,7 @@ export default function BalancePage() {
   const supabase = createClient();
   const router = useRouter();
   const { isDesktop } = useResponsiveAdd();
+  const { visibleCategories } = useCategories();
   const [isLoading, setIsLoading] = useState(true);
   const [entries, setEntries] = useState<BalanceEntry[]>([]);
   const [totalIncome, setTotalIncome] = useState(0);
@@ -226,7 +228,7 @@ export default function BalancePage() {
     <>
       <Header title="Balance Sheet" />
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-2xl lg:max-w-5xl mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
+        <div className="max-w-2xl lg:max-w-full mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
           {/* Action buttons — desktop only (mobile uses bottom nav + button) */}
           <div className="hidden lg:flex gap-3">
             <Button onClick={() => handleAddClick("expense")} variant="outline" className="gap-2">
@@ -313,7 +315,7 @@ export default function BalancePage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Categories</SelectItem>
-                  {categories.map((cat) => (
+                  {visibleCategories.map((cat) => (
                     <SelectItem key={cat.id} value={cat.id}>
                       {cat.emoji || cat.icon} {cat.name}
                     </SelectItem>
@@ -386,6 +388,7 @@ export default function BalancePage() {
                         className="cursor-pointer hover:bg-muted/50"
                         onClick={() => {
                           if (entry.type === "expense") router.push(`/expenses/${entry.id}?from=balance`);
+                          else router.push(`/income/${entry.id}?from=balance`);
                         }}
                       >
                         <TableCell className="text-muted-foreground text-sm">
@@ -441,7 +444,7 @@ export default function BalancePage() {
                       {dateEntries.map((entry) => (
                         <Link
                           key={entry.id}
-                          href={entry.type === "expense" ? `/expenses/${entry.id}?from=balance` : "#"}
+                          href={entry.type === "expense" ? `/expenses/${entry.id}?from=balance` : `/income/${entry.id}?from=balance`}
                           className="flex items-center gap-3 px-4 py-3 hover:bg-muted/50 transition-colors"
                         >
                           {entry.type === "income" ? (

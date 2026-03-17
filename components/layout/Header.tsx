@@ -10,9 +10,10 @@ import { ThemeToggle } from "@/components/theme-toggle";
 interface HeaderProps {
   title?: string;
   showBackButton?: boolean;
+  backHref?: string;
 }
 
-export function Header({ title, showBackButton }: HeaderProps) {
+export function Header({ title, showBackButton, backHref }: HeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -24,6 +25,11 @@ export function Header({ title, showBackButton }: HeaderProps) {
         {/* Mobile: Back button or Logo */}
         <div className="flex items-center gap-2 md:hidden">
           {isSubPage ? (
+            backHref ? (
+              <Link href={backHref} className="h-9 w-9 -ml-2 inline-flex items-center justify-center rounded-md hover:bg-accent">
+                <ChevronLeft size={20} />
+              </Link>
+            ) : (
             <Button
               variant="ghost"
               size="icon"
@@ -32,6 +38,7 @@ export function Header({ title, showBackButton }: HeaderProps) {
             >
               <ChevronLeft size={20} />
             </Button>
+            )
           ) : (
             <Link href="/" className="flex items-center gap-2">
               <Wallet size={24} className="text-primary" />

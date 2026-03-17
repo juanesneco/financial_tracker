@@ -14,6 +14,7 @@ export type Subscription = Tables["ft_subscriptions"]["Row"];
 export type Budget = Tables["ft_budgets"]["Row"];
 export type IncomeSource = Tables["ft_income_sources"]["Row"];
 export type IncomeRecord = Tables["ft_income_records"]["Row"];
+export type UserHiddenCategory = Tables["ft_user_hidden_categories"]["Row"];
 
 // ─── Insert Types ────────────────────────────────────────────────────────────
 
@@ -24,6 +25,11 @@ export type SubscriptionInsert = Tables["ft_subscriptions"]["Insert"];
 export type BudgetInsert = Tables["ft_budgets"]["Insert"];
 export type IncomeSourceInsert = Tables["ft_income_sources"]["Insert"];
 export type IncomeRecordInsert = Tables["ft_income_records"]["Insert"];
+export type CategoryInsert = Tables["ft_categories"]["Insert"];
+export type CategoryUpdate = Tables["ft_categories"]["Update"];
+export type SubcategoryInsert = Tables["ft_subcategories"]["Insert"];
+export type SubcategoryUpdate = Tables["ft_subcategories"]["Update"];
+export type UserHiddenCategoryInsert = Tables["ft_user_hidden_categories"]["Insert"];
 
 // ─── Update Types ────────────────────────────────────────────────────────────
 

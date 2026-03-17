@@ -40,6 +40,7 @@ export type Database = {
           display_order: number;
           emoji: string | null;
           budget_default: number | null;
+          user_id: string | null;
           original_glide_id: string | null;
           created_at: string;
         };
@@ -51,6 +52,7 @@ export type Database = {
           display_order?: number;
           emoji?: string | null;
           budget_default?: number | null;
+          user_id?: string | null;
           original_glide_id?: string | null;
           created_at?: string;
         };
@@ -61,6 +63,7 @@ export type Database = {
           display_order?: number;
           emoji?: string | null;
           budget_default?: number | null;
+          user_id?: string | null;
         };
       };
       ft_subcategories: {
@@ -70,6 +73,7 @@ export type Database = {
           name: string;
           display_order: number;
           emoji: string | null;
+          user_id: string | null;
           original_glide_id: string | null;
           created_at: string;
         };
@@ -79,6 +83,7 @@ export type Database = {
           name: string;
           display_order?: number;
           emoji?: string | null;
+          user_id?: string | null;
           original_glide_id?: string | null;
           created_at?: string;
         };
@@ -87,6 +92,7 @@ export type Database = {
           name?: string;
           display_order?: number;
           emoji?: string | null;
+          user_id?: string | null;
         };
       };
       ft_expenses: {
@@ -101,7 +107,6 @@ export type Database = {
           note: string | null;
           payment_method: "card" | "cash" | null;
           card_id: string | null;
-          comments: string | null;
           currency: string;
           receipt_url: string | null;
           original_glide_id: string | null;
@@ -119,7 +124,6 @@ export type Database = {
           note?: string | null;
           payment_method?: "card" | "cash" | null;
           card_id?: string | null;
-          comments?: string | null;
           currency?: string;
           receipt_url?: string | null;
           original_glide_id?: string | null;
@@ -135,7 +139,6 @@ export type Database = {
           note?: string | null;
           payment_method?: "card" | "cash" | null;
           card_id?: string | null;
-          comments?: string | null;
           currency?: string;
           receipt_url?: string | null;
           updated_at?: string;
@@ -340,6 +343,17 @@ export type Database = {
           currency?: string;
           date?: string;
           description?: string | null;
+        };
+      };
+      ft_user_hidden_categories: {
+        Row: {
+          user_id: string;
+          category_id: string;
+          created_at: string;
+        };
+        Insert: {
+          user_id: string;
+          category_id: string;
         };
       };
       otp_codes: {

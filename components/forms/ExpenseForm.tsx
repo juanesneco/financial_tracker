@@ -18,7 +18,8 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import type { Category, Subcategory, Card as CardType } from "@/lib/types";
+import type { Card as CardType } from "@/lib/types";
+import { useCategories } from "@/hooks/useCategories";
 
 interface ExpenseFormProps {
   onSuccess?: () => void;
@@ -30,40 +31,34 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
   const router = useRouter();
   const supabase = createClient();
 
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
+  const { visibleCategories, subcategories, isLoading: categoriesLoading } = useCategories();
   const [cards, setCards] = useState<CardType[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [cardsLoading, setCardsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [amount, setAmount] = useState("");
-  const [title, setTitle] = useState("");
+  const isLoading = categoriesLoading || cardsLoading;
+
+  const [date, setDate] = useState(format(new Date(), "yyyy-MM-dd"));
   const [categoryId, setCategoryId] = useState("");
   const [subcategoryId, setSubcategoryId] = useState("");
-  const [date, setDate] = useState(format(new Date(), "yyyy-MM-dd"));
-  const [note, setNote] = useState("");
-  const [comments, setComments] = useState("");
+  const [title, setTitle] = useState("");
+  const [amount, setAmount] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<string>("");
+  const [note, setNote] = useState("");
   const [cardId, setCardId] = useState("");
   const [receiptFile, setReceiptFile] = useState<File | null>(null);
   const [receiptPreview, setReceiptPreview] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchData() {
+    async function fetchCards() {
       try {
-        const [catsRes, subsRes, cardsRes] = await Promise.all([
-          supabase.from("ft_categories").select("*").order("display_order"),
-          supabase.from("ft_subcategories").select("*").order("display_order"),
-          supabase.from("ft_cards").select("*").order("bank"),
-        ]);
-        setCategories((catsRes.data || []) as Category[]);
-        setSubcategories((subsRes.data || []) as Subcategory[]);
-        setCards((cardsRes.data || []) as CardType[]);
+        const { data } = await supabase.from("ft_cards").select("*").order("bank");
+        setCards((data || []) as CardType[]);
       } finally {
-        setIsLoading(false);
+        setCardsLoading(false);
       }
     }
-    fetchData();
+    fetchCards();
   }, [supabase]);
 
   const filteredSubcategories = subcategories.filter(
@@ -86,22 +81,21 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
   };
 
   const resetForm = () => {
-    setAmount("");
-    setTitle("");
+    setDate(format(new Date(), "yyyy-MM-dd"));
     setCategoryId("");
     setSubcategoryId("");
-    setDate(format(new Date(), "yyyy-MM-dd"));
-    setNote("");
-    setComments("");
+    setTitle("");
+    setAmount("");
     setPaymentMethod("");
     setCardId("");
+    setNote("");
     setReceiptFile(null);
     setReceiptPreview(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!amount || !categoryId || !date) {
+    if (!title.trim() || !amount || !categoryId || !date) {
       toast.error("Please fill in all required fields");
       return;
     }
@@ -132,9 +126,8 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
         category_id: categoryId,
         subcategory_id: subcategoryId || null,
         date,
-        title: title || null,
-        note: note || null,
-        comments: comments || null,
+        title: title.trim(),
+        note: note.trim() || null,
         payment_method: paymentMethod || null,
         card_id: cardId || null,
         receipt_url: receiptUrl,
@@ -173,37 +166,21 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Amount */}
+      {/* 1. Date */}
       <div className="space-y-2">
-        <Label htmlFor="expense-amount">Amount *</Label>
+        <Label htmlFor="expense-date">Date *</Label>
         <Input
-          id="expense-amount"
-          type="number"
-          inputMode="decimal"
-          step="0.01"
-          min="0.01"
-          placeholder="0.00"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          id="expense-date"
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
           required
           disabled={isSubmitting}
-          className="text-2xl h-14 font-semibold"
+          className="h-11 py-2.5 md:h-9 md:py-1"
         />
       </div>
 
-      {/* Title */}
-      <div className="space-y-2">
-        <Label htmlFor="expense-title">Title</Label>
-        <Input
-          id="expense-title"
-          placeholder="What was this for?"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          disabled={isSubmitting}
-        />
-      </div>
-
-      {/* Category */}
+      {/* 2. Category */}
       <div className="space-y-2">
         <Label>Category *</Label>
         <Select
@@ -211,11 +188,11 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
           onValueChange={(val) => { setCategoryId(val); setSubcategoryId(""); }}
           disabled={isSubmitting}
         >
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full h-11 md:h-9">
             <SelectValue placeholder="Select a category" />
           </SelectTrigger>
           <SelectContent position="popper" className="max-h-[240px]">
-            {categories.map((cat) => (
+            {visibleCategories.map((cat) => (
               <SelectItem key={cat.id} value={cat.id}>
                 {cat.emoji || cat.icon} {cat.name}
               </SelectItem>
@@ -224,12 +201,12 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
         </Select>
       </div>
 
-      {/* Subcategory */}
+      {/* 3. Subcategory */}
       {filteredSubcategories.length > 0 && (
         <div className="space-y-2">
           <Label>Subcategory</Label>
           <Select value={subcategoryId} onValueChange={setSubcategoryId} disabled={isSubmitting}>
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full h-11 md:h-9">
               <SelectValue placeholder="Optional" />
             </SelectTrigger>
             <SelectContent position="popper" className="max-h-[240px]">
@@ -243,7 +220,39 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
         </div>
       )}
 
-      {/* Payment Method */}
+      {/* 4. Title */}
+      <div className="space-y-2">
+        <Label htmlFor="expense-title">Title *</Label>
+        <Input
+          id="expense-title"
+          placeholder="What was this for?"
+          required
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          disabled={isSubmitting}
+          className="h-11 py-2.5 md:h-9 md:py-1"
+        />
+      </div>
+
+      {/* 5. Amount */}
+      <div className="space-y-2">
+        <Label htmlFor="expense-amount">Amount *</Label>
+        <Input
+          id="expense-amount"
+          type="number"
+          inputMode="decimal"
+          step="0.01"
+          min="0.01"
+          placeholder="0.00"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          required
+          disabled={isSubmitting}
+          className="text-2xl h-14 font-semibold px-4 py-3"
+        />
+      </div>
+
+      {/* 6. Payment Method */}
       <div className="space-y-2">
         <Label>Payment Method</Label>
         <Select
@@ -251,7 +260,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
           onValueChange={(val) => { setPaymentMethod(val); if (val !== "card") setCardId(""); }}
           disabled={isSubmitting}
         >
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full h-11 md:h-9">
             <SelectValue placeholder="Optional" />
           </SelectTrigger>
           <SelectContent>
@@ -266,7 +275,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
         <div className="space-y-2">
           <Label>Card</Label>
           <Select value={cardId} onValueChange={setCardId} disabled={isSubmitting}>
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full h-11 md:h-9">
               <SelectValue placeholder="Select a card" />
             </SelectTrigger>
             <SelectContent>
@@ -280,42 +289,17 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
         </div>
       )}
 
-      {/* Date */}
+      {/* Notes */}
       <div className="space-y-2">
-        <Label htmlFor="expense-date">Date *</Label>
-        <Input
-          id="expense-date"
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          required
-          disabled={isSubmitting}
-        />
-      </div>
-
-      {/* Note */}
-      <div className="space-y-2">
-        <Label htmlFor="expense-note">Note</Label>
+        <Label htmlFor="expense-note">Notes</Label>
         <Textarea
           id="expense-note"
-          placeholder="Short description"
+          placeholder="Additional details (optional)"
           value={note}
           onChange={(e) => setNote(e.target.value)}
           disabled={isSubmitting}
           rows={2}
-        />
-      </div>
-
-      {/* Comments */}
-      <div className="space-y-2">
-        <Label htmlFor="expense-comments">Comments</Label>
-        <Textarea
-          id="expense-comments"
-          placeholder="Additional details"
-          value={comments}
-          onChange={(e) => setComments(e.target.value)}
-          disabled={isSubmitting}
-          rows={2}
+          className="py-3 min-h-[72px] md:min-h-[64px]"
         />
       </div>
 
@@ -366,7 +350,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
         <Button
           type="submit"
           className={isSheet ? "flex-1" : "w-full h-12 text-base"}
-          disabled={isSubmitting || !amount || !categoryId}
+          disabled={isSubmitting || !title.trim() || !amount || !categoryId}
         >
           {isSubmitting ? (
             <>

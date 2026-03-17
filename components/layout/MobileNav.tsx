@@ -29,18 +29,16 @@ const moreMenuItems = [
   { href: "/settings", icon: Settings, label: "Settings" },
 ];
 
-const DEPOSITS_ALLOWED_NAMES = ["juanes", "ivonne"];
-
 export function MobileNav() {
   const pathname = usePathname();
   const router = useRouter();
   const [moreOpen, setMoreOpen] = useState(false);
   const [addMenuOpen, setAddMenuOpen] = useState(false);
-  const [canSeeDeposits, setCanSeeDeposits] = useState(false);
+  const [isJuanes, setIsJuanes] = useState(false);
   const addMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    async function checkDepositsAccess() {
+    async function checkAccess() {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
@@ -50,9 +48,9 @@ export function MobileNav() {
         .eq("id", user.id)
         .single();
       const name = (profile?.display_name || "").toLowerCase();
-      setCanSeeDeposits(DEPOSITS_ALLOWED_NAMES.some((n) => name.includes(n)));
+      setIsJuanes(name.includes("juanes"));
     }
-    checkDepositsAccess();
+    checkAccess();
   }, []);
 
   // Close add menu when tapping outside
@@ -120,7 +118,7 @@ export function MobileNav() {
 
             // More button
             if (item.isMore) {
-              const isMoreActive = ["/subscriptions", "/income", "/cards", "/settings", "/deposits"].some(
+              const isMoreActive = ["/subscriptions", "/income", "/cards", "/settings", "/juanes"].some(
                 (p) => pathname === p || pathname.startsWith(p + "/")
               );
               return (
@@ -182,19 +180,19 @@ export function MobileNav() {
                 </Link>
               );
             })}
-            {canSeeDeposits && (
+            {isJuanes && (
               <Link
-                href="/deposits"
+                href="/juanes"
                 onClick={() => setMoreOpen(false)}
                 className={cn(
                   "flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-colors",
-                  pathname === "/deposits" || pathname.startsWith("/deposits/")
+                  pathname === "/juanes" || pathname.startsWith("/juanes/")
                     ? "bg-primary text-primary-foreground"
                     : "text-foreground hover:bg-muted"
                 )}
               >
                 <ArrowDownCircle size={20} />
-                Deposits
+                Juanes
               </Link>
             )}
           </nav>
