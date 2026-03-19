@@ -23,13 +23,23 @@ import { format } from "date-fns";
 import type { Card as CardType } from "@/lib/types";
 import { useCategories } from "@/hooks/useCategories";
 
+export interface ExpenseFormDefaults {
+  date?: string;
+  subcategoryId?: string;
+  title?: string;
+  amount?: string;
+  paymentMethod?: string;
+  receiptPreview?: string;
+}
+
 interface ExpenseFormProps {
   onSuccess?: () => void;
   onCancel?: () => void;
   isSheet?: boolean;
+  defaultValues?: ExpenseFormDefaults;
 }
 
-export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) {
+export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues }: ExpenseFormProps) {
   const router = useRouter();
   const supabase = createClient();
 
@@ -40,15 +50,15 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
 
   const isLoading = categoriesLoading || cardsLoading;
 
-  const [date, setDate] = useState(format(new Date(), "yyyy-MM-dd"));
-  const [subcategoryId, setSubcategoryId] = useState("");
-  const [title, setTitle] = useState("");
-  const [amount, setAmount] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState<string>("");
+  const [date, setDate] = useState(defaultValues?.date || format(new Date(), "yyyy-MM-dd"));
+  const [subcategoryId, setSubcategoryId] = useState(defaultValues?.subcategoryId || "");
+  const [title, setTitle] = useState(defaultValues?.title || "");
+  const [amount, setAmount] = useState(defaultValues?.amount || "");
+  const [paymentMethod, setPaymentMethod] = useState<string>(defaultValues?.paymentMethod || "");
   const [note, setNote] = useState("");
   const [cardId, setCardId] = useState("");
   const [receiptFile, setReceiptFile] = useState<File | null>(null);
-  const [receiptPreview, setReceiptPreview] = useState<string | null>(null);
+  const [receiptPreview, setReceiptPreview] = useState<string | null>(defaultValues?.receiptPreview || null);
 
   useEffect(() => {
     async function fetchCards() {
@@ -110,6 +120,21 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
         const { error: uploadError } = await supabase.storage
           .from("receipts")
           .upload(fileName, receiptFile);
+        if (uploadError) {
+          console.error("Upload error:", uploadError);
+          toast.error("Failed to upload receipt");
+        } else {
+          receiptUrl = fileName;
+        }
+      } else if (receiptPreview && receiptPreview.startsWith("data:")) {
+        // Handle scanned receipt: convert base64 data URL to blob for upload
+        const res = await fetch(receiptPreview);
+        const blob = await res.blob();
+        const ext = blob.type.split("/")[1] || "jpg";
+        const fileName = `${user.id}/${Date.now()}.${ext}`;
+        const { error: uploadError } = await supabase.storage
+          .from("receipts")
+          .upload(fileName, blob);
         if (uploadError) {
           console.error("Upload error:", uploadError);
           toast.error("Failed to upload receipt");

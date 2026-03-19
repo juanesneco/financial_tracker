@@ -26,7 +26,7 @@ Feature development is organized into numbered tracks at `app/docs/tracks/`. Eac
 | 10 | Deposits (Juanes Tab) | 5/5 | Done |
 | 11 | Settings & Profile | 5/5 | Done |
 
-### In Progress / Upcoming (Tracks 12–15)
+### In Progress / Upcoming (Tracks 12–16)
 
 | # | Track | Priority | Stories | Status |
 |---|-------|----------|---------|--------|
@@ -34,6 +34,7 @@ Feature development is organized into numbered tracks at `app/docs/tracks/`. Eac
 | 13 | UX Polish | P1 | 0/2 | Not Started |
 | 14 | Error & Loading States | P2 | 0/5 | Not Started |
 | 15 | Empty States | P3 | 0/5 | Not Started |
+| 16 | Receipt Scanning | P1 | 0/7 | Not Started |
 
 ### Key Decisions (from interview 2026-03-17)
 

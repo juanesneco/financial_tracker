@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   Home, ArrowRightLeft, Plus, BarChart3, MoreHorizontal,
   RefreshCw, DollarSign, CreditCard, Settings, ArrowDownCircle,
-  Receipt,
+  Receipt, Camera,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
@@ -80,7 +80,18 @@ export function MobileNav() {
                 <div key={item.href} className="relative" ref={addMenuRef}>
                   {/* Add popup menu */}
                   {addMenuOpen && (
-                    <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 bg-background border border-border rounded-xl shadow-xl overflow-hidden min-w-[160px]">
+                    <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 bg-background border border-border rounded-xl shadow-xl overflow-hidden min-w-[180px]">
+                      <button
+                        onClick={() => {
+                          setAddMenuOpen(false);
+                          router.push("/add/scan");
+                        }}
+                        className="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium hover:bg-muted transition-colors"
+                      >
+                        <Camera size={18} className="text-primary" />
+                        Scan Receipt
+                      </button>
+                      <div className="border-t border-border" />
                       <button
                         onClick={() => {
                           setAddMenuOpen(false);
