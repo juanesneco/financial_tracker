@@ -12,7 +12,9 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -31,7 +33,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
   const router = useRouter();
   const supabase = createClient();
 
-  const { visibleCategories, subcategories, isLoading: categoriesLoading } = useCategories();
+  const { groupedSubcategories, subcategoryMap, isLoading: categoriesLoading } = useCategories();
   const [cards, setCards] = useState<CardType[]>([]);
   const [cardsLoading, setCardsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -39,7 +41,6 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
   const isLoading = categoriesLoading || cardsLoading;
 
   const [date, setDate] = useState(format(new Date(), "yyyy-MM-dd"));
-  const [categoryId, setCategoryId] = useState("");
   const [subcategoryId, setSubcategoryId] = useState("");
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
@@ -61,9 +62,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
     fetchCards();
   }, [supabase]);
 
-  const filteredSubcategories = subcategories.filter(
-    (s) => s.category_id === categoryId
-  );
+  const categoryId = subcategoryMap.get(subcategoryId)?.categoryId || "";
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -82,7 +81,6 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
 
   const resetForm = () => {
     setDate(format(new Date(), "yyyy-MM-dd"));
-    setCategoryId("");
     setSubcategoryId("");
     setTitle("");
     setAmount("");
@@ -95,7 +93,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim() || !amount || !categoryId || !date) {
+    if (!title.trim() || !amount || !subcategoryId || !categoryId || !date) {
       toast.error("Please fill in all required fields");
       return;
     }
@@ -124,7 +122,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
         user_id: user.id,
         amount: parseFloat(amount),
         category_id: categoryId,
-        subcategory_id: subcategoryId || null,
+        subcategory_id: subcategoryId,
         date,
         title: title.trim(),
         note: note.trim() || null,
@@ -183,42 +181,24 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
       {/* 2. Category */}
       <div className="space-y-2">
         <Label>Category *</Label>
-        <Select
-          value={categoryId}
-          onValueChange={(val) => { setCategoryId(val); setSubcategoryId(""); }}
-          disabled={isSubmitting}
-        >
+        <Select value={subcategoryId} onValueChange={setSubcategoryId} disabled={isSubmitting}>
           <SelectTrigger className="w-full h-11 md:h-9">
             <SelectValue placeholder="Select a category" />
           </SelectTrigger>
           <SelectContent position="popper" className="max-h-[240px]">
-            {visibleCategories.map((cat) => (
-              <SelectItem key={cat.id} value={cat.id}>
-                {cat.emoji || cat.icon} {cat.name}
-              </SelectItem>
+            {groupedSubcategories.map((group) => (
+              <SelectGroup key={group.categoryId}>
+                <SelectLabel>{group.categoryEmoji} {group.categoryName}</SelectLabel>
+                {group.subcategories.map((sub) => (
+                  <SelectItem key={sub.id} value={sub.id}>
+                    {group.categoryEmoji} {group.categoryName} - {sub.emoji ? `${sub.emoji} ` : ""}{sub.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
             ))}
           </SelectContent>
         </Select>
       </div>
-
-      {/* 3. Subcategory */}
-      {filteredSubcategories.length > 0 && (
-        <div className="space-y-2">
-          <Label>Subcategory</Label>
-          <Select value={subcategoryId} onValueChange={setSubcategoryId} disabled={isSubmitting}>
-            <SelectTrigger className="w-full h-11 md:h-9">
-              <SelectValue placeholder="Optional" />
-            </SelectTrigger>
-            <SelectContent position="popper" className="max-h-[240px]">
-              {filteredSubcategories.map((sub) => (
-                <SelectItem key={sub.id} value={sub.id}>
-                  {sub.emoji ? `${sub.emoji} ` : ""}{sub.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      )}
 
       {/* 4. Title */}
       <div className="space-y-2">
@@ -350,7 +330,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet }: ExpenseFormProps) 
         <Button
           type="submit"
           className={isSheet ? "flex-1" : "w-full h-12 text-base"}
-          disabled={isSubmitting || !title.trim() || !amount || !categoryId}
+          disabled={isSubmitting || !title.trim() || !amount || !subcategoryId}
         >
           {isSubmitting ? (
             <>

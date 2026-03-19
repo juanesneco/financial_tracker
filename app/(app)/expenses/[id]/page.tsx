@@ -15,7 +15,9 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -47,7 +49,7 @@ export default function ExpenseDetailPage() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const { categories, visibleCategories, subcategories } = useCategories();
+  const { categories, subcategories, groupedSubcategories, subcategoryMap } = useCategories();
 
   const [expense, setExpense] = useState<Expense | null>(null);
   const [cards, setCards] = useState<CardType[]>([]);
@@ -55,7 +57,6 @@ export default function ExpenseDetailPage() {
   // Edit form state
   const [amount, setAmount] = useState("");
   const [title, setTitle] = useState("");
-  const [categoryId, setCategoryId] = useState("");
   const [subcategoryId, setSubcategoryId] = useState("");
   const [date, setDate] = useState("");
   const [note, setNote] = useState("");
@@ -86,7 +87,6 @@ export default function ExpenseDetailPage() {
         // Initialize form
         setAmount(String(e.amount));
         setTitle(e.title || "");
-        setCategoryId(e.category_id);
         setSubcategoryId(e.subcategory_id || "");
         setDate(e.date);
         setNote(e.note || "");
@@ -104,10 +104,10 @@ export default function ExpenseDetailPage() {
   const getSubcategoryById = (id: string) => subcategories.find(s => s.id === id);
   const getCardById = (id: string) => cards.find(c => c.id === id);
 
-  const filteredSubcategories = subcategories.filter(s => s.category_id === categoryId);
+  const categoryId = subcategoryMap.get(subcategoryId)?.categoryId || "";
 
   const handleSave = async () => {
-    if (!title.trim() || !amount || !categoryId || !date) {
+    if (!title.trim() || !amount || !subcategoryId || !categoryId || !date) {
       toast.error("Please fill required fields");
       return;
     }
@@ -120,7 +120,7 @@ export default function ExpenseDetailPage() {
           amount: parseFloat(amount),
           title: title || null,
           category_id: categoryId,
-          subcategory_id: subcategoryId || null,
+          subcategory_id: subcategoryId,
           date,
           note: note.trim() || null,
           payment_method: paymentMethod || null,
@@ -194,30 +194,24 @@ export default function ExpenseDetailPage() {
             {/* 2. Category */}
             <div className="space-y-2">
               <Label>Category *</Label>
-              <Select value={categoryId} onValueChange={(v) => { setCategoryId(v); setSubcategoryId(""); }}>
-                <SelectTrigger className="w-full h-11 md:h-9"><SelectValue /></SelectTrigger>
+              <Select value={subcategoryId} onValueChange={setSubcategoryId}>
+                <SelectTrigger className="w-full h-11 md:h-9">
+                  <SelectValue placeholder="Select a category" />
+                </SelectTrigger>
                 <SelectContent position="popper" className="max-h-[240px]">
-                  {visibleCategories.map((c) => (
-                    <SelectItem key={c.id} value={c.id}>{c.emoji || c.icon} {c.name}</SelectItem>
+                  {groupedSubcategories.map((group) => (
+                    <SelectGroup key={group.categoryId}>
+                      <SelectLabel>{group.categoryEmoji} {group.categoryName}</SelectLabel>
+                      {group.subcategories.map((sub) => (
+                        <SelectItem key={sub.id} value={sub.id}>
+                          {group.categoryEmoji} {group.categoryName} - {sub.emoji ? `${sub.emoji} ` : ""}{sub.name}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-
-            {/* 3. Subcategory */}
-            {filteredSubcategories.length > 0 && (
-              <div className="space-y-2">
-                <Label>Subcategory</Label>
-                <Select value={subcategoryId} onValueChange={setSubcategoryId}>
-                  <SelectTrigger className="w-full h-11 md:h-9"><SelectValue placeholder="Optional" /></SelectTrigger>
-                  <SelectContent position="popper" className="max-h-[240px]">
-                    {filteredSubcategories.map((s) => (
-                      <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
 
             {/* 4. Title */}
             <div className="space-y-2">
