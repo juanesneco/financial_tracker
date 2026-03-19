@@ -145,7 +145,21 @@ ${JSON.stringify(subcategoryList, null, 2)}
     return NextResponse.json(extracted);
   } catch (error) {
     console.error("Receipt scan error:", error);
-    const message = error instanceof Error ? error.message : "Failed to analyze receipt";
+
+    // Surface friendly error messages
+    let message = "Failed to analyze receipt";
+    if (error instanceof Error) {
+      if (error.message.includes("credit balance")) {
+        message = "AI service out of credits. Please try again later.";
+      } else if (error.message.includes("Could not process image")) {
+        message = "Could not read the image. Try a clearer photo.";
+      } else if (error.message.includes("rate limit")) {
+        message = "Too many requests. Please wait a moment.";
+      } else {
+        message = error.message;
+      }
+    }
+
     return NextResponse.json(
       { error: message },
       { status: 500 }
