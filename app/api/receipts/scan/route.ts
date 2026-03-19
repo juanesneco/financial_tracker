@@ -145,8 +145,9 @@ ${JSON.stringify(subcategoryList, null, 2)}
     return NextResponse.json(extracted);
   } catch (error) {
     console.error("Receipt scan error:", error);
+    const message = error instanceof Error ? error.message : "Failed to analyze receipt";
     return NextResponse.json(
-      { error: "Failed to analyze receipt" },
+      { error: message },
       { status: 500 }
     );
   }
