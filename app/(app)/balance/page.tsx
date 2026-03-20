@@ -416,19 +416,25 @@ export default function BalancePage() {
                   <div className="flex items-center gap-1.5 flex-1 sm:flex-none">
                     <span className="text-sm text-muted-foreground shrink-0">From</span>
                     <Input
-                      type="date"
+                      type={startDate ? "date" : "text"}
+                      placeholder="YYYY-MM-DD"
                       value={startDate}
+                      onFocus={(e) => { e.target.type = "date"; }}
+                      onBlur={(e) => { if (!e.target.value) e.target.type = "text"; }}
                       onChange={(e) => setStartDate(e.target.value)}
-                      className="w-full sm:w-[140px] text-sm"
+                      className="w-full sm:w-[140px] text-sm h-8"
                     />
                   </div>
                   <div className="flex items-center gap-1.5 flex-1 sm:flex-none">
                     <span className="text-sm text-muted-foreground shrink-0">To</span>
                     <Input
-                      type="date"
+                      type={endDate ? "date" : "text"}
+                      placeholder="YYYY-MM-DD"
                       value={endDate}
+                      onFocus={(e) => { e.target.type = "date"; }}
+                      onBlur={(e) => { if (!e.target.value) e.target.type = "text"; }}
                       onChange={(e) => setEndDate(e.target.value)}
-                      className="w-full sm:w-[140px] text-sm"
+                      className="w-full sm:w-[140px] text-sm h-8"
                     />
                   </div>
                 </div>
