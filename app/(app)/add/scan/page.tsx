@@ -21,8 +21,8 @@ export default function ScanReceiptPage() {
   const galleryInputRef = useRef<HTMLInputElement>(null);
   const [isExtracting, setIsExtracting] = useState(false);
 
-  // Resize image to fit sessionStorage (~5MB limit) and reduce API payload
-  const resizeImage = (file: File, maxWidth = 1200): Promise<string> => {
+  // Resize image to stay under Anthropic's 5MB limit and fit sessionStorage
+  const resizeImage = (file: File, maxWidth = 1200): Promise<{ dataUrl: string; blob: Blob }> => {
     return new Promise((resolve) => {
       const img = document.createElement("img");
       img.onload = () => {
@@ -36,7 +36,12 @@ export default function ScanReceiptPage() {
         canvas.height = height;
         const ctx = canvas.getContext("2d")!;
         ctx.drawImage(img, 0, 0, width, height);
-        resolve(canvas.toDataURL("image/jpeg", 0.85));
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+        canvas.toBlob(
+          (blob) => resolve({ dataUrl, blob: blob! }),
+          "image/jpeg",
+          0.85
+        );
       };
       img.src = URL.createObjectURL(file);
     });
@@ -46,8 +51,11 @@ export default function ScanReceiptPage() {
     setIsExtracting(true);
 
     try {
+      // Resize before sending to API (Anthropic has a 5MB image limit)
+      const { dataUrl, blob } = await resizeImage(file);
+
       const formData = new FormData();
-      formData.append("image", file);
+      formData.append("image", new File([blob], "receipt.jpg", { type: "image/jpeg" }));
 
       const res = await fetch("/api/receipts/scan", {
         method: "POST",
@@ -63,11 +71,9 @@ export default function ScanReceiptPage() {
 
       const result: ScanResult = await res.json();
 
-      // Resize for sessionStorage (base64 of full-res photo can exceed 5MB limit)
-      const preview = await resizeImage(file);
       const scanData = {
         ...result,
-        receiptPreview: preview,
+        receiptPreview: dataUrl,
       };
       sessionStorage.setItem("scanResult", JSON.stringify(scanData));
       router.push("/add?from=scan");
