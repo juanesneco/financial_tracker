@@ -18,12 +18,22 @@ export interface SubcategoryInfo {
   name: string;
 }
 
+export interface FlatSubcategory {
+  id: string;
+  name: string;
+  emoji: string | null;
+  categoryId: string;
+  categoryName: string;
+  categoryEmoji: string;
+}
+
 interface UseCategoriesReturn {
   categories: Category[];
   visibleCategories: Category[];
   hiddenCategoryIds: Set<string>;
   subcategories: Subcategory[];
   groupedSubcategories: CategoryGroup[];
+  flatSortedSubcategories: FlatSubcategory[];
   subcategoryMap: Map<string, SubcategoryInfo>;
   isLoading: boolean;
   refetch: () => Promise<void>;
@@ -81,6 +91,24 @@ export function useCategories(): UseCategoriesReturn {
       .filter((g) => g.subcategories.length > 0);
   }, [visibleCategories, subcategories]);
 
+  const flatSortedSubcategories = useMemo(() => {
+    return groupedSubcategories
+      .flatMap((group) =>
+        group.subcategories.map((sub) => ({
+          id: sub.id,
+          name: sub.name,
+          emoji: sub.emoji,
+          categoryId: group.categoryId,
+          categoryName: group.categoryName,
+          categoryEmoji: group.categoryEmoji,
+        }))
+      )
+      .sort((a, b) =>
+        a.categoryName.localeCompare(b.categoryName) ||
+        a.name.localeCompare(b.name)
+      );
+  }, [groupedSubcategories]);
+
   const subcategoryMap = useMemo(() => {
     const map = new Map<string, SubcategoryInfo>();
     for (const group of groupedSubcategories) {
@@ -120,6 +148,7 @@ export function useCategories(): UseCategoriesReturn {
     hiddenCategoryIds,
     subcategories,
     groupedSubcategories,
+    flatSortedSubcategories,
     subcategoryMap,
     isLoading,
     refetch: fetchAll,

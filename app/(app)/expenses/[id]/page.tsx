@@ -15,9 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -49,7 +47,7 @@ export default function ExpenseDetailPage() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const { categories, subcategories, groupedSubcategories, subcategoryMap } = useCategories();
+  const { categories, subcategories, flatSortedSubcategories, subcategoryMap } = useCategories();
 
   const [expense, setExpense] = useState<Expense | null>(null);
   const [cards, setCards] = useState<CardType[]>([]);
@@ -199,15 +197,10 @@ export default function ExpenseDetailPage() {
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent position="popper" className="max-h-[240px]">
-                  {groupedSubcategories.map((group) => (
-                    <SelectGroup key={group.categoryId}>
-                      <SelectLabel>{group.categoryEmoji} {group.categoryName}</SelectLabel>
-                      {group.subcategories.map((sub) => (
-                        <SelectItem key={sub.id} value={sub.id}>
-                          {group.categoryEmoji} {group.categoryName} - {sub.emoji ? `${sub.emoji} ` : ""}{sub.name}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
+                  {flatSortedSubcategories.map((sub) => (
+                    <SelectItem key={sub.id} value={sub.id}>
+                      {sub.categoryEmoji} {sub.categoryName} - {sub.emoji ? `${sub.emoji} ` : ""}{sub.name}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>

@@ -12,9 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -43,7 +41,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues }: Exp
   const router = useRouter();
   const supabase = createClient();
 
-  const { groupedSubcategories, subcategoryMap, isLoading: categoriesLoading } = useCategories();
+  const { flatSortedSubcategories, subcategoryMap, isLoading: categoriesLoading } = useCategories();
   const [cards, setCards] = useState<CardType[]>([]);
   const [cardsLoading, setCardsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -211,15 +209,10 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues }: Exp
             <SelectValue placeholder="Select a category" />
           </SelectTrigger>
           <SelectContent position="popper" className="max-h-[240px]">
-            {groupedSubcategories.map((group) => (
-              <SelectGroup key={group.categoryId}>
-                <SelectLabel>{group.categoryEmoji} {group.categoryName}</SelectLabel>
-                {group.subcategories.map((sub) => (
-                  <SelectItem key={sub.id} value={sub.id}>
-                    {group.categoryEmoji} {group.categoryName} - {sub.emoji ? `${sub.emoji} ` : ""}{sub.name}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
+            {flatSortedSubcategories.map((sub) => (
+              <SelectItem key={sub.id} value={sub.id}>
+                {sub.categoryEmoji} {sub.categoryName} - {sub.emoji ? `${sub.emoji} ` : ""}{sub.name}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>
