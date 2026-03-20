@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
-import { Loader2, TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight, Search, Receipt, DollarSign } from "lucide-react";
+import { Loader2, TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight, Search, Receipt, DollarSign, Filter, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -58,12 +58,13 @@ export default function BalancePage() {
   const [slideOverOpen, setSlideOverOpen] = useState(false);
   const [slideOverTab, setSlideOverTab] = useState<"expense" | "income">("expense");
 
-  // Month selector (null = all time)
+  // Month selector (defaults to current month)
   const [now] = useState(() => new Date());
-  const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
+  const [selectedMonth, setSelectedMonth] = useState<number | null>(now.getMonth());
   const [selectedYear, setSelectedYear] = useState(now.getFullYear());
 
   // Filters
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
@@ -71,6 +72,10 @@ export default function BalancePage() {
   const [typeFilter, setTypeFilter] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+
+  const filtersActive = filtersOpen && (
+    debouncedSearch !== "" || categoryFilter !== "" || paymentFilter !== "" || typeFilter !== "" || startDate !== "" || endDate !== ""
+  );
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleSearchChange = (value: string) => {
@@ -87,10 +92,11 @@ export default function BalancePage() {
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
-      // Build date range: use custom dates if set, else month if selected, else all time
+      // When filters are active, fetch all-time (with optional date range from filter)
+      // Otherwise, use month selection
       let dateStart: string | null = null;
       let dateEnd: string | null = null;
-      if (startDate || endDate) {
+      if (filtersActive) {
         dateStart = startDate || null;
         dateEnd = endDate || null;
       } else if (selectedMonth !== null) {
@@ -179,7 +185,7 @@ export default function BalancePage() {
     } finally {
       setIsLoading(false);
     }
-  }, [supabase, selectedMonth, selectedYear, debouncedSearch, categoryFilter, paymentFilter, typeFilter, startDate, endDate]);
+  }, [supabase, selectedMonth, selectedYear, debouncedSearch, categoryFilter, paymentFilter, typeFilter, startDate, endDate, filtersActive]);
 
   useEffect(() => {
     fetchData();
@@ -255,14 +261,20 @@ export default function BalancePage() {
       <Header title="Balance Sheet" />
       <main className="flex-1 overflow-y-auto">
         <div className="max-w-2xl lg:max-w-full mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
-          {/* Month Selector */}
-          <div className="flex items-center justify-between">
-            <Button variant="ghost" size="sm" onClick={goToPreviousMonth}>&larr;</Button>
-            <button onClick={() => setSelectedMonth(null)} className="text-sm font-medium hover:text-primary transition-colors">
-              {selectedMonth !== null ? formatMonthYear(selectedMonth, selectedYear) : "All Time"}
-            </button>
-            <Button variant="ghost" size="sm" onClick={goToNextMonth}>&rarr;</Button>
-          </div>
+          {/* Month Selector / Filtered Results Header */}
+          {!filtersActive ? (
+            <div className="flex items-center justify-between">
+              <Button variant="ghost" size="sm" onClick={goToPreviousMonth}>&larr;</Button>
+              <span className="text-sm font-medium">
+                {selectedMonth !== null ? formatMonthYear(selectedMonth, selectedYear) : "All Time"}
+              </span>
+              <Button variant="ghost" size="sm" onClick={goToNextMonth}>&rarr;</Button>
+            </div>
+          ) : (
+            <div className="text-center">
+              <span className="text-sm font-medium text-muted-foreground">Filtered Results</span>
+            </div>
+          )}
 
           {/* Summary Cards */}
           <div className="grid grid-cols-3 gap-3 min-w-0 fade-in">
@@ -304,93 +316,129 @@ export default function BalancePage() {
             </Card>
           </div>
 
-          {/* Filter Toolbar */}
-          <div className="space-y-3">
-            <div className="relative">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                placeholder="Search transactions..."
-                value={search}
-                onChange={(e) => handleSearchChange(e.target.value)}
-                className="pl-9"
-              />
+          {/* Filter Toggle + Add Buttons */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant={filtersOpen ? "secondary" : "outline"}
+              size="sm"
+              onClick={() => {
+                const next = !filtersOpen;
+                setFiltersOpen(next);
+                if (!next) {
+                  setSearch(""); setDebouncedSearch("");
+                  setCategoryFilter(""); setPaymentFilter("");
+                  setTypeFilter(""); setStartDate(""); setEndDate("");
+                }
+              }}
+              className="gap-2"
+            >
+              <Filter size={14} />
+              Filters
+            </Button>
+
+            {filtersActive && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setSearch(""); setDebouncedSearch("");
+                  setCategoryFilter(""); setPaymentFilter("");
+                  setTypeFilter(""); setStartDate(""); setEndDate("");
+                }}
+                className="gap-1 text-muted-foreground"
+              >
+                <X size={14} />
+                Clear Filters
+              </Button>
+            )}
+
+            {/* Add buttons — desktop only */}
+            <div className="hidden lg:flex items-center gap-2 ml-auto">
+              <Button onClick={() => handleAddClick("expense")} variant="outline" size="sm" className="gap-2">
+                <Receipt size={16} /> Add Expense
+              </Button>
+              <Button onClick={() => handleAddClick("income")} variant="outline" size="sm" className="gap-2">
+                <DollarSign size={16} /> Add Income
+              </Button>
             </div>
-            <div className="flex gap-2 flex-wrap">
-              <Select value={typeFilter} onValueChange={(v) => setTypeFilter(v === "all" ? "" : v)}>
-                <SelectTrigger className="w-[130px]">
-                  <SelectValue placeholder="Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Types</SelectItem>
-                  <SelectItem value="expense">Expenses</SelectItem>
-                  <SelectItem value="income">Income</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select value={categoryFilter} onValueChange={(v) => setCategoryFilter(v === "all" ? "" : v)}>
-                <SelectTrigger className="w-[160px]">
-                  <SelectValue placeholder="Category" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Categories</SelectItem>
-                  {visibleCategories.map((cat) => (
-                    <SelectItem key={cat.id} value={cat.id}>
-                      {cat.emoji || cat.icon} {cat.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <Select value={paymentFilter} onValueChange={(v) => setPaymentFilter(v === "all" ? "" : v)}>
-                <SelectTrigger className="w-[140px]">
-                  <SelectValue placeholder="Payment" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Methods</SelectItem>
-                  <SelectItem value="card">Card</SelectItem>
-                  <SelectItem value="cash">Cash</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <div className="flex items-center gap-2 w-full sm:w-auto">
-                <div className="flex items-center gap-1.5 flex-1 sm:flex-none">
-                  <span className="text-xs text-muted-foreground shrink-0">From</span>
-                  <Input
-                    type="date"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                    className="w-full sm:w-[140px]"
-                  />
-                </div>
-                <div className="flex items-center gap-1.5 flex-1 sm:flex-none">
-                  <span className="text-xs text-muted-foreground shrink-0">To</span>
-                  <Input
-                    type="date"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    className="w-full sm:w-[140px]"
-                  />
-                </div>
-              </div>
-
-              {/* Vertical divider — desktop only */}
-              <div className="hidden lg:block w-px h-6 bg-border self-center" />
-
-              {/* Add buttons — desktop only */}
-              <div className="hidden lg:flex items-center gap-2 ml-auto">
-                <Button onClick={() => handleAddClick("expense")} variant="outline" size="sm" className="gap-2">
-                  <Receipt size={16} /> Add Expense
-                </Button>
-                <Button onClick={() => handleAddClick("income")} variant="outline" size="sm" className="gap-2">
-                  <DollarSign size={16} /> Add Income
-                </Button>
-              </div>
-            </div>
-
-            <p className="text-xs text-muted-foreground">
-              {entries.length} transaction{entries.length !== 1 ? "s" : ""}
-            </p>
           </div>
+
+          {/* Collapsible Filter Toolbar */}
+          {filtersOpen && (
+            <div className="space-y-3">
+              <div className="relative">
+                <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  placeholder="Search transactions..."
+                  value={search}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                  className="pl-9 text-sm"
+                />
+              </div>
+              <div className="flex gap-2 flex-wrap">
+                <Select value={typeFilter} onValueChange={(v) => setTypeFilter(v === "all" ? "" : v)}>
+                  <SelectTrigger className="w-[130px]">
+                    <SelectValue placeholder="Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Types</SelectItem>
+                    <SelectItem value="expense">Expenses</SelectItem>
+                    <SelectItem value="income">Income</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Select value={categoryFilter} onValueChange={(v) => setCategoryFilter(v === "all" ? "" : v)}>
+                  <SelectTrigger className="w-[160px]">
+                    <SelectValue placeholder="Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Categories</SelectItem>
+                    {visibleCategories.map((cat) => (
+                      <SelectItem key={cat.id} value={cat.id}>
+                        {cat.emoji || cat.icon} {cat.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <Select value={paymentFilter} onValueChange={(v) => setPaymentFilter(v === "all" ? "" : v)}>
+                  <SelectTrigger className="w-[140px]">
+                    <SelectValue placeholder="Payment" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Methods</SelectItem>
+                    <SelectItem value="card">Card</SelectItem>
+                    <SelectItem value="cash">Cash</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <div className="flex items-center gap-1.5 flex-1 sm:flex-none">
+                    <span className="text-sm text-muted-foreground shrink-0">From</span>
+                    <Input
+                      type="date"
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                      className="w-full sm:w-[140px] text-sm"
+                    />
+                  </div>
+                  <div className="flex items-center gap-1.5 flex-1 sm:flex-none">
+                    <span className="text-sm text-muted-foreground shrink-0">To</span>
+                    <Input
+                      type="date"
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      className="w-full sm:w-[140px] text-sm"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <p className="text-xs text-muted-foreground">
+            {entries.length} transaction{entries.length !== 1 ? "s" : ""}
+          </p>
 
           {/* Desktop Table View */}
           <div className="hidden lg:block">
