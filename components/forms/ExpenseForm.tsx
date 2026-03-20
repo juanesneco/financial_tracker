@@ -197,7 +197,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues }: Exp
           onChange={(e) => setDate(e.target.value)}
           required
           disabled={isSubmitting}
-          className="h-11 py-2.5 md:h-9 md:py-1"
+          className="h-11 py-2.5 md:h-9 md:py-1 w-full max-w-full"
         />
       </div>
 

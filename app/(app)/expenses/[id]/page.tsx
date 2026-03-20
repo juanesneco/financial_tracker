@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams, useSearchParams } from "next/navigation";
-import { Loader2, Trash2, CreditCard, Banknote, Pencil, ChevronRight, ImageIcon, ImageOff } from "lucide-react";
+import { Loader2, Trash2, CreditCard, Banknote, Pencil, ChevronRight, ImageIcon, ImageOff, Upload, X } from "lucide-react";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import { formatCurrency, formatDate } from "@/lib/format-utils";
 import Link from "next/link";
@@ -60,6 +61,8 @@ export default function ExpenseDetailPage() {
   const [note, setNote] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
   const [cardId, setCardId] = useState("");
+  const [receiptFile, setReceiptFile] = useState<File | null>(null);
+  const [receiptPreview, setReceiptPreview] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -90,6 +93,10 @@ export default function ExpenseDetailPage() {
         setNote(e.note || "");
         setPaymentMethod(e.payment_method || "");
         setCardId(e.card_id || "");
+        if (e.receipt_url) {
+          const { data: urlData } = supabase.storage.from("receipts").getPublicUrl(e.receipt_url);
+          setReceiptPreview(urlData.publicUrl);
+        }
       } finally {
         setIsLoading(false);
       }
@@ -104,6 +111,21 @@ export default function ExpenseDetailPage() {
 
   const categoryId = subcategoryMap.get(subcategoryId)?.categoryId || "";
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setReceiptFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => setReceiptPreview(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeReceipt = () => {
+    setReceiptFile(null);
+    setReceiptPreview(null);
+  };
+
   const handleSave = async () => {
     if (!title.trim() || !amount || !subcategoryId || !categoryId || !date) {
       toast.error("Please fill required fields");
@@ -112,9 +134,27 @@ export default function ExpenseDetailPage() {
 
     setIsSaving(true);
     try {
-      const { error } = await supabase
-        .from("ft_expenses")
-        .update({
+      // Handle receipt upload
+      let receiptUrl: string | null | undefined = undefined;
+      if (receiptFile) {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) { toast.error("Not authenticated"); return; }
+        const fileExt = receiptFile.name.split(".").pop();
+        const fileName = `${user.id}/${Date.now()}.${fileExt}`;
+        const { error: uploadError } = await supabase.storage
+          .from("receipts")
+          .upload(fileName, receiptFile);
+        if (uploadError) {
+          toast.error("Failed to upload receipt");
+        } else {
+          receiptUrl = fileName;
+        }
+      } else if (!receiptPreview && expense?.receipt_url) {
+        // Receipt was removed
+        receiptUrl = null;
+      }
+
+      const updatePayload: Record<string, unknown> = {
           amount: parseFloat(amount),
           title: title || null,
           category_id: categoryId,
@@ -123,7 +163,14 @@ export default function ExpenseDetailPage() {
           note: note.trim() || null,
           payment_method: paymentMethod || null,
           card_id: cardId || null,
-        })
+      };
+      if (receiptUrl !== undefined) {
+        updatePayload.receipt_url = receiptUrl;
+      }
+
+      const { error } = await supabase
+        .from("ft_expenses")
+        .update(updatePayload)
         .eq("id", expenseId);
 
       if (error) {
@@ -134,9 +181,19 @@ export default function ExpenseDetailPage() {
       toast.success("Expense updated");
       setIsEditing(false);
 
-      // Refresh data
+      // Refresh data and reset receipt state
+      setReceiptFile(null);
       const { data: updated } = await supabase.from("ft_expenses").select("*").eq("id", expenseId).single();
-      if (updated) setExpense(updated as Expense);
+      if (updated) {
+        const u = updated as Expense;
+        setExpense(u);
+        if (u.receipt_url) {
+          const { data: urlData } = supabase.storage.from("receipts").getPublicUrl(u.receipt_url);
+          setReceiptPreview(urlData.publicUrl);
+        } else {
+          setReceiptPreview(null);
+        }
+      }
     } finally {
       setIsSaving(false);
     }
@@ -186,7 +243,7 @@ export default function ExpenseDetailPage() {
             {/* 1. Date */}
             <div className="space-y-2">
               <Label>Date *</Label>
-              <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="h-11 py-2.5 md:h-9 md:py-1" />
+              <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="h-11 py-2.5 md:h-9 md:py-1 w-full max-w-full" />
             </div>
 
             {/* 2. Category */}
@@ -266,6 +323,42 @@ export default function ExpenseDetailPage() {
               <Textarea value={note} onChange={(e) => setNote(e.target.value)} rows={2} placeholder="Additional details (optional)" className="py-3 min-h-[72px] md:min-h-[64px]" />
             </div>
 
+            {/* Receipt */}
+            <div className="space-y-2">
+              <Label>Receipt</Label>
+              {receiptPreview ? (
+                <div className="relative rounded-lg overflow-hidden border">
+                  <Image
+                    src={receiptPreview}
+                    alt="Receipt preview"
+                    width={400}
+                    height={300}
+                    className="w-full h-48 object-cover"
+                  />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
+                    className="absolute top-2 right-2 h-8 w-8"
+                    onClick={removeReceipt}
+                  >
+                    <X size={16} />
+                  </Button>
+                </div>
+              ) : (
+                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer hover:bg-muted/50 transition-colors">
+                  <Upload size={24} className="text-muted-foreground mb-2" />
+                  <span className="text-sm text-muted-foreground">Tap to upload receipt</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                </label>
+              )}
+            </div>
+
             <div className="flex gap-3">
               <Button variant="outline" className="flex-1" onClick={() => setIsEditing(false)}>
                 Cancel
@@ -308,7 +401,16 @@ export default function ExpenseDetailPage() {
 
               {/* Actions */}
               <div className="flex gap-3 mt-5">
-                <Button variant="outline" className="flex-1" onClick={() => setIsEditing(true)}>
+                <Button variant="outline" className="flex-1" onClick={() => {
+                  setReceiptFile(null);
+                  if (expense.receipt_url) {
+                    const { data: urlData } = supabase.storage.from("receipts").getPublicUrl(expense.receipt_url);
+                    setReceiptPreview(urlData.publicUrl);
+                  } else {
+                    setReceiptPreview(null);
+                  }
+                  setIsEditing(true);
+                }}>
                   <Pencil size={14} className="mr-2" />
                   Edit
                 </Button>

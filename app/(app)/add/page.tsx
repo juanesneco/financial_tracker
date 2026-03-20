@@ -58,7 +58,7 @@ export default function AddExpensePage() {
   return (
     <>
       <Header title={fromScan ? "Review Expense" : "Add Expense"} showBackButton />
-      <main className="flex-1 overflow-y-auto overflow-x-hidden">
+      <main className="flex-1 overflow-y-auto">
         <div className="max-w-lg mx-auto p-4 md:p-6">
           <ExpenseForm key={fromScan ? "scan" : "manual"} defaultValues={defaults} />
         </div>
