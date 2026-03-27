@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { Loader2, Plus, CreditCard, Banknote, Receipt, DollarSign } from "lucide-react";
+import { Loader2, Plus, CreditCard, Banknote, Receipt, DollarSign, Mic, Camera } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -211,7 +211,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Quick Actions — desktop only (mobile uses bottom nav + button) */}
-          <div className="fade-in hidden lg:grid grid-cols-2 gap-3">
+          <div className="fade-in hidden lg:grid grid-cols-4 gap-3">
             <button onClick={() => handleAddClick("expense")} className="block text-left">
               <Card className="hover:bg-muted/50 transition-colors transition-transform duration-200 hover:-translate-y-0.5 cursor-pointer">
                 <CardContent className="pt-5 pb-4 flex flex-col items-center gap-2">
@@ -232,6 +232,26 @@ export default function DashboardPage() {
                 </CardContent>
               </Card>
             </button>
+            <Link href="/add/voice" className="block text-left">
+              <Card className="hover:bg-muted/50 transition-colors transition-transform duration-200 hover:-translate-y-0.5 cursor-pointer">
+                <CardContent className="pt-5 pb-4 flex flex-col items-center gap-2">
+                  <div className="h-11 w-11 rounded-full bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center">
+                    <Mic size={20} className="text-violet-500" />
+                  </div>
+                  <p className="text-xs font-medium text-center">Voice Entry</p>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link href="/add/scan" className="block text-left">
+              <Card className="hover:bg-muted/50 transition-colors transition-transform duration-200 hover:-translate-y-0.5 cursor-pointer">
+                <CardContent className="pt-5 pb-4 flex flex-col items-center gap-2">
+                  <div className="h-11 w-11 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                    <Camera size={20} className="text-blue-500" />
+                  </div>
+                  <p className="text-xs font-medium text-center">Scan Receipt</p>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
 
           {/* Month Selector */}

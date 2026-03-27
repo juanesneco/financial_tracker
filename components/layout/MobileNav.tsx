@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   Home, ArrowRightLeft, Plus, BarChart3, MoreHorizontal,
   RefreshCw, DollarSign, CreditCard, Settings, ArrowDownCircle,
-  Receipt, Camera,
+  Receipt, Camera, Mic,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
@@ -81,6 +81,17 @@ export function MobileNav() {
                   {/* Add popup menu */}
                   {addMenuOpen && (
                     <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 bg-background border border-border rounded-xl shadow-xl overflow-hidden min-w-[180px]">
+                      <button
+                        onClick={() => {
+                          setAddMenuOpen(false);
+                          router.push("/add/voice");
+                        }}
+                        className="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium hover:bg-muted transition-colors"
+                      >
+                        <Mic size={18} className="text-violet-500" />
+                        Voice Entry
+                      </button>
+                      <div className="border-t border-border" />
                       <button
                         onClick={() => {
                           setAddMenuOpen(false);
