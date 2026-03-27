@@ -165,7 +165,7 @@ export default function IncomeDetailPage() {
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="h-11 py-2.5 md:h-9 md:py-1"
+                className="h-11 py-2.5 md:h-9 md:py-1 w-full max-w-full min-w-0 overflow-hidden"
               />
             </div>
 

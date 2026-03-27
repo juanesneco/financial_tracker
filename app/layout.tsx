@@ -52,7 +52,7 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
       <body
-        className={`${inter.variable} ${dmSerif.variable} antialiased`}
+        className={`${inter.variable} ${dmSerif.variable} antialiased overflow-x-hidden`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}

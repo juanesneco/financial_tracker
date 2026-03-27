@@ -33,7 +33,7 @@ export function AddSlideOver({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
+      <SheetContent className="w-full sm:max-w-lg overflow-y-auto overflow-x-hidden">
         <SheetHeader>
           <SheetTitle>
             {defaultTab === "expense" ? "Add Expense" : "Add Income"}
