@@ -2,27 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams, useSearchParams } from "next/navigation";
-import { Loader2, Trash2, CreditCard, Banknote, Pencil, ChevronRight, ImageIcon, ImageOff, Upload, X } from "lucide-react";
-import Image from "next/image";
+import { Loader2, Trash2, CreditCard, Banknote, Pencil, ChevronRight, ImageIcon, ImageOff } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { formatCurrency, formatDate } from "@/lib/format-utils";
 import Link from "next/link";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { toast } from "sonner";
-import type { Expense, Category, Subcategory, Card as CardType } from "@/lib/types";
+import type { Expense, Card as CardType } from "@/lib/types";
 import { useCategories } from "@/hooks/useCategories";
+import { ExpenseForm } from "@/components/forms/ExpenseForm";
 
 export default function ExpenseDetailPage() {
   const router = useRouter();
@@ -44,25 +34,14 @@ export default function ExpenseDetailPage() {
   const origin = originMap[fromParam || ""] || originMap.expenses;
 
   const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const { categories, subcategories, flatSortedSubcategories, subcategoryMap } = useCategories();
+  const { categories, subcategories } = useCategories();
 
   const [expense, setExpense] = useState<Expense | null>(null);
   const [cards, setCards] = useState<CardType[]>([]);
-
-  // Edit form state
-  const [amount, setAmount] = useState("");
-  const [title, setTitle] = useState("");
-  const [subcategoryId, setSubcategoryId] = useState("");
-  const [date, setDate] = useState("");
-  const [note, setNote] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("");
-  const [cardId, setCardId] = useState("");
-  const [receiptFile, setReceiptFile] = useState<File | null>(null);
-  const [receiptPreview, setReceiptPreview] = useState<string | null>(null);
+  const [receiptPreviewUrl, setReceiptPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -85,17 +64,9 @@ export default function ExpenseDetailPage() {
         setExpense(e);
         setCards((userCards || []) as CardType[]);
 
-        // Initialize form
-        setAmount(String(e.amount));
-        setTitle(e.title || "");
-        setSubcategoryId(e.subcategory_id || "");
-        setDate(e.date);
-        setNote(e.note || "");
-        setPaymentMethod(e.payment_method || "");
-        setCardId(e.card_id || "");
         if (e.receipt_url) {
           const { data: urlData } = supabase.storage.from("receipts").getPublicUrl(e.receipt_url);
-          setReceiptPreview(urlData.publicUrl);
+          setReceiptPreviewUrl(urlData.publicUrl);
         }
       } finally {
         setIsLoading(false);
@@ -108,96 +79,6 @@ export default function ExpenseDetailPage() {
   const getCategoryById = (id: string) => categories.find(c => c.id === id);
   const getSubcategoryById = (id: string) => subcategories.find(s => s.id === id);
   const getCardById = (id: string) => cards.find(c => c.id === id);
-
-  const categoryId = subcategoryMap.get(subcategoryId)?.categoryId || "";
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setReceiptFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => setReceiptPreview(reader.result as string);
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const removeReceipt = () => {
-    setReceiptFile(null);
-    setReceiptPreview(null);
-  };
-
-  const handleSave = async () => {
-    if (!title.trim() || !amount || !subcategoryId || !categoryId || !date) {
-      toast.error("Please fill required fields");
-      return;
-    }
-
-    setIsSaving(true);
-    try {
-      // Handle receipt upload
-      let receiptUrl: string | null | undefined = undefined;
-      if (receiptFile) {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) { toast.error("Not authenticated"); return; }
-        const fileExt = receiptFile.name.split(".").pop();
-        const fileName = `${user.id}/${Date.now()}.${fileExt}`;
-        const { error: uploadError } = await supabase.storage
-          .from("receipts")
-          .upload(fileName, receiptFile);
-        if (uploadError) {
-          toast.error("Failed to upload receipt");
-        } else {
-          receiptUrl = fileName;
-        }
-      } else if (!receiptPreview && expense?.receipt_url) {
-        // Receipt was removed
-        receiptUrl = null;
-      }
-
-      const updatePayload: Record<string, unknown> = {
-          amount: parseFloat(amount),
-          title: title || null,
-          category_id: categoryId,
-          subcategory_id: subcategoryId,
-          date,
-          note: note.trim() || null,
-          payment_method: paymentMethod || null,
-          card_id: cardId || null,
-      };
-      if (receiptUrl !== undefined) {
-        updatePayload.receipt_url = receiptUrl;
-      }
-
-      const { error } = await supabase
-        .from("ft_expenses")
-        .update(updatePayload)
-        .eq("id", expenseId);
-
-      if (error) {
-        toast.error("Failed to update expense");
-        return;
-      }
-
-      toast.success("Expense updated");
-      setIsEditing(false);
-
-      // Refresh data and reset receipt state
-      setReceiptFile(null);
-      const { data: updated } = await supabase.from("ft_expenses").select("*").eq("id", expenseId).single();
-      if (updated) {
-        const u = updated as Expense;
-        setExpense(u);
-        if (u.receipt_url) {
-          const { data: urlData } = supabase.storage.from("receipts").getPublicUrl(u.receipt_url);
-          setReceiptPreview(urlData.publicUrl);
-        } else {
-          setReceiptPreview(null);
-        }
-      }
-    } finally {
-      setIsSaving(false);
-    }
-  };
 
   const handleDelete = async () => {
     if (!confirm("Are you sure you want to delete this expense?")) return;
@@ -239,134 +120,38 @@ export default function ExpenseDetailPage() {
       <>
         <Header title="Edit Expense" showBackButton />
         <main className="flex-1 overflow-y-auto">
-          <div className="max-w-lg lg:max-w-full mx-auto p-4 md:p-6 space-y-6">
-            {/* 1. Date */}
-            <div className="space-y-2">
-              <Label>Date *</Label>
-              <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="h-11 py-2.5 md:h-9 md:py-1 w-full max-w-full" />
-            </div>
-
-            {/* 2. Category */}
-            <div className="space-y-2">
-              <Label>Category *</Label>
-              <Select value={subcategoryId} onValueChange={setSubcategoryId}>
-                <SelectTrigger className="w-full h-11 md:h-9">
-                  <SelectValue placeholder="Select a category" />
-                </SelectTrigger>
-                <SelectContent position="popper" className="max-h-[240px]">
-                  {flatSortedSubcategories.map((sub) => (
-                    <SelectItem key={sub.id} value={sub.id}>
-                      {sub.categoryEmoji} {sub.categoryName} - {sub.emoji ? `${sub.emoji} ` : ""}{sub.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* 4. Title */}
-            <div className="space-y-2">
-              <Label>Title *</Label>
-              <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="What was this for?" required className="h-11 py-2.5 md:h-9 md:py-1" />
-            </div>
-
-            {/* 5. Amount */}
-            <div className="space-y-2">
-              <Label>Amount *</Label>
-              <Input
-                type="number"
-                step="0.01"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                className="text-2xl h-14 font-semibold px-4 py-3"
-              />
-            </div>
-
-            {/* 6. Payment Method */}
-            <div className="space-y-2">
-              <Label>Payment Method</Label>
-              <Select value={paymentMethod} onValueChange={(v) => { setPaymentMethod(v); if (v !== "card") setCardId(""); }}>
-                <SelectTrigger className="w-full h-11 md:h-9"><SelectValue placeholder="Optional" /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="card">Card</SelectItem>
-                  <SelectItem value="cash">Cash</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Card Selector */}
-            {paymentMethod === "card" && cards.length > 0 && (() => {
-              const availableCards = cards.filter(c =>
-                !c.deactivated_at ||
-                c.id === cardId ||
-                (c.deactivated_at && date && c.deactivated_at >= date)
-              );
-              return availableCards.length > 0 ? (
-                <div className="space-y-2">
-                  <Label>Card</Label>
-                  <Select value={cardId} onValueChange={setCardId}>
-                    <SelectTrigger className="w-full h-11 md:h-9"><SelectValue placeholder="Select card" /></SelectTrigger>
-                    <SelectContent>
-                      {availableCards.map((c) => (
-                        <SelectItem key={c.id} value={c.id}>
-                          {c.label || c.bank}{c.deactivated_at ? " (inactive)" : ""}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              ) : null;
-            })()}
-
-            {/* Notes */}
-            <div className="space-y-2">
-              <Label>Notes</Label>
-              <Textarea value={note} onChange={(e) => setNote(e.target.value)} rows={2} placeholder="Additional details (optional)" className="py-3 min-h-[72px] md:min-h-[64px]" />
-            </div>
-
-            {/* Receipt */}
-            <div className="space-y-2">
-              <Label>Receipt</Label>
-              {receiptPreview ? (
-                <div className="relative rounded-lg overflow-hidden border">
-                  <Image
-                    src={receiptPreview}
-                    alt="Receipt preview"
-                    width={400}
-                    height={300}
-                    className="w-full h-48 object-cover"
-                  />
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    size="icon"
-                    className="absolute top-2 right-2 h-8 w-8"
-                    onClick={removeReceipt}
-                  >
-                    <X size={16} />
-                  </Button>
-                </div>
-              ) : (
-                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer hover:bg-muted/50 transition-colors">
-                  <Upload size={24} className="text-muted-foreground mb-2" />
-                  <span className="text-sm text-muted-foreground">Tap to upload receipt</span>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleFileChange}
-                  />
-                </label>
-              )}
-            </div>
-
-            <div className="flex gap-3">
-              <Button variant="outline" className="flex-1" onClick={() => setIsEditing(false)}>
-                Cancel
-              </Button>
-              <Button className="flex-1" onClick={handleSave} disabled={isSaving}>
-                {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : "Save"}
-              </Button>
-            </div>
+          <div className="max-w-lg lg:max-w-full mx-auto p-4 md:p-6">
+            <ExpenseForm
+              mode="edit"
+              expenseId={expenseId}
+              cards={cards}
+              existingReceiptUrl={expense.receipt_url}
+              defaultValues={{
+                date: expense.date,
+                subcategoryId: expense.subcategory_id || "",
+                title: expense.title || "",
+                amount: String(expense.amount),
+                paymentMethod: expense.payment_method || "",
+                cardId: expense.card_id || "",
+                note: expense.note || "",
+                receiptPreview: receiptPreviewUrl || undefined,
+              }}
+              onCancel={() => setIsEditing(false)}
+              onSuccess={async () => {
+                setIsEditing(false);
+                const { data: updated } = await supabase.from("ft_expenses").select("*").eq("id", expenseId).single();
+                if (updated) {
+                  const u = updated as Expense;
+                  setExpense(u);
+                  if (u.receipt_url) {
+                    const { data: urlData } = supabase.storage.from("receipts").getPublicUrl(u.receipt_url);
+                    setReceiptPreviewUrl(urlData.publicUrl);
+                  } else {
+                    setReceiptPreviewUrl(null);
+                  }
+                }
+              }}
+            />
           </div>
         </main>
       </>
@@ -401,16 +186,7 @@ export default function ExpenseDetailPage() {
 
               {/* Actions */}
               <div className="flex gap-3 mt-5">
-                <Button variant="outline" className="flex-1" onClick={() => {
-                  setReceiptFile(null);
-                  if (expense.receipt_url) {
-                    const { data: urlData } = supabase.storage.from("receipts").getPublicUrl(expense.receipt_url);
-                    setReceiptPreview(urlData.publicUrl);
-                  } else {
-                    setReceiptPreview(null);
-                  }
-                  setIsEditing(true);
-                }}>
+                <Button variant="outline" className="flex-1" onClick={() => setIsEditing(true)}>
                   <Pencil size={14} className="mr-2" />
                   Edit
                 </Button>

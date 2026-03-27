@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { format } from "date-fns";
 import type { Card as CardType } from "@/lib/types";
 import { useCategories } from "@/hooks/useCategories";
+import { CategoryCombobox } from "@/components/forms/CategoryCombobox";
 
 export interface ExpenseFormDefaults {
   date?: string;
@@ -27,6 +28,8 @@ export interface ExpenseFormDefaults {
   title?: string;
   amount?: string;
   paymentMethod?: string;
+  cardId?: string;
+  note?: string;
   receiptPreview?: string;
 }
 
@@ -35,15 +38,21 @@ interface ExpenseFormProps {
   onCancel?: () => void;
   isSheet?: boolean;
   defaultValues?: ExpenseFormDefaults;
+  mode?: "create" | "edit";
+  expenseId?: string;
+  existingReceiptUrl?: string | null;
+  cards?: CardType[];
 }
 
-export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues }: ExpenseFormProps) {
+export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode = "create", expenseId, existingReceiptUrl, cards: cardsProp }: ExpenseFormProps) {
   const router = useRouter();
   const supabase = createClient();
 
+  const isEdit = mode === "edit";
+
   const { flatSortedSubcategories, subcategoryMap, isLoading: categoriesLoading } = useCategories();
-  const [cards, setCards] = useState<CardType[]>([]);
-  const [cardsLoading, setCardsLoading] = useState(true);
+  const [cards, setCards] = useState<CardType[]>(cardsProp || []);
+  const [cardsLoading, setCardsLoading] = useState(!cardsProp);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isLoading = categoriesLoading || cardsLoading;
@@ -53,12 +62,13 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues }: Exp
   const [title, setTitle] = useState(defaultValues?.title || "");
   const [amount, setAmount] = useState(defaultValues?.amount || "");
   const [paymentMethod, setPaymentMethod] = useState<string>(defaultValues?.paymentMethod || "");
-  const [note, setNote] = useState("");
-  const [cardId, setCardId] = useState("");
+  const [note, setNote] = useState(defaultValues?.note || "");
+  const [cardId, setCardId] = useState(defaultValues?.cardId || "");
   const [receiptFile, setReceiptFile] = useState<File | null>(null);
   const [receiptPreview, setReceiptPreview] = useState<string | null>(defaultValues?.receiptPreview || null);
 
   useEffect(() => {
+    if (cardsProp) return;
     async function fetchCards() {
       try {
         const { data } = await supabase.from("ft_cards").select("*").order("bank");
@@ -68,7 +78,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues }: Exp
       }
     }
     fetchCards();
-  }, [supabase]);
+  }, [supabase, cardsProp]);
 
   const categoryId = subcategoryMap.get(subcategoryId)?.categoryId || "";
 
@@ -111,7 +121,8 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues }: Exp
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { toast.error("Not authenticated"); return; }
 
-      let receiptUrl: string | null = null;
+      // Handle receipt upload (shared between create and edit)
+      let receiptUrl: string | null | undefined = isEdit ? undefined : null;
       if (receiptFile) {
         const fileExt = receiptFile.name.split(".").pop();
         const fileName = `${user.id}/${Date.now()}.${fileExt}`;
@@ -139,35 +150,70 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues }: Exp
         } else {
           receiptUrl = fileName;
         }
+      } else if (isEdit && !receiptPreview && existingReceiptUrl) {
+        // Receipt was removed in edit mode
+        receiptUrl = null;
       }
 
-      const { error: insertError } = await supabase.from("ft_expenses").insert({
-        user_id: user.id,
-        amount: parseFloat(amount),
-        category_id: categoryId,
-        subcategory_id: subcategoryId,
-        date,
-        title: title.trim(),
-        note: note.trim() || null,
-        payment_method: paymentMethod || null,
-        card_id: cardId || null,
-        receipt_url: receiptUrl,
-      });
+      if (isEdit) {
+        // Edit mode: update existing expense
+        const updatePayload: Record<string, unknown> = {
+          amount: parseFloat(amount),
+          category_id: categoryId,
+          subcategory_id: subcategoryId,
+          date,
+          title: title.trim(),
+          note: note.trim() || null,
+          payment_method: paymentMethod || null,
+          card_id: cardId || null,
+        };
+        if (receiptUrl !== undefined) {
+          updatePayload.receipt_url = receiptUrl;
+        }
 
-      if (insertError) {
-        console.error("Insert error:", insertError);
-        toast.error("Failed to save expense");
-        return;
-      }
+        const { error } = await supabase
+          .from("ft_expenses")
+          .update(updatePayload)
+          .eq("id", expenseId!);
 
-      toast.success("Expense added!");
-      resetForm();
+        if (error) {
+          console.error("Update error:", error);
+          toast.error("Failed to update expense");
+          return;
+        }
 
-      if (isSheet && onSuccess) {
-        onSuccess();
+        toast.success("Expense updated");
+        onSuccess?.();
       } else {
-        router.push("/");
-        router.refresh();
+        // Create mode: insert new expense
+        const { error: insertError } = await supabase.from("ft_expenses").insert({
+          user_id: user.id,
+          amount: parseFloat(amount),
+          category_id: categoryId,
+          subcategory_id: subcategoryId,
+          date,
+          title: title.trim(),
+          note: note.trim() || null,
+          payment_method: paymentMethod || null,
+          card_id: cardId || null,
+          receipt_url: receiptUrl as string | null,
+        });
+
+        if (insertError) {
+          console.error("Insert error:", insertError);
+          toast.error("Failed to save expense");
+          return;
+        }
+
+        toast.success("Expense added!");
+        resetForm();
+
+        if (isSheet && onSuccess) {
+          onSuccess();
+        } else {
+          router.push("/");
+          router.refresh();
+        }
       }
     } catch (error) {
       console.error("Submit error:", error);
@@ -186,7 +232,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues }: Exp
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6 overflow-hidden">
       {/* 1. Date */}
       <div className="space-y-2">
         <Label htmlFor="expense-date">Date *</Label>
@@ -197,25 +243,19 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues }: Exp
           onChange={(e) => setDate(e.target.value)}
           required
           disabled={isSubmitting}
-          className="h-11 py-2.5 md:h-9 md:py-1 w-full max-w-full"
+          className="h-11 py-2.5 md:h-9 md:py-1 w-full max-w-full min-w-0 overflow-hidden"
         />
       </div>
 
       {/* 2. Category */}
       <div className="space-y-2">
         <Label>Category *</Label>
-        <Select value={subcategoryId} onValueChange={setSubcategoryId} disabled={isSubmitting}>
-          <SelectTrigger className="w-full h-11 md:h-9">
-            <SelectValue placeholder="Select a category" />
-          </SelectTrigger>
-          <SelectContent position="popper" className="max-h-[240px]">
-            {flatSortedSubcategories.map((sub) => (
-              <SelectItem key={sub.id} value={sub.id}>
-                {sub.categoryEmoji} {sub.categoryName} - {sub.emoji ? `${sub.emoji} ` : ""}{sub.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <CategoryCombobox
+          subcategories={flatSortedSubcategories}
+          value={subcategoryId}
+          onValueChange={setSubcategoryId}
+          disabled={isSubmitting}
+        />
       </div>
 
       {/* 4. Title */}
@@ -269,23 +309,32 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues }: Exp
       </div>
 
       {/* Card Selector */}
-      {paymentMethod === "card" && cards.filter(c => !c.deactivated_at).length > 0 && (
-        <div className="space-y-2">
-          <Label>Card</Label>
-          <Select value={cardId} onValueChange={setCardId} disabled={isSubmitting}>
-            <SelectTrigger className="w-full h-11 md:h-9">
-              <SelectValue placeholder="Select a card" />
-            </SelectTrigger>
-            <SelectContent>
-              {cards.filter(c => !c.deactivated_at).map((card) => (
-                <SelectItem key={card.id} value={card.id}>
-                  {card.label || `${card.bank} ${card.last_four ? `(${card.last_four})` : ""}`}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      )}
+      {paymentMethod === "card" && (() => {
+        const availableCards = isEdit
+          ? cards.filter(c =>
+              !c.deactivated_at ||
+              c.id === cardId ||
+              (c.deactivated_at && date && c.deactivated_at >= date)
+            )
+          : cards.filter(c => !c.deactivated_at);
+        return availableCards.length > 0 ? (
+          <div className="space-y-2">
+            <Label>Card</Label>
+            <Select value={cardId} onValueChange={setCardId} disabled={isSubmitting}>
+              <SelectTrigger className="w-full h-11 md:h-9">
+                <SelectValue placeholder="Select a card" />
+              </SelectTrigger>
+              <SelectContent>
+                {availableCards.map((card) => (
+                  <SelectItem key={card.id} value={card.id}>
+                    {card.label || `${card.bank} ${card.last_four ? `(${card.last_four})` : ""}`}{card.deactivated_at ? " (inactive)" : ""}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        ) : null;
+      })()}
 
       {/* Notes */}
       <div className="space-y-2">
@@ -339,15 +388,15 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues }: Exp
       </div>
 
       {/* Actions */}
-      <div className={isSheet ? "flex gap-2" : ""}>
-        {isSheet && onCancel && (
+      <div className={(isSheet || isEdit) ? "flex gap-2" : ""}>
+        {((isSheet || isEdit) && onCancel) && (
           <Button type="button" variant="outline" className="flex-1" onClick={onCancel}>
             Cancel
           </Button>
         )}
         <Button
           type="submit"
-          className={isSheet ? "flex-1" : "w-full h-12 text-base"}
+          className={(isSheet || isEdit) ? "flex-1" : "w-full h-12 text-base"}
           disabled={isSubmitting || !title.trim() || !amount || !subcategoryId}
         >
           {isSubmitting ? (
@@ -356,7 +405,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues }: Exp
               Saving...
             </>
           ) : (
-            "Save Expense"
+            isEdit ? "Save Changes" : "Save Expense"
           )}
         </Button>
       </div>
