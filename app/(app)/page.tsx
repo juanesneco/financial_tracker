@@ -5,7 +5,7 @@ import { Loader2, Plus, CreditCard, Banknote, Receipt, DollarSign, Mic, Camera }
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { getProfile, getCategories, getExpenses, getDeposits, getIncomeRecords } from "@/lib/supabase/queries";
+import { getProfile, getCategories, getExpenses, getIncomeRecords } from "@/lib/supabase/queries";
 import { formatCurrency, formatDateShort, getMonthDateRange, formatMonthYear } from "@/lib/format-utils";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { AddSlideOver } from "@/components/shared/AddSlideOver";
 import { BlurredAmount } from "@/components/shared/BlurredAmount";
 import { useResponsiveAdd } from "@/hooks/useResponsiveAdd";
-import type { Expense, Category, Deposit, IncomeRecord, CategoryTotal } from "@/lib/types";
+import type { Expense, Category, IncomeRecord, CategoryTotal } from "@/lib/types";
 
 export default function DashboardPage() {
   const supabase = createClient();
@@ -22,11 +22,9 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [displayName, setDisplayName] = useState<string>("");
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [deposits, setDeposits] = useState<Deposit[]>([]);
   const [incomeRecords, setIncomeRecords] = useState<IncomeRecord[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [monthlyTotal, setMonthlyTotal] = useState(0);
-  const [depositsTotal, setDepositsTotal] = useState(0);
   const [incomeTotal, setIncomeTotal] = useState(0);
   const [categoryTotals, setCategoryTotals] = useState<CategoryTotal[]>([]);
 
@@ -66,11 +64,6 @@ export default function DashboardPage() {
       const exps = (monthExpenses || []) as Expense[];
       setExpenses(exps);
 
-      const { data: monthDeposits } = await getDeposits(supabase, { startDate: start, endDate: end });
-
-      const deps = (monthDeposits || []) as Deposit[];
-      setDeposits(deps);
-
       const { data: monthIncome } = await getIncomeRecords(supabase, { startDate: start, endDate: end });
 
       const incRecs = (monthIncome || []) as IncomeRecord[];
@@ -78,9 +71,6 @@ export default function DashboardPage() {
 
       const expTotal = exps.reduce((sum, e) => sum + Number(e.amount), 0);
       setMonthlyTotal(expTotal);
-
-      const depTotal = deps.reduce((sum, d) => sum + Number(d.amount), 0);
-      setDepositsTotal(depTotal);
 
       const incTotal = incRecs.reduce((sum, r) => sum + Number(r.amount), 0);
       setIncomeTotal(incTotal);
