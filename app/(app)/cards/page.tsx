@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import type { Card as CardType, Subscription } from "@/lib/types";
 
 const isCardActive = (card: CardType) => !card.deactivated_at;
+const capitalizeFirst = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 export default function CardsPage() {
   const supabase = useMemo(() => createClient(), []);
@@ -57,7 +58,7 @@ export default function CardsPage() {
       if (!user) return;
 
       const validType = cardType === "credit" || cardType === "debit" ? cardType : null;
-      const label = [bank, validType ? validType.charAt(0).toUpperCase() + validType.slice(1) : null, lastFour ? `(${lastFour})` : null].filter(Boolean).join(" ");
+      const label = [bank, validType ? capitalizeFirst(validType) : null, lastFour ? `(${lastFour})` : null].filter(Boolean).join(" ");
 
       const { error } = await insertCard(supabase, {
         user_id: user.id, bank, last_four: lastFour || null, card_type: validType, label,
@@ -180,7 +181,7 @@ export default function CardsPage() {
                       </div>
                       <div className="flex items-center gap-2">
                         <p className="text-xs text-muted-foreground">
-                          {card.card_type ? card.card_type.charAt(0).toUpperCase() + card.card_type.slice(1) : "Card"}
+                          {card.card_type ? capitalizeFirst(card.card_type) : "Card"}
                           {card.last_four ? ` ending in ${card.last_four}` : ""}
                         </p>
                         {subCount > 0 && (
@@ -242,7 +243,7 @@ export default function CardsPage() {
                             </div>
                           </TableCell>
                           <TableCell className="text-muted-foreground">
-                            {card.card_type ? card.card_type.charAt(0).toUpperCase() + card.card_type.slice(1) : "—"}
+                            {card.card_type ? capitalizeFirst(card.card_type) : "—"}
                           </TableCell>
                           <TableCell className="tabular-nums text-muted-foreground">
                             {card.last_four || "—"}
