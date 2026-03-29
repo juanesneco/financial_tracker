@@ -48,6 +48,8 @@ export default function BudgetsPage() {
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
+  const getCategoryById = (id: string) => categories.find(c => c.id === id);
+
   const getSpentForCategory = (catId: string) => {
     return expenses
       .filter(e => e.category_id === catId)
@@ -135,7 +137,7 @@ export default function BudgetsPage() {
 
           <div className="space-y-3">
             {budgets.map((budget) => {
-              const cat = budget.category_id ? categories.find(c => c.id === budget.category_id) : null;
+              const cat = budget.category_id ? getCategoryById(budget.category_id) : null;
               const spent = budget.category_id ? getSpentForCategory(budget.category_id) : 0;
               const budgetAmount = budget.amount;
               const percentage = budgetAmount > 0 ? Math.min((spent / budgetAmount) * 100, 100) : 0;
