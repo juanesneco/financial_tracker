@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent, Fragment } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { getProfile, insertCategory, insertSubcategory, deleteCategory, deleteSubcategory, deleteSubcategoriesByIds, updateCategory, getExpenseCountsBySubcategoryIds, getExpenseCountByCategory } from "@/lib/supabase/queries";
@@ -186,7 +186,7 @@ export default function CategoriesSettingsPage() {
     refetch();
   };
 
-  const handleDeleteSubcategory = async (id: string, e?: React.MouseEvent) => {
+  const handleDeleteSubcategory = async (id: string, e?: MouseEvent) => {
     e?.preventDefault();
     e?.stopPropagation();
 
@@ -509,7 +509,7 @@ export default function CategoriesSettingsPage() {
                     const isNotDisplayed = !cat.is_displayed;
 
                     return (
-                      <React.Fragment key={cat.id}>
+                      <Fragment key={cat.id}>
                         <tr className={`${isHidden || isNotDisplayed ? "opacity-50" : ""} hover:bg-muted/30`}>
                           <td className="py-3 pr-2">
                             <button
@@ -625,7 +625,7 @@ export default function CategoriesSettingsPage() {
                             </td>
                           </tr>
                         )}
-                      </React.Fragment>
+                      </Fragment>
                     );
                   })}
                 </tbody>
