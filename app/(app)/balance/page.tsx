@@ -107,11 +107,11 @@ export default function BalancePage() {
       }
 
       // Helper to fetch all rows (PostgREST caps at 1000 per request)
-      const fetchAllPages = async (
-        fetcher: (opts: { startDate?: string; endDate?: string; limit?: number; offset?: number }) => Promise<{ data: unknown[] | null }>
-      ) => {
+      const fetchAllPages = async <T,>(
+        fetcher: (opts: { startDate?: string; endDate?: string; limit?: number; offset?: number }) => Promise<{ data: T[] | null }>
+      ): Promise<T[]> => {
         const PAGE = 1000;
-        let allRows: unknown[] = [];
+        let allRows: T[] = [];
         let from = 0;
         while (true) {
           const { data } = await fetcher({
@@ -130,8 +130,8 @@ export default function BalancePage() {
 
       const [catsRes, expenses, incomeRecords, sourcesRes] = await Promise.all([
         getCategories(supabase),
-        fetchAllPages((opts) => getExpenses(supabase, opts)) as Promise<Expense[]>,
-        fetchAllPages((opts) => getIncomeRecords(supabase, opts)) as Promise<IncomeRecord[]>,
+        fetchAllPages<Expense>((opts) => getExpenses(supabase, opts)),
+        fetchAllPages<IncomeRecord>((opts) => getIncomeRecords(supabase, opts)),
         getIncomeSources(supabase),
       ]);
 
