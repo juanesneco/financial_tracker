@@ -63,7 +63,6 @@ export default function StatisticsPage() {
   // Month detail data
   const [monthLoading, setMonthLoading] = useState(false);
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [categoryTotals, setCategoryTotals] = useState<CategoryTotal[]>([]);
   const [trendData, setTrendData] = useState<{ month: string; total: number }[]>([]);
 
@@ -120,7 +119,6 @@ export default function StatisticsPage() {
     setMonthLoading(true);
     try {
       const { data: cats } = await getCategories(supabase);
-      setCategories((cats || []) as Category[]);
 
       const { start, end } = getMonthDateRange(selectedMonth, selectedYear);
       const { data: exps } = await getExpenses(supabase, { startDate: start, endDate: end });
