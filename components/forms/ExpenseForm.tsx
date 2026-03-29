@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Loader2, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
-import { getCards as dalGetCards, insertExpense, updateExpense } from "@/lib/supabase/queries";
+import { getCards, insertExpense, updateExpense } from "@/lib/supabase/queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -72,7 +72,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
     if (cardsProp) return;
     async function fetchCards() {
       try {
-        const { data } = await dalGetCards(supabase);
+        const { data } = await getCards(supabase);
         setCards(data || []);
       } finally {
         setCardsLoading(false);
