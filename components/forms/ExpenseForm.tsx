@@ -122,6 +122,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { toast.error("Not authenticated"); return; }
 
+      const paymentMethodValue = (paymentMethod || null) as "card" | "cash" | null;
       // Handle receipt upload (shared between create and edit)
       let receiptUrl: string | null | undefined = isEdit ? undefined : null;
       if (receiptFile) {
@@ -165,7 +166,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
           date,
           title: title.trim(),
           note: note.trim() || null,
-          payment_method: (paymentMethod || null) as "card" | "cash" | null,
+          payment_method: paymentMethodValue,
           card_id: cardId || null,
         };
         if (receiptUrl !== undefined) {
@@ -193,7 +194,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
           date,
           title: title.trim(),
           note: note.trim() || null,
-          payment_method: (paymentMethod || null) as "card" | "cash" | null,
+          payment_method: paymentMethodValue,
           card_id: cardId || null,
           receipt_url: receiptUrl as string | null,
         });
