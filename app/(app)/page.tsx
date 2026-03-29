@@ -67,7 +67,7 @@ export default function DashboardPage() {
 
       const { data: monthIncome } = await getIncomeRecords(supabase, { startDate: start, endDate: end });
 
-      const incRecs = (monthIncome || []) as IncomeRecord[];
+      const incRecs = monthIncome || [];
       setIncomeRecords(incRecs);
 
       const expTotal = exps.reduce((sum, e) => sum + Number(e.amount), 0);
