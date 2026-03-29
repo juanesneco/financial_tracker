@@ -69,9 +69,7 @@ export default function SubscriptionsPage() {
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
-  const activeTotal = subscriptions
-    .filter(s => s.is_active)
-    .reduce((sum, s) => sum + s.amount, 0);
+  const activeTotal = subscriptions.reduce((sum, s) => (s.is_active ? sum + s.amount : sum), 0);
 
   const parseRenewalDay = (value: string): number | null => {
     const day = value ? parseInt(value) : null;
