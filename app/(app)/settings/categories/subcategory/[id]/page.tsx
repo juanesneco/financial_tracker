@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
@@ -72,23 +72,30 @@ export default function SubcategoryDetailPage() {
 
   const isLoading = catLoading || isLoadingExpenses;
 
-  const totalAmount = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
+  const totalAmount = useMemo(
+    () => expenses.reduce((sum, e) => sum + Number(e.amount), 0),
+    [expenses]
+  );
   const canEdit =
     subcategory &&
     (subcategory.user_id !== null || profile?.is_super_admin);
 
   // Group expenses by date
-  const groupedExpenses = expenses.reduce<Record<string, Expense[]>>(
-    (acc, exp) => {
-      const key = exp.date;
-      if (!acc[key]) acc[key] = [];
-      acc[key].push(exp);
-      return acc;
-    },
-    {}
+  const groupedExpenses = useMemo(
+    () =>
+      expenses.reduce<Record<string, Expense[]>>((acc, exp) => {
+        if (!acc[exp.date]) acc[exp.date] = [];
+        acc[exp.date].push(exp);
+        return acc;
+      }, {}),
+    [expenses]
   );
-  const sortedDates = Object.keys(groupedExpenses).sort(
-    (a, b) => new Date(b).getTime() - new Date(a).getTime()
+  const sortedDates = useMemo(
+    () =>
+      Object.keys(groupedExpenses).sort(
+        (a, b) => new Date(b).getTime() - new Date(a).getTime()
+      ),
+    [groupedExpenses]
   );
 
   const handleStartEdit = () => {
