@@ -78,6 +78,9 @@ export default function SubscriptionsPage() {
     return day && day >= 1 && day <= 31 ? day : null;
   };
 
+  const parseCardId = (value: string): string | null =>
+    value && value !== "none" ? value : null;
+
   const handleAdd = async () => {
     if (!title || !amount) { toast.error("Title and amount required"); return; }
     setIsSaving(true);
@@ -91,7 +94,7 @@ export default function SubscriptionsPage() {
         amount: parseFloat(amount),
         renewal_day: parseRenewalDay(renewalDay),
         is_active: true,
-        card_id: cardId && cardId !== "none" ? cardId : null,
+        card_id: parseCardId(cardId),
       });
 
       if (error) { toast.error("Failed to add"); return; }
@@ -118,7 +121,7 @@ export default function SubscriptionsPage() {
         title: editTitle,
         amount: parseFloat(editAmount),
         renewal_day: parseRenewalDay(editRenewalDay),
-        card_id: editCardId && editCardId !== "none" ? editCardId : null,
+        card_id: parseCardId(editCardId),
       });
 
       if (error) { toast.error("Failed to update"); return; }
