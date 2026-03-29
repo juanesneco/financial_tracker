@@ -56,6 +56,7 @@ export default function ScanReceiptPage() {
 
       const formData = new FormData();
       formData.append("image", new File([blob], "receipt.jpg", { type: "image/jpeg" }));
+      formData.append("localDate", new Date().toLocaleDateString("en-CA"));
 
       const res = await fetch("/api/receipts/scan", {
         method: "POST",

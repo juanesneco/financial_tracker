@@ -16,7 +16,7 @@ export async function POST(request: Request) {
 
     // 2. Parse JSON body
     const body = await request.json();
-    const { transcription } = body;
+    const { transcription, localDate } = body;
     if (!transcription || typeof transcription !== "string" || !transcription.trim()) {
       return NextResponse.json({ error: "No transcription provided" }, { status: 400 });
     }
@@ -46,9 +46,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No subcategories configured" }, { status: 400 });
     }
 
-    // 4. Build prompt
-    const today = new Date().toISOString().split("T")[0];
-    const dayOfWeek = new Date().toLocaleDateString("en-US", { weekday: "long" });
+    // 4. Build prompt — use the client's local date to avoid timezone mismatch
+    const today = localDate && /^\d{4}-\d{2}-\d{2}$/.test(localDate)
+      ? localDate
+      : new Date().toISOString().split("T")[0];
+    const dayOfWeek = new Date(today + "T12:00:00").toLocaleDateString("en-US", { weekday: "long" });
 
     const prompt = `You are an expert assistant that extracts structured financial data from voice transcriptions.
 

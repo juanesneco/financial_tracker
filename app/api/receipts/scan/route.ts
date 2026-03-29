@@ -17,6 +17,7 @@ export async function POST(request: Request) {
     // 2. Parse multipart form data
     const formData = await request.formData();
     const imageFile = formData.get("image") as File | null;
+    const localDate = formData.get("localDate") as string | null;
     if (!imageFile) {
       return NextResponse.json({ error: "No image provided" }, { status: 400 });
     }
@@ -55,7 +56,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No subcategories configured" }, { status: 400 });
     }
 
-    // 5. Build prompt
+    // 5. Build prompt — use client's local date for context
+    const today = localDate && /^\d{4}-\d{2}-\d{2}$/.test(localDate)
+      ? localDate
+      : new Date().toISOString().split("T")[0];
+
     const prompt = `You are an expert assistant that extracts structured financial data from receipt images.
 
 ## Objective
@@ -74,7 +79,7 @@ ${JSON.stringify(subcategoryList, null, 2)}
 
 ## Rules
 
-1. **Date**: Extract the transaction/purchase date and normalize to YYYY-MM-DD. If multiple dates appear, choose the purchase date. The year should be 2025 or 2026.
+1. **Date**: Extract the transaction/purchase date and normalize to YYYY-MM-DD. If multiple dates appear, choose the purchase date. Today's date is ${today}. If no date is visible on the receipt, use ${today}.
 
 2. **Amount**: Return the grand total actually paid (after discounts; include tax if shown as a single total). Use a dot as decimal separator (e.g., 1234.56). No currency symbols.
 
