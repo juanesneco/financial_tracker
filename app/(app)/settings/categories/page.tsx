@@ -103,19 +103,15 @@ export default function CategoriesSettingsPage() {
   // ─── Handlers ───────────────────────────────────────────────────────────────
 
   const handleAddCategory = async () => {
-    if (!newCatName.trim()) return;
+    if (!newCatName.trim() || !profile) return;
     setIsSaving(true);
     try {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) return;
       const { error } = await insertCategory(supabase, {
         name: newCatName.trim(),
         emoji: newCatEmoji || null,
         icon: newCatEmoji || "📦",
         color: newCatColor,
-        user_id: user.id,
+        user_id: profile.id,
       });
       if (error) {
         toast.error("Failed to create category");
@@ -133,18 +129,14 @@ export default function CategoriesSettingsPage() {
   };
 
   const handleAddSubcategory = async (categoryId: string) => {
-    if (!newSubName.trim()) return;
+    if (!newSubName.trim() || !profile) return;
     setIsSaving(true);
     try {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) return;
       const { error } = await insertSubcategory(supabase, {
         category_id: categoryId,
         name: newSubName.trim(),
         emoji: newSubEmoji || null,
-        user_id: user.id,
+        user_id: profile.id,
       });
       if (error) {
         toast.error("Failed to create subcategory");
