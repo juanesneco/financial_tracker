@@ -62,7 +62,7 @@ export default function DashboardPage() {
 
       const { data: monthExpenses } = await getExpenses(supabase, { startDate: start, endDate: end });
 
-      const exps = (monthExpenses || []) as Expense[];
+      const exps = monthExpenses || [];
       setExpenses(exps);
 
       const { data: monthIncome } = await getIncomeRecords(supabase, { startDate: start, endDate: end });
