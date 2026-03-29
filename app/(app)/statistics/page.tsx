@@ -154,7 +154,7 @@ export default function StatisticsPage() {
         const { start: s, end: e } = getMonthDateRange(month, year);
         const { data } = await getExpenses(supabase, { startDate: s, endDate: e });
 
-        const total = (data || []).reduce((sum: number, row: { amount: number }) => sum + Number(row.amount), 0);
+        const total = (data || []).reduce((sum, row) => sum + Number(row.amount), 0);
         const monthName = new Date(year, month).toLocaleDateString("en", { month: "short" });
         return { month: monthName, total };
       });
