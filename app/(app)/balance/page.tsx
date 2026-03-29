@@ -60,7 +60,7 @@ export default function BalancePage() {
 
   // Month selector (defaults to current month)
   const [now] = useState(() => new Date());
-  const [selectedMonth, setSelectedMonth] = useState<number | null>(now.getMonth());
+  const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
   const [selectedYear, setSelectedYear] = useState(now.getFullYear());
 
   // Filters
@@ -99,7 +99,7 @@ export default function BalancePage() {
       if (filtersActive) {
         dateStart = startDate || null;
         dateEnd = endDate || null;
-      } else if (selectedMonth !== null) {
+      } else {
         const range = getMonthDateRange(selectedMonth, selectedYear);
         dateStart = range.start;
         dateEnd = range.end;
@@ -221,13 +221,11 @@ export default function BalancePage() {
   }, [isLoading]);
 
   const goToPreviousMonth = () => {
-    if (selectedMonth === null) { setSelectedMonth(now.getMonth()); setSelectedYear(now.getFullYear()); return; }
     if (selectedMonth === 0) { setSelectedMonth(11); setSelectedYear(selectedYear - 1); }
     else setSelectedMonth(selectedMonth - 1);
   };
 
   const goToNextMonth = () => {
-    if (selectedMonth === null) { setSelectedMonth(now.getMonth()); setSelectedYear(now.getFullYear()); return; }
     if (selectedMonth === 11) { setSelectedMonth(0); setSelectedYear(selectedYear + 1); }
     else setSelectedMonth(selectedMonth + 1);
   };
@@ -275,7 +273,7 @@ export default function BalancePage() {
             <div className="flex items-center justify-between">
               <Button variant="ghost" size="sm" onClick={goToPreviousMonth}>&larr;</Button>
               <span className="text-sm font-medium">
-                {selectedMonth !== null ? formatMonthYear(selectedMonth, selectedYear) : "All Time"}
+                {formatMonthYear(selectedMonth, selectedYear)}
               </span>
               <Button variant="ghost" size="sm" onClick={goToNextMonth}>&rarr;</Button>
             </div>
