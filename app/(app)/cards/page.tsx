@@ -30,7 +30,6 @@ export default function CardsPage() {
   const [showForm, setShowForm] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  // Form
   const [bank, setBank] = useState("");
   const [lastFour, setLastFour] = useState("");
   const [cardType, setCardType] = useState("");
