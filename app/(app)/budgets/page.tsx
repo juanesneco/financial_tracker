@@ -53,7 +53,7 @@ export default function BudgetsPage() {
   const getSpentForCategory = (catId: string) => {
     return expenses
       .filter(e => e.category_id === catId)
-      .reduce((sum, e) => sum + Number(e.amount), 0);
+      .reduce((sum, e) => sum + e.amount, 0);
   };
 
   const handleAdd = async () => {
@@ -139,7 +139,7 @@ export default function BudgetsPage() {
             {budgets.map((budget) => {
               const cat = budget.category_id ? getCategoryById(budget.category_id) : null;
               const spent = budget.category_id ? getSpentForCategory(budget.category_id) : 0;
-              const budgetAmount = Number(budget.amount);
+              const budgetAmount = budget.amount;
               const percentage = budgetAmount > 0 ? Math.min((spent / budgetAmount) * 100, 100) : 0;
               const isOver = spent > budgetAmount;
 
