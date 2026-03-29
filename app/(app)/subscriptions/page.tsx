@@ -170,7 +170,7 @@ export default function SubscriptionsPage() {
         <p className="text-xs text-muted-foreground">
           {formatCurrency(Number(sub.amount))}
           {sub.renewal_day ? ` / day ${sub.renewal_day}` : ""}
-          {sub.card_id ? ` · ${getCardLabel(sub.card_id)}` : ""}
+          {getCardLabel(sub.card_id) ? ` · ${getCardLabel(sub.card_id)}` : ""}
         </p>
       </div>
       <Button
