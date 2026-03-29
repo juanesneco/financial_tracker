@@ -39,8 +39,8 @@ export default function CardsPage() {
       getCards(supabase),
       getActiveSubscriptions(supabase),
     ]);
-    setCards((cardsRes.data || []) as CardType[]);
-    setSubscriptions((subsRes.data || []) as Subscription[]);
+    setCards(cardsRes.data || []);
+    setSubscriptions(subsRes.data || []);
     setIsLoading(false);
   }, [supabase]);
 
