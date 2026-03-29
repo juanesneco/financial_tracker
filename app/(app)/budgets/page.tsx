@@ -138,8 +138,9 @@ export default function BudgetsPage() {
 
           <div className="space-y-3">
             {budgets.map((budget) => {
-              const cat = budget.category_id ? getCategoryById(budget.category_id) : null;
-              const spent = budget.category_id ? (spentByCategory[budget.category_id] ?? 0) : 0;
+              const catId = budget.category_id;
+              const cat = catId ? getCategoryById(catId) : null;
+              const spent = catId ? (spentByCategory[catId] ?? 0) : 0;
               const budgetAmount = budget.amount;
               const percentage = budgetAmount > 0 ? Math.min((spent / budgetAmount) * 100, 100) : 0;
               const isOver = spent > budgetAmount;
