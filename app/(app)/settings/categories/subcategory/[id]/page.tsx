@@ -50,19 +50,22 @@ export default function SubcategoryDetailPage() {
   // Fetch profile + expenses
   useEffect(() => {
     async function fetchData() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) return;
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (!user) return;
 
-      const [{ data: prof }, { data: exps }] = await Promise.all([
-        getProfile(supabase, user.id),
-        getExpensesBySubcategoryId(supabase, subcategoryId),
-      ]);
+        const [{ data: prof }, { data: exps }] = await Promise.all([
+          getProfile(supabase, user.id),
+          getExpensesBySubcategoryId(supabase, subcategoryId),
+        ]);
 
-      if (prof) setProfile(prof as Profile);
-      setExpenses((exps || []) as Expense[]);
-      setIsLoadingExpenses(false);
+        if (prof) setProfile(prof as Profile);
+        setExpenses((exps || []) as Expense[]);
+      } finally {
+        setIsLoadingExpenses(false);
+      }
     }
     fetchData();
   }, [supabase, subcategoryId]);
