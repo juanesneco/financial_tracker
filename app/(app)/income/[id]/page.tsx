@@ -80,7 +80,6 @@ export default function IncomeDetailPage() {
     fetchData();
   }, [supabase, recordId, router]);
 
-  const getSourceById = (id: string) => sources.find((s) => s.id === id);
 
   const handleSave = async () => {
     if (!date || !sourceId || !description.trim() || !amount) {
@@ -143,7 +142,7 @@ export default function IncomeDetailPage() {
 
   if (!record) return null;
 
-  const source = record.income_source_id ? getSourceById(record.income_source_id) : null;
+  const source = record.income_source_id ? sources.find((s) => s.id === record.income_source_id) : null;
 
   if (isEditing) {
     return (
