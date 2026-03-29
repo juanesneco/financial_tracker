@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Loader2, Plus, Trash2, Pencil, ArrowUpDown } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { getSubscriptions, insertSubscription, updateSubscription, deleteSubscription, getCards } from "@/lib/supabase/queries";
@@ -33,7 +33,7 @@ import { toast } from "sonner";
 import type { Subscription, Card as CardType } from "@/lib/types";
 
 export default function SubscriptionsPage() {
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
   const [isLoading, setIsLoading] = useState(true);
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [cards, setCards] = useState<CardType[]>([]);
