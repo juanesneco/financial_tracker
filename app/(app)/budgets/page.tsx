@@ -15,13 +15,13 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { useCategories } from "@/hooks/useCategories";
-import type { Budget, Expense } from "@/lib/types";
+import type { Budget } from "@/lib/types";
 
 export default function BudgetsPage() {
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
   const [budgets, setBudgets] = useState<Budget[]>([]);
-  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [spentByCategory, setSpentByCategory] = useState<Record<string, number>>({});
   const [showForm, setShowForm] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -43,7 +43,11 @@ export default function BudgetsPage() {
       ]);
 
       setBudgets((b || []) as Budget[]);
-      setExpenses((exps || []) as Expense[]);
+      const totals: Record<string, number> = {};
+      for (const e of exps || []) {
+        totals[e.category_id] = (totals[e.category_id] ?? 0) + e.amount;
+      }
+      setSpentByCategory(totals);
     } finally {
       setIsLoading(false);
     }
@@ -52,12 +56,6 @@ export default function BudgetsPage() {
   useEffect(() => { fetchData(); }, [fetchData]);
 
   const getCategoryById = (id: string) => categories.find(c => c.id === id);
-
-  const getSpentForCategory = (catId: string) => {
-    return expenses
-      .filter(e => e.category_id === catId)
-      .reduce((sum, e) => sum + e.amount, 0);
-  };
 
   const handleAdd = async () => {
     if (!categoryId || !amount) { toast.error("Category and amount required"); return; }
@@ -141,7 +139,7 @@ export default function BudgetsPage() {
           <div className="space-y-3">
             {budgets.map((budget) => {
               const cat = budget.category_id ? getCategoryById(budget.category_id) : null;
-              const spent = budget.category_id ? getSpentForCategory(budget.category_id) : 0;
+              const spent = budget.category_id ? (spentByCategory[budget.category_id] ?? 0) : 0;
               const budgetAmount = budget.amount;
               const percentage = budgetAmount > 0 ? Math.min((spent / budgetAmount) * 100, 100) : 0;
               const isOver = spent > budgetAmount;
