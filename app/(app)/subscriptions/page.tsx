@@ -154,9 +154,9 @@ export default function SubscriptionsPage() {
   const activeSubs = sortSubs(subscriptions.filter(s => s.is_active));
   const inactiveSubs = sortSubs(subscriptions.filter(s => !s.is_active));
 
-  const getCardLabel = (cardId: string | null) => {
-    if (!cardId) return null;
-    const card = cards.find(c => c.id === cardId);
+  const getCardLabel = (id: string | null) => {
+    if (!id) return null;
+    const card = cards.find(c => c.id === id);
     return card ? (card.label || card.bank) : null;
   };
 
