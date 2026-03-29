@@ -141,10 +141,9 @@ export default function ExpenseDetailPage() {
                 setIsEditing(false);
                 const { data: updated } = await getExpenseById(supabase, expenseId);
                 if (updated) {
-                  const u = updated as Expense;
-                  setExpense(u);
-                  if (u.receipt_url) {
-                    const { data: urlData } = supabase.storage.from("receipts").getPublicUrl(u.receipt_url);
+                  setExpense(updated);
+                  if (updated.receipt_url) {
+                    const { data: urlData } = supabase.storage.from("receipts").getPublicUrl(updated.receipt_url);
                     setReceiptPreviewUrl(urlData.publicUrl);
                   } else {
                     setReceiptPreviewUrl(null);
