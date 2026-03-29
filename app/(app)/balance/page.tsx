@@ -53,7 +53,6 @@ export default function BalancePage() {
   const [entries, setEntries] = useState<BalanceEntry[]>([]);
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpenses, setTotalExpenses] = useState(0);
-  const [categories, setCategories] = useState<Category[]>([]);
 
   // Slide-over
   const [slideOverOpen, setSlideOverOpen] = useState(false);
@@ -136,7 +135,6 @@ export default function BalancePage() {
       ]);
 
       const cats = catsRes.data || [];
-      setCategories(cats);
       const sources = sourcesRes.data || [];
 
       let combined: BalanceEntry[] = [
