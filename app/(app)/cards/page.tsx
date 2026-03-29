@@ -20,7 +20,7 @@ import { toast } from "sonner";
 import type { Card as CardType, Subscription } from "@/lib/types";
 
 const isCardActive = (card: CardType): boolean => !card.deactivated_at;
-const capitalizeFirst = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+const capitalizeFirst = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
 
 export default function CardsPage() {
   const supabase = useMemo(() => createClient(), []);
