@@ -45,26 +45,22 @@ export default function DashboardPage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { data: profile } = await getProfile(supabase, user.id);
-
-      setDisplayName(
-        profile?.display_name ||
-        user.email?.split("@")[0] || "there"
-      );
-
-      const { data: cats } = await getCategories(supabase);
-      const catList = cats || [];
-
-      setCategories(catList);
-
       const { start, end } = getMonthDateRange(selectedMonth, selectedYear);
 
-      const { data: monthExpenses } = await getExpenses(supabase, { startDate: start, endDate: end });
+      const [{ data: profile }, { data: cats }, { data: monthExpenses }, { data: monthIncome }] = await Promise.all([
+        getProfile(supabase, user.id),
+        getCategories(supabase),
+        getExpenses(supabase, { startDate: start, endDate: end }),
+        getIncomeRecords(supabase, { startDate: start, endDate: end }),
+      ]);
+
+      setDisplayName(profile?.display_name || user.email?.split("@")[0] || "there");
+
+      const catList = cats || [];
+      setCategories(catList);
 
       const exps = monthExpenses || [];
       setExpenses(exps);
-
-      const { data: monthIncome } = await getIncomeRecords(supabase, { startDate: start, endDate: end });
 
       const incRecs = monthIncome || [];
 
