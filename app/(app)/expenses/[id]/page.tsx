@@ -62,7 +62,7 @@ export default function ExpenseDetailPage() {
         }
 
         setExpense(exp);
-        setCards((userCards || []) as CardType[]);
+        setCards(userCards || []);
 
         if (exp.receipt_url) {
           const { data: urlData } = supabase.storage.from("receipts").getPublicUrl(exp.receipt_url);
