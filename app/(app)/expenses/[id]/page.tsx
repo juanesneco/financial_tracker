@@ -76,10 +76,6 @@ export default function ExpenseDetailPage() {
     fetchData();
   }, [supabase, expenseId, router]);
 
-  const getCategoryById = (id: string) => categories.find(c => c.id === id);
-  const getSubcategoryById = (id: string) => subcategories.find(s => s.id === id);
-  const getCardById = (id: string) => cards.find(c => c.id === id);
-
   const handleDelete = async () => {
     if (!confirm("Are you sure you want to delete this expense?")) return;
 
@@ -111,9 +107,9 @@ export default function ExpenseDetailPage() {
 
   if (!expense) return null;
 
-  const cat = getCategoryById(expense.category_id);
-  const sub = expense.subcategory_id ? getSubcategoryById(expense.subcategory_id) : null;
-  const card = expense.card_id ? getCardById(expense.card_id) : null;
+  const cat = categories.find(c => c.id === expense.category_id);
+  const sub = expense.subcategory_id ? subcategories.find(s => s.id === expense.subcategory_id) : null;
+  const card = expense.card_id ? cards.find(c => c.id === expense.card_id) : null;
 
   if (isEditing) {
     return (
