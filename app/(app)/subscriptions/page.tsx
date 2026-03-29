@@ -99,7 +99,11 @@ export default function SubscriptionsPage() {
 
       if (error) { toast.error("Failed to add"); return; }
       toast.success("Subscription added");
-      setShowForm(false); setTitle(""); setAmount(""); setRenewalDay(""); setCardId("");
+      setShowForm(false);
+      setTitle("");
+      setAmount("");
+      setRenewalDay("");
+      setCardId("");
       fetchData();
     } finally { setIsSaving(false); }
   };
