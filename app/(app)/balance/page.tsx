@@ -29,7 +29,7 @@ import {
 import { AddSlideOver } from "@/components/shared/AddSlideOver";
 import { useResponsiveAdd } from "@/hooks/useResponsiveAdd";
 import { useCategories } from "@/hooks/useCategories";
-import type { Expense, Category, IncomeRecord, IncomeSource } from "@/lib/types";
+import type { Expense, Category, IncomeRecord, IncomeSource, PaymentMethod } from "@/lib/types";
 
 const PAGE_SIZE = 50;
 
@@ -41,7 +41,7 @@ type BalanceEntry = {
   date: string;
   category?: Category;
   source?: IncomeSource;
-  paymentMethod?: string | null;
+  paymentMethod?: PaymentMethod | null;
 };
 
 export default function BalancePage() {
