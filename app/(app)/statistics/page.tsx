@@ -79,7 +79,7 @@ export default function StatisticsPage() {
       const dates = [
         oldestExp?.[0]?.date, oldestInc?.[0]?.date,
         newestExp?.[0]?.date, newestInc?.[0]?.date,
-      ].filter(Boolean).map((d: string) => new Date(d + "T00:00:00").getFullYear());
+      ].filter((d): d is string => Boolean(d)).map((d) => new Date(d + "T00:00:00").getFullYear());
 
       if (dates.length > 0) {
         setMinYear(Math.min(...dates));
