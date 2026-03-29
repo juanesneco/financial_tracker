@@ -73,6 +73,11 @@ export default function SubscriptionsPage() {
     .filter(s => s.is_active)
     .reduce((sum, s) => sum + Number(s.amount), 0);
 
+  const parseRenewalDay = (value: string): number | null => {
+    const day = value ? parseInt(value) : null;
+    return day && day >= 1 && day <= 31 ? day : null;
+  };
+
   const handleAdd = async () => {
     if (!title || !amount) { toast.error("Title and amount required"); return; }
     setIsSaving(true);
@@ -80,12 +85,11 @@ export default function SubscriptionsPage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const day = renewalDay ? parseInt(renewalDay) : null;
       const { error } = await insertSubscription(supabase, {
         user_id: user.id,
         title,
         amount: parseFloat(amount),
-        renewal_day: day && day >= 1 && day <= 31 ? day : null,
+        renewal_day: parseRenewalDay(renewalDay),
         is_active: true,
         card_id: cardId && cardId !== "none" ? cardId : null,
       });
@@ -110,11 +114,10 @@ export default function SubscriptionsPage() {
     if (!editTitle || !editAmount) { toast.error("Title and amount required"); return; }
     setIsUpdating(true);
     try {
-      const day = editRenewalDay ? parseInt(editRenewalDay) : null;
       const { error } = await updateSubscription(supabase, editingSub.id, {
         title: editTitle,
         amount: parseFloat(editAmount),
-        renewal_day: day && day >= 1 && day <= 31 ? day : null,
+        renewal_day: parseRenewalDay(editRenewalDay),
         card_id: editCardId && editCardId !== "none" ? editCardId : null,
       });
 
