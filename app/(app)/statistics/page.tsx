@@ -135,7 +135,7 @@ export default function StatisticsPage() {
 
       const totals: CategoryTotal[] = [];
       catMap.forEach(({ total, count }, catId) => {
-        const cat = (cats || []).find((c: Category) => c.id === catId);
+        const cat = (cats || []).find((c) => c.id === catId);
         if (cat) totals.push({ category: cat, total, count });
       });
       totals.sort((a, b) => b.total - a.total);
