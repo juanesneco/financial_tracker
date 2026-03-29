@@ -147,13 +147,10 @@ export default function StatisticsPage() {
       setCategoryTotals(totals);
 
       // 6-month trend
-      const months = [];
-      for (let i = 5; i >= 0; i--) {
-        let m = selectedMonth - i;
-        let y = selectedYear;
-        while (m < 0) { m += 12; y--; }
-        months.push({ month: m, year: y });
-      }
+      const months = Array.from({ length: 6 }, (_, i) => {
+        const d = new Date(selectedYear, selectedMonth - (5 - i));
+        return { month: d.getMonth(), year: d.getFullYear() };
+      });
 
       const trendPromises = months.map(async ({ month, year }) => {
         const { start: s, end: e } = getMonthDateRange(month, year);
