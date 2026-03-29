@@ -44,8 +44,8 @@ export default function BudgetsPage() {
 
       setBudgets((b ?? []) as Budget[]);
       const totals: Record<string, number> = {};
-      for (const { category_id, amount } of (exps ?? []) as Array<{ category_id: string; amount: number }>) {
-        totals[category_id] = (totals[category_id] ?? 0) + amount;
+      for (const { category_id, amount: expAmount } of (exps ?? []) as Array<{ category_id: string; amount: number }>) {
+        totals[category_id] = (totals[category_id] ?? 0) + expAmount;
       }
       setSpentByCategory(totals);
     } finally {
