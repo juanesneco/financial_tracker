@@ -42,7 +42,7 @@ export function IncomeForm({ onSuccess, onCancel, isSheet }: IncomeFormProps) {
   useEffect(() => {
     async function fetchSources() {
       const { data } = await getIncomeSources(supabase);
-      setSources((data || []) as IncomeSource[]);
+      setSources(data ?? []);
       setIsLoading(false);
     }
     fetchSources();
