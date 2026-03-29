@@ -222,6 +222,10 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
     }
   };
 
+  const availableCards = isEdit
+    ? cards.filter(c => !c.deactivated_at || c.id === cardId || (c.deactivated_at && date && c.deactivated_at >= date))
+    : cards.filter(c => !c.deactivated_at);
+
   if (isLoading) {
     return (
       <div className="flex-1 flex items-center justify-center py-12">
@@ -308,32 +312,23 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
       </div>
 
       {/* Card Selector */}
-      {paymentMethod === "card" && (() => {
-        const availableCards = isEdit
-          ? cards.filter(c =>
-              !c.deactivated_at ||
-              c.id === cardId ||
-              (c.deactivated_at && date && c.deactivated_at >= date)
-            )
-          : cards.filter(c => !c.deactivated_at);
-        return availableCards.length > 0 ? (
-          <div className="space-y-2">
-            <Label>Card</Label>
-            <Select value={cardId} onValueChange={setCardId} disabled={isSubmitting}>
-              <SelectTrigger className="w-full h-11 md:h-9">
-                <SelectValue placeholder="Select a card" />
-              </SelectTrigger>
-              <SelectContent>
-                {availableCards.map((card) => (
-                  <SelectItem key={card.id} value={card.id}>
-                    {card.label || `${card.bank} ${card.last_four ? `(${card.last_four})` : ""}`}{card.deactivated_at ? " (inactive)" : ""}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        ) : null;
-      })()}
+      {paymentMethod === "card" && availableCards.length > 0 && (
+        <div className="space-y-2">
+          <Label>Card</Label>
+          <Select value={cardId} onValueChange={setCardId} disabled={isSubmitting}>
+            <SelectTrigger className="w-full h-11 md:h-9">
+              <SelectValue placeholder="Select a card" />
+            </SelectTrigger>
+            <SelectContent>
+              {availableCards.map((card) => (
+                <SelectItem key={card.id} value={card.id}>
+                  {card.label || `${card.bank} ${card.last_four ? `(${card.last_four})` : ""}`}{card.deactivated_at ? " (inactive)" : ""}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
 
       {/* Notes */}
       <div className="space-y-2">
