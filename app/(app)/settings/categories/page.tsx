@@ -366,7 +366,7 @@ export default function CategoriesSettingsPage() {
                 .filter((s) => s.category_id === cat.id)
                 .sort((a, b) => a.name.localeCompare(b.name));
               const canEdit = !isUniversal || profile?.is_super_admin;
-              const isNotDisplayed = cat.is_displayed === false;
+              const isNotDisplayed = !cat.is_displayed;
 
               return (
                 <Card
@@ -402,11 +402,11 @@ export default function CategoriesSettingsPage() {
                       </div>
                       {canEdit && (
                         <button
-                          onClick={() => handleToggleDisplayed(cat.id, cat.is_displayed !== false)}
-                          className={`p-2 transition-colors ${cat.is_displayed !== false ? "text-emerald-600 hover:text-muted-foreground" : "text-muted-foreground hover:text-emerald-600"}`}
-                          title={cat.is_displayed !== false ? "Hide from dropdowns" : "Show in dropdowns"}
+                          onClick={() => handleToggleDisplayed(cat.id, cat.is_displayed)}
+                          className={`p-2 transition-colors ${cat.is_displayed ? "text-emerald-600 hover:text-muted-foreground" : "text-muted-foreground hover:text-emerald-600"}`}
+                          title={cat.is_displayed ? "Hide from dropdowns" : "Show in dropdowns"}
                         >
-                          {cat.is_displayed !== false ? <ToggleRight size={18} /> : <ToggleLeft size={18} />}
+                          {cat.is_displayed ? <ToggleRight size={18} /> : <ToggleLeft size={18} />}
                         </button>
                       )}
                       {isUniversal && (
@@ -506,7 +506,7 @@ export default function CategoriesSettingsPage() {
                       .filter((s) => s.category_id === cat.id)
                       .sort((a, b) => a.name.localeCompare(b.name));
                     const canEdit = !isUniversal || profile?.is_super_admin;
-                    const isNotDisplayed = cat.is_displayed === false;
+                    const isNotDisplayed = !cat.is_displayed;
 
                     return (
                       <React.Fragment key={cat.id}>
@@ -536,11 +536,11 @@ export default function CategoriesSettingsPage() {
                           <td className="py-3 pr-4 text-center">
                             {canEdit && (
                               <button
-                                onClick={() => handleToggleDisplayed(cat.id, cat.is_displayed !== false)}
-                                className={`p-1 transition-colors ${cat.is_displayed !== false ? "text-emerald-600 hover:text-muted-foreground" : "text-muted-foreground hover:text-emerald-600"}`}
-                                title={cat.is_displayed !== false ? "Hide from dropdowns" : "Show in dropdowns"}
+                                onClick={() => handleToggleDisplayed(cat.id, cat.is_displayed)}
+                                className={`p-1 transition-colors ${cat.is_displayed ? "text-emerald-600 hover:text-muted-foreground" : "text-muted-foreground hover:text-emerald-600"}`}
+                                title={cat.is_displayed ? "Hide from dropdowns" : "Show in dropdowns"}
                               >
-                                {cat.is_displayed !== false ? <ToggleRight size={18} /> : <ToggleLeft size={18} />}
+                                {cat.is_displayed ? <ToggleRight size={18} /> : <ToggleLeft size={18} />}
                               </button>
                             )}
                           </td>
