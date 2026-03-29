@@ -70,12 +70,12 @@ export async function unhideCategory(supabase: Client, userId: string, categoryI
 
 // ─── Category CRUD ───────────────────────────────────────────────────────────
 
-export async function insertCategory(supabase: Client, data: CategoryInsert) {
-  return supabase.from("ft_categories").insert(data).select().single();
+export async function insertCategory(supabase: Client, category: CategoryInsert) {
+  return supabase.from("ft_categories").insert(category).select().single();
 }
 
-export async function updateCategory(supabase: Client, id: string, data: CategoryUpdate) {
-  return supabase.from("ft_categories").update(data).eq("id", id).select().single();
+export async function updateCategory(supabase: Client, id: string, category: CategoryUpdate) {
+  return supabase.from("ft_categories").update(category).eq("id", id).select().single();
 }
 
 export async function deleteCategory(supabase: Client, id: string) {
@@ -84,12 +84,12 @@ export async function deleteCategory(supabase: Client, id: string) {
 
 // ─── Subcategory CRUD ────────────────────────────────────────────────────────
 
-export async function insertSubcategory(supabase: Client, data: SubcategoryInsert) {
-  return supabase.from("ft_subcategories").insert(data).select().single();
+export async function insertSubcategory(supabase: Client, subcategory: SubcategoryInsert) {
+  return supabase.from("ft_subcategories").insert(subcategory).select().single();
 }
 
-export async function updateSubcategory(supabase: Client, id: string, data: SubcategoryUpdate) {
-  return supabase.from("ft_subcategories").update(data).eq("id", id).select().single();
+export async function updateSubcategory(supabase: Client, id: string, subcategory: SubcategoryUpdate) {
+  return supabase.from("ft_subcategories").update(subcategory).eq("id", id).select().single();
 }
 
 export async function deleteSubcategory(supabase: Client, id: string) {
@@ -234,8 +234,8 @@ export async function getActiveSubscriptions(supabase: Client) {
   return supabase.from("ft_subscriptions").select("*").eq("is_active", true);
 }
 
-export async function insertSubscription(supabase: Client, sub: SubscriptionInsert) {
-  return supabase.from("ft_subscriptions").insert(sub).select().single();
+export async function insertSubscription(supabase: Client, subscription: SubscriptionInsert) {
+  return supabase.from("ft_subscriptions").insert(subscription).select().single();
 }
 
 export async function updateSubscription(supabase: Client, id: string, updates: SubscriptionUpdate) {
