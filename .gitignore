@@ -51,3 +51,6 @@ supabase/.temp
 # Claude Code
 .claude/
 .env*.local
+
+# autoresearch logs
+/logs/
