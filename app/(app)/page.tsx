@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { AddSlideOver } from "@/components/shared/AddSlideOver";
 import { BlurredAmount } from "@/components/shared/BlurredAmount";
 import { useResponsiveAdd } from "@/hooks/useResponsiveAdd";
-import type { Expense, Category, IncomeRecord, CategoryTotal } from "@/lib/types";
+import type { Expense, Category, CategoryTotal } from "@/lib/types";
 
 export default function DashboardPage() {
   const supabaseRef = useRef(createClient());
@@ -23,7 +23,6 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [displayName, setDisplayName] = useState<string>("");
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [incomeRecords, setIncomeRecords] = useState<IncomeRecord[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [monthlyTotal, setMonthlyTotal] = useState(0);
   const [incomeTotal, setIncomeTotal] = useState(0);
@@ -68,7 +67,6 @@ export default function DashboardPage() {
       const { data: monthIncome } = await getIncomeRecords(supabase, { startDate: start, endDate: end });
 
       const incRecs = monthIncome || [];
-      setIncomeRecords(incRecs);
 
       const expTotal = exps.reduce((sum, e) => sum + Number(e.amount), 0);
       setMonthlyTotal(expTotal);
