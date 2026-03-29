@@ -32,7 +32,6 @@ export type SubcategoryUpdate = Tables["ft_subcategories"]["Update"];
 // ─── Update Types ────────────────────────────────────────────────────────────
 
 export type ExpenseUpdate = Tables["ft_expenses"]["Update"];
-export type DepositUpdate = Tables["ft_deposits"]["Update"];
 export type CardUpdate = Tables["ft_cards"]["Update"];
 export type SubscriptionUpdate = Tables["ft_subscriptions"]["Update"];
 export type BudgetUpdate = Tables["ft_budgets"]["Update"];
