@@ -89,7 +89,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
     if (file) {
       setReceiptFile(file);
       const reader = new FileReader();
-      reader.onloadend = () => setReceiptPreview(reader.result as string);
+      reader.onloadend = () => { if (typeof reader.result === "string") setReceiptPreview(reader.result); };
       reader.readAsDataURL(file);
     }
   };
