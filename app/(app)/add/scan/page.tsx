@@ -34,11 +34,12 @@ export default function ScanReceiptPage() {
         }
         canvas.width = width;
         canvas.height = height;
-        const ctx = canvas.getContext("2d")!;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
         ctx.drawImage(img, 0, 0, width, height);
         const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
         canvas.toBlob(
-          (blob) => resolve({ dataUrl, blob: blob! }),
+          (blob) => { if (blob) resolve({ dataUrl, blob }); },
           "image/jpeg",
           0.85
         );
