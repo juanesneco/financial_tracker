@@ -40,6 +40,11 @@ interface MonthlyData {
   expenses: number;
 }
 
+interface TrendDataPoint {
+  month: string;
+  total: number;
+}
+
 export default function StatisticsPage() {
   const supabase = createClient();
   const now = new Date();
@@ -64,7 +69,7 @@ export default function StatisticsPage() {
   const [monthLoading, setMonthLoading] = useState(false);
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [categoryTotals, setCategoryTotals] = useState<CategoryTotal[]>([]);
-  const [trendData, setTrendData] = useState<{ month: string; total: number }[]>([]);
+  const [trendData, setTrendData] = useState<TrendDataPoint[]>([]);
 
   // ─── Fetch valid year range on mount ─────────────────────────────────────────
   useEffect(() => {
