@@ -38,7 +38,7 @@ function loadDefaults(storageKey: string): ExpenseFormDefaults | undefined {
     if (scan.payment_method) d.paymentMethod = scan.payment_method;
     if (scan.receiptPreview) d.receiptPreview = scan.receiptPreview;
 
-    const missing = [];
+    const missing: string[] = [];
     if (!scan.subcategory_id) missing.push("category");
     if (!scan.title) missing.push("title");
     if (!scan.amount) missing.push("amount");
