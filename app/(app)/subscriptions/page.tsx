@@ -71,7 +71,7 @@ export default function SubscriptionsPage() {
 
   const activeTotal = subscriptions
     .filter(s => s.is_active)
-    .reduce((sum, s) => sum + Number(s.amount), 0);
+    .reduce((sum, s) => sum + s.amount, 0);
 
   const parseRenewalDay = (value: string): number | null => {
     const day = value ? parseInt(value) : null;
@@ -171,7 +171,7 @@ export default function SubscriptionsPage() {
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium truncate">{sub.title}</p>
         <p className="text-xs text-muted-foreground">
-          {formatCurrency(Number(sub.amount))}
+          {formatCurrency(sub.amount)}
           {sub.renewal_day ? ` / day ${sub.renewal_day}` : ""}
           {getCardLabel(sub.card_id) ? ` · ${getCardLabel(sub.card_id)}` : ""}
         </p>
