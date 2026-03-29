@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { createClient } from "@/lib/supabase/server";
+import { getVisibleCategoriesWithSubs } from "@/lib/supabase/queries";
 
 export const maxDuration = 30;
 
@@ -30,11 +31,7 @@ export async function POST(request: Request) {
       "image/jpeg" | "image/png" | "image/gif" | "image/webp";
 
     // 4. Fetch user's visible categories + subcategories
-    const [catsRes, subsRes, hiddenRes] = await Promise.all([
-      supabase.from("ft_categories").select("*").order("display_order"),
-      supabase.from("ft_subcategories").select("*").order("display_order"),
-      supabase.from("ft_user_hidden_categories").select("category_id").eq("user_id", user.id),
-    ]);
+    const { categories: catsRes, subcategories: subsRes, hiddenCategories: hiddenRes } = await getVisibleCategoriesWithSubs(supabase, user.id);
 
     const categories = catsRes.data || [];
     const subcategories = subsRes.data || [];

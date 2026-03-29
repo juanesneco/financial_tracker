@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Loader2, Plus, Trash2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { getDeposits, insertDeposit, deleteDeposit } from "@/lib/supabase/queries";
 import { formatCurrency, formatDate } from "@/lib/format-utils";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -27,11 +28,7 @@ export default function DepositsPage() {
   const [note, setNote] = useState("");
 
   async function fetchDeposits() {
-    const { data } = await supabase
-      .from("ft_deposits")
-      .select("*")
-      .order("date", { ascending: false })
-      .limit(100);
+    const { data } = await getDeposits(supabase, { limit: 100 });
     setDeposits((data || []) as Deposit[]);
     setIsLoading(false);
   }
@@ -47,7 +44,7 @@ export default function DepositsPage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { error } = await supabase.from("ft_deposits").insert({
+      const { error } = await insertDeposit(supabase, {
         user_id: user.id,
         amount: parseFloat(amount),
         date,
@@ -65,7 +62,7 @@ export default function DepositsPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this deposit?")) return;
-    const { error } = await supabase.from("ft_deposits").delete().eq("id", id);
+    const { error } = await deleteDeposit(supabase, id);
     if (error) { toast.error("Failed to delete"); return; }
     toast.success("Deleted");
     fetchDeposits();

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { Loader2, Trash2, CreditCard, Banknote, Pencil, ChevronRight, ImageIcon, ImageOff } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { getExpenseById, getCards, deleteExpense } from "@/lib/supabase/queries";
 import { formatCurrency, formatDate } from "@/lib/format-utils";
 import Link from "next/link";
 import { Header } from "@/components/layout/Header";
@@ -50,8 +51,8 @@ export default function ExpenseDetailPage() {
           { data: exp },
           { data: userCards },
         ] = await Promise.all([
-          supabase.from("ft_expenses").select("*").eq("id", expenseId).single(),
-          supabase.from("ft_cards").select("*").order("bank"),
+          getExpenseById(supabase, expenseId),
+          getCards(supabase),
         ]);
 
         if (!exp) {
@@ -85,7 +86,7 @@ export default function ExpenseDetailPage() {
 
     setIsDeleting(true);
     try {
-      const { error } = await supabase.from("ft_expenses").delete().eq("id", expenseId);
+      const { error } = await deleteExpense(supabase, expenseId);
       if (error) {
         toast.error("Failed to delete expense");
         return;
@@ -139,7 +140,7 @@ export default function ExpenseDetailPage() {
               onCancel={() => setIsEditing(false)}
               onSuccess={async () => {
                 setIsEditing(false);
-                const { data: updated } = await supabase.from("ft_expenses").select("*").eq("id", expenseId).single();
+                const { data: updated } = await getExpenseById(supabase, expenseId);
                 if (updated) {
                   const u = updated as Expense;
                   setExpense(u);

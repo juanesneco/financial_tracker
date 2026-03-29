@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Loader2, Plus, Trash2, Pencil, ArrowUpDown } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { getSubscriptions, insertSubscription, updateSubscription, deleteSubscription, getCards } from "@/lib/supabase/queries";
 import { formatCurrency } from "@/lib/format-utils";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -58,12 +59,8 @@ export default function SubscriptionsPage() {
 
   async function fetchData() {
     const [subsRes, cardsRes] = await Promise.all([
-      supabase
-        .from("ft_subscriptions")
-        .select("*")
-        .order("is_active", { ascending: false })
-        .order("title"),
-      supabase.from("ft_cards").select("*").order("bank"),
+      getSubscriptions(supabase),
+      getCards(supabase),
     ]);
     setSubscriptions((subsRes.data || []) as Subscription[]);
     setCards((cardsRes.data || []) as CardType[]);
@@ -84,7 +81,7 @@ export default function SubscriptionsPage() {
       if (!user) return;
 
       const day = renewalDay ? parseInt(renewalDay) : null;
-      const { error } = await supabase.from("ft_subscriptions").insert({
+      const { error } = await insertSubscription(supabase, {
         user_id: user.id,
         title,
         amount: parseFloat(amount),
@@ -114,15 +111,12 @@ export default function SubscriptionsPage() {
     setIsUpdating(true);
     try {
       const day = editRenewalDay ? parseInt(editRenewalDay) : null;
-      const { error } = await supabase
-        .from("ft_subscriptions")
-        .update({
-          title: editTitle,
-          amount: parseFloat(editAmount),
-          renewal_day: day && day >= 1 && day <= 31 ? day : null,
-          card_id: editCardId && editCardId !== "none" ? editCardId : null,
-        })
-        .eq("id", editingSub.id);
+      const { error } = await updateSubscription(supabase, editingSub.id, {
+        title: editTitle,
+        amount: parseFloat(editAmount),
+        renewal_day: day && day >= 1 && day <= 31 ? day : null,
+        card_id: editCardId && editCardId !== "none" ? editCardId : null,
+      });
 
       if (error) { toast.error("Failed to update"); return; }
       toast.success("Subscription updated");
@@ -132,7 +126,7 @@ export default function SubscriptionsPage() {
   };
 
   const toggleActive = async (id: string, currentStatus: boolean) => {
-    const { error } = await supabase.from("ft_subscriptions").update({ is_active: !currentStatus }).eq("id", id);
+    const { error } = await updateSubscription(supabase, id, { is_active: !currentStatus });
     if (error) { toast.error("Failed to update"); return; }
     toast.success(currentStatus ? "Subscription paused" : "Subscription activated");
     fetchData();
@@ -140,7 +134,7 @@ export default function SubscriptionsPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this subscription?")) return;
-    const { error } = await supabase.from("ft_subscriptions").delete().eq("id", id);
+    const { error } = await deleteSubscription(supabase, id);
     if (error) { toast.error("Failed to delete"); return; }
     toast.success("Deleted");
     fetchData();

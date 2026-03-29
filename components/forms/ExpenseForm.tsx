@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Loader2, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
+import { getCards as dalGetCards, insertExpense, updateExpense } from "@/lib/supabase/queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -71,7 +72,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
     if (cardsProp) return;
     async function fetchCards() {
       try {
-        const { data } = await supabase.from("ft_cards").select("*").order("bank");
+        const { data } = await dalGetCards(supabase);
         setCards((data || []) as CardType[]);
       } finally {
         setCardsLoading(false);
@@ -171,10 +172,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
           updatePayload.receipt_url = receiptUrl;
         }
 
-        const { error } = await supabase
-          .from("ft_expenses")
-          .update(updatePayload)
-          .eq("id", expenseId!);
+        const { error } = await updateExpense(supabase, expenseId!, updatePayload as Parameters<typeof updateExpense>[2]);
 
         if (error) {
           console.error("Update error:", error);
@@ -186,7 +184,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
         onSuccess?.();
       } else {
         // Create mode: insert new expense
-        const { error: insertError } = await supabase.from("ft_expenses").insert({
+        const { error: insertError } = await insertExpense(supabase, {
           user_id: user.id,
           amount: parseFloat(amount),
           category_id: categoryId,
@@ -194,7 +192,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
           date,
           title: title.trim(),
           note: note.trim() || null,
-          payment_method: paymentMethod || null,
+          payment_method: (paymentMethod || null) as "card" | "cash" | null,
           card_id: cardId || null,
           receipt_url: receiptUrl as string | null,
         });

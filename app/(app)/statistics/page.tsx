@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Loader2, ChevronLeft, ChevronRight, ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { getOldestExpenseDate, getOldestIncomeDate, getNewestExpenseDate, getNewestIncomeDate, getExpenses, getIncomeRecords, getCategories } from "@/lib/supabase/queries";
 import { formatCurrency, getMonthDateRange, formatMonthYear } from "@/lib/format-utils";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -70,10 +71,10 @@ export default function StatisticsPage() {
   useEffect(() => {
     async function fetchYearRange() {
       const [{ data: oldestExp }, { data: oldestInc }, { data: newestExp }, { data: newestInc }] = await Promise.all([
-        supabase.from("ft_expenses").select("date").order("date", { ascending: true }).limit(1),
-        supabase.from("ft_income_records").select("date").order("date", { ascending: true }).limit(1),
-        supabase.from("ft_expenses").select("date").order("date", { ascending: false }).limit(1),
-        supabase.from("ft_income_records").select("date").order("date", { ascending: false }).limit(1),
+        getOldestExpenseDate(supabase),
+        getOldestIncomeDate(supabase),
+        getNewestExpenseDate(supabase),
+        getNewestIncomeDate(supabase),
       ]);
 
       const dates = [
@@ -98,8 +99,8 @@ export default function StatisticsPage() {
         const { start, end } = getMonthDateRange(m, selectedYear);
 
         const [{ data: expData }, { data: incData }] = await Promise.all([
-          supabase.from("ft_expenses").select("amount").gte("date", start).lte("date", end),
-          supabase.from("ft_income_records").select("amount").gte("date", start).lte("date", end),
+          getExpenses(supabase, { startDate: start, endDate: end }),
+          getIncomeRecords(supabase, { startDate: start, endDate: end }),
         ]);
 
         const expenses = (expData || []).reduce((sum: number, r: { amount: number }) => sum + Number(r.amount), 0);
@@ -118,18 +119,11 @@ export default function StatisticsPage() {
   const fetchMonthData = useCallback(async () => {
     setMonthLoading(true);
     try {
-      const { data: cats } = await supabase
-        .from("ft_categories")
-        .select("*")
-        .order("display_order");
+      const { data: cats } = await getCategories(supabase);
       setCategories((cats || []) as Category[]);
 
       const { start, end } = getMonthDateRange(selectedMonth, selectedYear);
-      const { data: exps } = await supabase
-        .from("ft_expenses")
-        .select("*")
-        .gte("date", start)
-        .lte("date", end);
+      const { data: exps } = await getExpenses(supabase, { startDate: start, endDate: end });
 
       const expenseList = (exps || []) as Expense[];
       setExpenses(expenseList);
@@ -160,11 +154,7 @@ export default function StatisticsPage() {
 
       const trendPromises = months.map(async ({ month, year }) => {
         const { start: s, end: e } = getMonthDateRange(month, year);
-        const { data } = await supabase
-          .from("ft_expenses")
-          .select("amount")
-          .gte("date", s)
-          .lte("date", e);
+        const { data } = await getExpenses(supabase, { startDate: s, endDate: e });
 
         const total = (data || []).reduce((sum: number, row: { amount: number }) => sum + Number(row.amount), 0);
         const monthName = new Date(year, month).toLocaleDateString("en", { month: "short" });

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Loader2, Plus, Trash2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { getIncomeSources, insertIncomeSource, deleteIncomeSource } from "@/lib/supabase/queries";
 import { formatCurrency } from "@/lib/format-utils";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -24,7 +25,7 @@ export default function IncomePage() {
   const [legalName, setLegalName] = useState("");
 
   async function fetchSources() {
-    const { data } = await supabase.from("ft_income_sources").select("*").order("source_name");
+    const { data } = await getIncomeSources(supabase);
     setSources((data || []) as IncomeSource[]);
     setIsLoading(false);
   }
@@ -38,7 +39,7 @@ export default function IncomePage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { error } = await supabase.from("ft_income_sources").insert({
+      const { error } = await insertIncomeSource(supabase, {
         user_id: user.id,
         source_name: sourceName,
         initials: initials || null,
@@ -54,7 +55,7 @@ export default function IncomePage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this income source?")) return;
-    const { error } = await supabase.from("ft_income_sources").delete().eq("id", id);
+    const { error } = await deleteIncomeSource(supabase, id);
     if (error) { toast.error("Failed to delete"); return; }
     toast.success("Deleted");
     fetchSources();

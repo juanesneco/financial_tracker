@@ -12,6 +12,7 @@ import type {
   IncomeSourceInsert,
   IncomeSourceUpdate,
   IncomeRecordInsert,
+  IncomeRecordUpdate,
   CategoryInsert,
   CategoryUpdate,
   SubcategoryInsert,
@@ -95,6 +96,10 @@ export async function deleteSubcategory(supabase: Client, id: string) {
   return supabase.from("ft_subcategories").delete().eq("id", id);
 }
 
+export async function deleteSubcategoriesByIds(supabase: Client, ids: string[]) {
+  return supabase.from("ft_subcategories").delete().in("id", ids);
+}
+
 // ─── Expenses ─────────────────────────────────────────────────────────────────
 
 export async function getExpenses(
@@ -127,6 +132,29 @@ export async function getExpenses(
 
 export async function getExpenseById(supabase: Client, id: string) {
   return supabase.from("ft_expenses").select("*").eq("id", id).single();
+}
+
+export async function getExpenseCountByCategory(supabase: Client, categoryId: string) {
+  return supabase
+    .from("ft_expenses")
+    .select("id", { count: "exact", head: true })
+    .eq("category_id", categoryId);
+}
+
+export async function getExpensesBySubcategoryId(supabase: Client, subcategoryId: string) {
+  return supabase
+    .from("ft_expenses")
+    .select("*")
+    .eq("subcategory_id", subcategoryId)
+    .order("date", { ascending: false })
+    .order("created_at", { ascending: false });
+}
+
+export async function getExpenseCountsBySubcategoryIds(supabase: Client, subcategoryIds: string[]) {
+  return supabase
+    .from("ft_expenses")
+    .select("subcategory_id")
+    .in("subcategory_id", subcategoryIds);
 }
 
 export async function insertExpense(supabase: Client, expense: ExpenseInsert) {
@@ -202,6 +230,10 @@ export async function getSubscriptions(supabase: Client) {
   return supabase.from("ft_subscriptions").select("*").order("is_active", { ascending: false }).order("title");
 }
 
+export async function getActiveSubscriptions(supabase: Client) {
+  return supabase.from("ft_subscriptions").select("*").eq("is_active", true);
+}
+
 export async function insertSubscription(supabase: Client, sub: SubscriptionInsert) {
   return supabase.from("ft_subscriptions").insert(sub).select().single();
 }
@@ -254,20 +286,61 @@ export async function deleteIncomeSource(supabase: Client, id: string) {
 
 export async function getIncomeRecords(
   supabase: Client,
-  options: { startDate?: string; endDate?: string } = {}
+  options: { startDate?: string; endDate?: string; limit?: number; offset?: number } = {}
 ) {
-  let query = supabase.from("ft_income_records").select("*");
+  let query = supabase.from("ft_income_records").select("*", { count: "exact" });
 
   if (options.startDate) query = query.gte("date", options.startDate);
   if (options.endDate) query = query.lte("date", options.endDate);
 
-  return query.order("date", { ascending: false });
+  query = query.order("date", { ascending: false });
+
+  if (options.limit) query = query.limit(options.limit);
+  if (options.offset) query = query.range(options.offset, options.offset + (options.limit || 50) - 1);
+
+  return query;
+}
+
+export async function getIncomeRecordById(supabase: Client, id: string) {
+  return supabase.from("ft_income_records").select("*").eq("id", id).single();
 }
 
 export async function insertIncomeRecord(supabase: Client, record: IncomeRecordInsert) {
   return supabase.from("ft_income_records").insert(record).select().single();
 }
 
+export async function updateIncomeRecord(supabase: Client, id: string, updates: IncomeRecordUpdate) {
+  return supabase.from("ft_income_records").update(updates).eq("id", id).select().single();
+}
+
 export async function deleteIncomeRecord(supabase: Client, id: string) {
   return supabase.from("ft_income_records").delete().eq("id", id);
+}
+
+// ─── Aggregates & Helpers ────────────────────────────────────────────────────
+
+export async function getOldestExpenseDate(supabase: Client) {
+  return supabase.from("ft_expenses").select("date").order("date", { ascending: true }).limit(1);
+}
+
+export async function getNewestExpenseDate(supabase: Client) {
+  return supabase.from("ft_expenses").select("date").order("date", { ascending: false }).limit(1);
+}
+
+export async function getOldestIncomeDate(supabase: Client) {
+  return supabase.from("ft_income_records").select("date").order("date", { ascending: true }).limit(1);
+}
+
+export async function getNewestIncomeDate(supabase: Client) {
+  return supabase.from("ft_income_records").select("date").order("date", { ascending: false }).limit(1);
+}
+
+export async function getVisibleCategoriesWithSubs(supabase: Client, userId: string) {
+  const [catsRes, subsRes, hiddenRes] = await Promise.all([
+    supabase.from("ft_categories").select("*").order("display_order"),
+    supabase.from("ft_subcategories").select("*").order("display_order"),
+    supabase.from("ft_user_hidden_categories").select("category_id").eq("user_id", userId),
+  ]);
+
+  return { categories: catsRes, subcategories: subsRes, hiddenCategories: hiddenRes };
 }

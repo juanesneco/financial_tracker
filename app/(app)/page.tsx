@@ -5,6 +5,7 @@ import { Loader2, Plus, CreditCard, Banknote, Receipt, DollarSign, Mic, Camera }
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { getProfile, getCategories, getExpenses, getDeposits, getIncomeRecords } from "@/lib/supabase/queries";
 import { formatCurrency, formatDateShort, getMonthDateRange, formatMonthYear } from "@/lib/format-utils";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -47,52 +48,30 @@ export default function DashboardPage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { data: profile } = await supabase
-        .from("ft_profiles")
-        .select("display_name")
-        .eq("id", user.id)
-        .single();
+      const { data: profile } = await getProfile(supabase, user.id);
 
       setDisplayName(
         profile?.display_name ||
         user.email?.split("@")[0] || "there"
       );
 
-      const { data: cats } = await supabase
-        .from("ft_categories")
-        .select("*")
-        .order("display_order");
+      const { data: cats } = await getCategories(supabase);
 
       setCategories(cats || []);
 
       const { start, end } = getMonthDateRange(selectedMonth, selectedYear);
 
-      const { data: monthExpenses } = await supabase
-        .from("ft_expenses")
-        .select("*")
-        .gte("date", start)
-        .lte("date", end)
-        .order("date", { ascending: false });
+      const { data: monthExpenses } = await getExpenses(supabase, { startDate: start, endDate: end });
 
       const exps = (monthExpenses || []) as Expense[];
       setExpenses(exps);
 
-      const { data: monthDeposits } = await supabase
-        .from("ft_deposits")
-        .select("*")
-        .gte("date", start)
-        .lte("date", end)
-        .order("date", { ascending: false });
+      const { data: monthDeposits } = await getDeposits(supabase, { startDate: start, endDate: end });
 
       const deps = (monthDeposits || []) as Deposit[];
       setDeposits(deps);
 
-      const { data: monthIncome } = await supabase
-        .from("ft_income_records")
-        .select("*")
-        .gte("date", start)
-        .lte("date", end)
-        .order("date", { ascending: false });
+      const { data: monthIncome } = await getIncomeRecords(supabase, { startDate: start, endDate: end });
 
       const incRecs = (monthIncome || []) as IncomeRecord[];
       setIncomeRecords(incRecs);

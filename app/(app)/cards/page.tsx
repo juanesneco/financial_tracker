@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Loader2, Plus, Trash2, CreditCard, Banknote, Power, PowerOff } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { getCards, insertCard, updateCard, deleteCard, getActiveSubscriptions } from "@/lib/supabase/queries";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -35,8 +36,8 @@ export default function CardsPage() {
 
   async function fetchData() {
     const [cardsRes, subsRes] = await Promise.all([
-      supabase.from("ft_cards").select("*").order("bank"),
-      supabase.from("ft_subscriptions").select("*").eq("is_active", true),
+      getCards(supabase),
+      getActiveSubscriptions(supabase),
     ]);
     setCards((cardsRes.data || []) as CardType[]);
     setSubscriptions((subsRes.data || []) as Subscription[]);
@@ -58,7 +59,7 @@ export default function CardsPage() {
       const validType = cardType === "credit" || cardType === "debit" ? cardType : null;
       const label = [bank, validType ? validType.charAt(0).toUpperCase() + validType.slice(1) : null, lastFour ? `(${lastFour})` : null].filter(Boolean).join(" ");
 
-      const { error } = await supabase.from("ft_cards").insert({
+      const { error } = await insertCard(supabase, {
         user_id: user.id, bank, last_four: lastFour || null, card_type: validType, label,
       });
 
@@ -72,12 +73,9 @@ export default function CardsPage() {
 
   const handleToggleActive = async (card: CardType) => {
     const active = isCardActive(card);
-    const { error } = await supabase
-      .from("ft_cards")
-      .update({
-        deactivated_at: active ? new Date().toISOString() : null,
-      })
-      .eq("id", card.id);
+    const { error } = await updateCard(supabase, card.id, {
+      deactivated_at: active ? new Date().toISOString() : null,
+    });
 
     if (error) {
       toast.error(`Failed to ${active ? "deactivate" : "activate"} card`);
@@ -94,7 +92,7 @@ export default function CardsPage() {
       return;
     }
     if (!confirm("Delete this card?")) return;
-    const { error } = await supabase.from("ft_cards").delete().eq("id", id);
+    const { error } = await deleteCard(supabase, id);
     if (error) {
       toast.error("Failed to delete card");
       return;

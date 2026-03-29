@@ -33,6 +33,7 @@ import {
   MoreHorizontal,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { getProfile } from "@/lib/supabase/queries";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -117,11 +118,7 @@ export default function DesignKitPage() {
           return;
         }
 
-        const { data: profile } = await supabase
-          .from("ft_profiles")
-          .select("is_super_admin")
-          .eq("id", user.id)
-          .single();
+        const { data: profile } = await getProfile(supabase, user.id);
 
         if (profile?.is_super_admin) {
           setIsAdmin(true);

@@ -5,6 +5,7 @@ import { Loader2, TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight, Search
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { getCategories, getExpenses, getIncomeRecords, getIncomeSources } from "@/lib/supabase/queries";
 import { formatCurrency, formatDateShort, getMonthDateRange, formatMonthYear } from "@/lib/format-utils";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -106,16 +107,20 @@ export default function BalancePage() {
       }
 
       // Helper to fetch all rows (PostgREST caps at 1000 per request)
-      const fetchAll = async <T,>(table: string, dateCol: string): Promise<T[]> => {
+      const fetchAllPages = async (
+        fetcher: (opts: { startDate?: string; endDate?: string; limit?: number; offset?: number }) => Promise<{ data: unknown[] | null }>
+      ) => {
         const PAGE = 1000;
-        let allRows: T[] = [];
+        let allRows: unknown[] = [];
         let from = 0;
         while (true) {
-          let q = supabase.from(table).select("*").order("date", { ascending: false }).range(from, from + PAGE - 1);
-          if (dateStart) q = q.gte(dateCol, dateStart);
-          if (dateEnd) q = q.lte(dateCol, dateEnd);
-          const { data } = await q;
-          const rows = (data || []) as T[];
+          const { data } = await fetcher({
+            startDate: dateStart || undefined,
+            endDate: dateEnd || undefined,
+            limit: PAGE,
+            offset: from,
+          });
+          const rows = data || [];
           allRows = allRows.concat(rows);
           if (rows.length < PAGE) break;
           from += PAGE;
@@ -124,10 +129,10 @@ export default function BalancePage() {
       };
 
       const [catsRes, expenses, incomeRecords, sourcesRes] = await Promise.all([
-        supabase.from("ft_categories").select("*").order("display_order"),
-        fetchAll<Expense>("ft_expenses", "date"),
-        fetchAll<IncomeRecord>("ft_income_records", "date"),
-        supabase.from("ft_income_sources").select("*"),
+        getCategories(supabase),
+        fetchAllPages((opts) => getExpenses(supabase, opts)) as Promise<Expense[]>,
+        fetchAllPages((opts) => getIncomeRecords(supabase, opts)) as Promise<IncomeRecord[]>,
+        getIncomeSources(supabase),
       ]);
 
       const cats = (catsRes.data || []) as Category[];

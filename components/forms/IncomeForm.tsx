@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { getIncomeSources, insertIncomeRecord } from "@/lib/supabase/queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -40,10 +41,7 @@ export function IncomeForm({ onSuccess, onCancel, isSheet }: IncomeFormProps) {
 
   useEffect(() => {
     async function fetchSources() {
-      const { data } = await supabase
-        .from("ft_income_sources")
-        .select("*")
-        .order("source_name");
+      const { data } = await getIncomeSources(supabase);
       setSources((data || []) as IncomeSource[]);
       setIsLoading(false);
     }
@@ -77,7 +75,7 @@ export function IncomeForm({ onSuccess, onCancel, isSheet }: IncomeFormProps) {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { toast.error("Not authenticated"); return; }
 
-      const { error } = await supabase.from("ft_income_records").insert({
+      const { error } = await insertIncomeRecord(supabase, {
         user_id: user.id,
         amount: parseFloat(amount),
         date,

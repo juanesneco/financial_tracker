@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { Loader2, Search, CreditCard, Banknote } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { getExpenses } from "@/lib/supabase/queries";
 import { formatCurrency, formatDateShort } from "@/lib/format-utils";
 import { Header } from "@/components/layout/Header";
 import { Card } from "@/components/ui/card";
@@ -50,22 +51,15 @@ export default function ExpensesPage() {
   const fetchExpenses = useCallback(async () => {
     setIsLoading(true);
     try {
-      let query = supabase
-        .from("ft_expenses")
-        .select("*", { count: "exact" });
-
-      if (startDate) query = query.gte("date", startDate);
-      if (endDate) query = query.lte("date", endDate);
-      if (categoryFilter) query = query.eq("category_id", categoryFilter);
-      if (paymentFilter) query = query.eq("payment_method", paymentFilter);
-      if (debouncedSearch) query = query.or(`title.ilike.%${debouncedSearch}%,note.ilike.%${debouncedSearch}%`);
-
-      query = query
-        .order("date", { ascending: false })
-        .order("created_at", { ascending: false })
-        .range(page * PAGE_SIZE, (page + 1) * PAGE_SIZE - 1);
-
-      const { data, count } = await query;
+      const { data, count } = await getExpenses(supabase, {
+        startDate: startDate || undefined,
+        endDate: endDate || undefined,
+        categoryId: categoryFilter || undefined,
+        paymentMethod: paymentFilter || undefined,
+        search: debouncedSearch || undefined,
+        limit: PAGE_SIZE,
+        offset: page * PAGE_SIZE,
+      });
 
       setExpenses((data || []) as Expense[]);
       setTotalCount(count || 0);

@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Home, BarChart3, Settings, Wallet, CreditCard, RefreshCw, ArrowRightLeft, ArrowDownCircle, DollarSign, Palette } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
+import { getProfile } from "@/lib/supabase/queries";
 
 const navItems = [
   { href: "/", icon: Home, label: "Home" },
@@ -28,12 +29,7 @@ export function Sidebar() {
     async function getUser() {
       const { data: { user: authUser } } = await supabase.auth.getUser();
       if (authUser) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { data: profile } = await (supabase as any)
-          .from("ft_profiles")
-          .select("display_name, is_super_admin")
-          .eq("id", authUser.id)
-          .single();
+        const { data: profile } = await getProfile(supabase, authUser.id);
 
         setDisplayName(
           profile?.display_name ||

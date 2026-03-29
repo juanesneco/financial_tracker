@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { getProfile, getExpensesBySubcategoryId, updateSubcategory, deleteSubcategory } from "@/lib/supabase/queries";
 import { useCategories } from "@/hooks/useCategories";
 import { formatCurrency, formatDate } from "@/lib/format-utils";
 import { Header } from "@/components/layout/Header";
@@ -55,13 +56,8 @@ export default function SubcategoryDetailPage() {
       if (!user) return;
 
       const [{ data: prof }, { data: exps }] = await Promise.all([
-        supabase.from("ft_profiles").select("*").eq("id", user.id).single(),
-        supabase
-          .from("ft_expenses")
-          .select("*")
-          .eq("subcategory_id", subcategoryId)
-          .order("date", { ascending: false })
-          .order("created_at", { ascending: false }),
+        getProfile(supabase, user.id),
+        getExpensesBySubcategoryId(supabase, subcategoryId),
       ]);
 
       if (prof) setProfile(prof as Profile);
@@ -103,10 +99,7 @@ export default function SubcategoryDetailPage() {
     if (!editName.trim()) return;
     setIsSaving(true);
     try {
-      const { error } = await supabase
-        .from("ft_subcategories")
-        .update({ name: editName.trim(), emoji: editEmoji || null })
-        .eq("id", subcategoryId);
+      const { error } = await updateSubcategory(supabase, subcategoryId, { name: editName.trim(), emoji: editEmoji || null });
       if (error) {
         toast.error("Failed to update subcategory");
         return;
@@ -130,10 +123,7 @@ export default function SubcategoryDetailPage() {
 
     setIsDeleting(true);
     try {
-      const { error } = await supabase
-        .from("ft_subcategories")
-        .delete()
-        .eq("id", subcategoryId);
+      const { error } = await deleteSubcategory(supabase, subcategoryId);
       if (error) {
         toast.error("Failed to delete subcategory");
         return;

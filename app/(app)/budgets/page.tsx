@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Loader2, Plus, Trash2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { getBudgets, insertBudget, deleteBudget, getCategories, getExpenses } from "@/lib/supabase/queries";
 import { formatCurrency, getMonthDateRange } from "@/lib/format-utils";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -38,9 +39,9 @@ export default function BudgetsPage() {
       { data: cats },
       { data: exps },
     ] = await Promise.all([
-      supabase.from("ft_budgets").select("*").order("amount", { ascending: false }),
-      supabase.from("ft_categories").select("*").order("display_order"),
-      supabase.from("ft_expenses").select("*").gte("date", start).lte("date", end),
+      getBudgets(supabase),
+      getCategories(supabase),
+      getExpenses(supabase, { startDate: start, endDate: end }),
     ]);
 
     setBudgets((b || []) as Budget[]);
@@ -66,7 +67,7 @@ export default function BudgetsPage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { error } = await supabase.from("ft_budgets").insert({
+      const { error } = await insertBudget(supabase, {
         user_id: user.id, category_id: categoryId, amount: parseFloat(amount),
       });
 
@@ -79,7 +80,7 @@ export default function BudgetsPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this budget?")) return;
-    const { error } = await supabase.from("ft_budgets").delete().eq("id", id);
+    const { error } = await deleteBudget(supabase, id);
     if (error) { toast.error("Failed to delete"); return; }
     toast.success("Deleted");
     fetchData();

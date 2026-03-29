@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { getCategories, getSubcategories, getUserHiddenCategories, hideCategory as dalHideCategory, unhideCategory as dalUnhideCategory } from "@/lib/supabase/queries";
 import type { Category, Subcategory } from "@/lib/types";
 
 export interface CategoryGroup {
@@ -54,9 +55,9 @@ export function useCategories(): UseCategoriesReturn {
       if (!user) return;
 
       const [catsRes, subsRes, hiddenRes] = await Promise.all([
-        supabase.from("ft_categories").select("*").order("display_order"),
-        supabase.from("ft_subcategories").select("*").order("display_order"),
-        supabase.from("ft_user_hidden_categories").select("category_id").eq("user_id", user.id),
+        getCategories(supabase),
+        getSubcategories(supabase),
+        getUserHiddenCategories(supabase, user.id),
       ]);
 
       setCategories((catsRes.data || []) as Category[]);
@@ -127,14 +128,14 @@ export function useCategories(): UseCategoriesReturn {
   const hide = useCallback(async (categoryId: string) => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
-    await supabase.from("ft_user_hidden_categories").insert({ user_id: user.id, category_id: categoryId });
+    await dalHideCategory(supabase, user.id, categoryId);
     setHiddenCategoryIds((prev) => new Set([...prev, categoryId]));
   }, [supabase]);
 
   const unhide = useCallback(async (categoryId: string) => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
-    await supabase.from("ft_user_hidden_categories").delete().eq("user_id", user.id).eq("category_id", categoryId);
+    await dalUnhideCategory(supabase, user.id, categoryId);
     setHiddenCategoryIds((prev) => {
       const next = new Set(prev);
       next.delete(categoryId);

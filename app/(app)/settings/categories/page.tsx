@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { getProfile, insertCategory, insertSubcategory, deleteCategory, deleteSubcategory, deleteSubcategoriesByIds, updateCategory, getExpenseCountsBySubcategoryIds, getExpenseCountByCategory } from "@/lib/supabase/queries";
 import { useCategories } from "@/hooks/useCategories";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -77,11 +78,7 @@ export default function CategoriesSettingsPage() {
         data: { user },
       } = await supabase.auth.getUser();
       if (!user) return;
-      const { data } = await supabase
-        .from("ft_profiles")
-        .select("*")
-        .eq("id", user.id)
-        .single();
+      const { data } = await getProfile(supabase, user.id);
       if (data) setProfile(data as Profile);
     }
     fetchProfile();
@@ -92,10 +89,7 @@ export default function CategoriesSettingsPage() {
     async function fetchSubExpenseCounts() {
       if (subcategories.length === 0) return;
       const subIds = subcategories.map((s) => s.id);
-      const { data } = await supabase
-        .from("ft_expenses")
-        .select("subcategory_id")
-        .in("subcategory_id", subIds);
+      const { data } = await getExpenseCountsBySubcategoryIds(supabase, subIds);
       if (!data) return;
       const counts: Record<string, number> = {};
       for (const row of data) {
@@ -117,7 +111,7 @@ export default function CategoriesSettingsPage() {
         data: { user },
       } = await supabase.auth.getUser();
       if (!user) return;
-      const { error } = await supabase.from("ft_categories").insert({
+      const { error } = await insertCategory(supabase, {
         name: newCatName.trim(),
         emoji: newCatEmoji || null,
         icon: newCatEmoji || "📦",
@@ -147,7 +141,7 @@ export default function CategoriesSettingsPage() {
         data: { user },
       } = await supabase.auth.getUser();
       if (!user) return;
-      const { error } = await supabase.from("ft_subcategories").insert({
+      const { error } = await insertSubcategory(supabase, {
         category_id: categoryId,
         name: newSubName.trim(),
         emoji: newSubEmoji || null,
@@ -169,10 +163,7 @@ export default function CategoriesSettingsPage() {
 
   const handleDeleteCategory = async (id: string) => {
     // Check how many expenses use this category
-    const { count } = await supabase
-      .from("ft_expenses")
-      .select("id", { count: "exact", head: true })
-      .eq("category_id", id);
+    const { count } = await getExpenseCountByCategory(supabase, id);
 
     if (count && count > 0) {
       toast.error(`Cannot delete — ${count} expense(s) are linked to this category`);
@@ -184,16 +175,10 @@ export default function CategoriesSettingsPage() {
     // Delete subcategories first, then the category
     const catSubs = subcategories.filter((s) => s.category_id === id);
     if (catSubs.length > 0) {
-      await supabase
-        .from("ft_subcategories")
-        .delete()
-        .in("id", catSubs.map((s) => s.id));
+      await deleteSubcategoriesByIds(supabase, catSubs.map((s) => s.id));
     }
 
-    const { error } = await supabase
-      .from("ft_categories")
-      .delete()
-      .eq("id", id);
+    const { error } = await deleteCategory(supabase, id);
     if (error) {
       toast.error("Failed to delete category");
       return;
@@ -214,10 +199,7 @@ export default function CategoriesSettingsPage() {
 
     if (!confirm("Delete this subcategory?")) return;
 
-    const { error } = await supabase
-      .from("ft_subcategories")
-      .delete()
-      .eq("id", id);
+    const { error } = await deleteSubcategory(supabase, id);
     if (error) {
       toast.error("Failed to delete subcategory");
       return;
@@ -227,10 +209,7 @@ export default function CategoriesSettingsPage() {
   };
 
   const handleToggleDisplayed = async (id: string, currentValue: boolean) => {
-    const { error } = await supabase
-      .from("ft_categories")
-      .update({ is_displayed: !currentValue })
-      .eq("id", id);
+    const { error } = await updateCategory(supabase, id, { is_displayed: !currentValue });
     if (error) {
       toast.error("Failed to update category");
       return;

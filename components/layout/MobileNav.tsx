@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
+import { getProfile } from "@/lib/supabase/queries";
 import {
   Sheet, SheetContent, SheetHeader, SheetTitle,
 } from "@/components/ui/sheet";
@@ -42,11 +43,7 @@ export function MobileNav() {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
-      const { data: profile } = await supabase
-        .from("ft_profiles")
-        .select("display_name")
-        .eq("id", user.id)
-        .single();
+      const { data: profile } = await getProfile(supabase, user.id);
       const name = (profile?.display_name || "").toLowerCase();
       setIsJuanes(name.includes("juanes"));
     }

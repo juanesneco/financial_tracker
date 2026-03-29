@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Loader2, LogOut, Settings2 } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { getProfile, updateProfile } from "@/lib/supabase/queries";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -35,7 +36,7 @@ export default function SettingsPage() {
         if (!user) return;
         setEmail(user.email || "");
 
-        const { data } = await supabase.from("ft_profiles").select("*").eq("id", user.id).single();
+        const { data } = await getProfile(supabase, user.id);
         if (data) {
           const p = data as Profile;
           setProfile(p);
@@ -51,10 +52,7 @@ export default function SettingsPage() {
     if (!profile) return;
     setIsSaving(true);
     try {
-      const { error } = await supabase
-        .from("ft_profiles")
-        .update({ display_name: displayName, currency })
-        .eq("id", profile.id);
+      const { error } = await updateProfile(supabase, profile.id, { display_name: displayName, currency });
 
       if (error) { toast.error("Failed to save"); return; }
       toast.success("Profile updated");

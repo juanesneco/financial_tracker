@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { Loader2, Trash2, Pencil, ChevronRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { getIncomeRecordById, getIncomeSources, updateIncomeRecord, deleteIncomeRecord } from "@/lib/supabase/queries";
 import { formatCurrency, formatDate } from "@/lib/format-utils";
 import Link from "next/link";
 import { Header } from "@/components/layout/Header";
@@ -53,8 +54,8 @@ export default function IncomeDetailPage() {
     async function fetchData() {
       try {
         const [{ data: rec }, { data: srcs }] = await Promise.all([
-          supabase.from("ft_income_records").select("*").eq("id", recordId).single(),
-          supabase.from("ft_income_sources").select("*").order("source_name"),
+          getIncomeRecordById(supabase, recordId),
+          getIncomeSources(supabase),
         ]);
 
         if (!rec) {
@@ -90,15 +91,12 @@ export default function IncomeDetailPage() {
 
     setIsSaving(true);
     try {
-      const { error } = await supabase
-        .from("ft_income_records")
-        .update({
-          date,
-          income_source_id: sourceId || null,
-          description: description.trim() || null,
-          amount: parseFloat(amount),
-        })
-        .eq("id", recordId);
+      const { error } = await updateIncomeRecord(supabase, recordId, {
+        date,
+        income_source_id: sourceId || null,
+        description: description.trim() || null,
+        amount: parseFloat(amount),
+      });
 
       if (error) {
         toast.error("Failed to update income record");
@@ -108,11 +106,7 @@ export default function IncomeDetailPage() {
       toast.success("Income updated");
       setIsEditing(false);
 
-      const { data: updated } = await supabase
-        .from("ft_income_records")
-        .select("*")
-        .eq("id", recordId)
-        .single();
+      const { data: updated } = await getIncomeRecordById(supabase, recordId);
       if (updated) setRecord(updated as IncomeRecord);
     } finally {
       setIsSaving(false);
@@ -124,7 +118,7 @@ export default function IncomeDetailPage() {
 
     setIsDeleting(true);
     try {
-      const { error } = await supabase.from("ft_income_records").delete().eq("id", recordId);
+      const { error } = await deleteIncomeRecord(supabase, recordId);
       if (error) {
         toast.error("Failed to delete income record");
         return;

@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { getIvonneDeposits, getIvonneExpenses } from "@/lib/supabase/queries";
 import { formatCurrency, formatDate } from "@/lib/format-utils";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -34,8 +35,8 @@ export default function JuanesPage() {
   useEffect(() => {
     async function fetchData() {
       const [depositsRes, expensesRes] = await Promise.all([
-        supabase.rpc("get_ivonne_deposits"),
-        supabase.rpc("get_ivonne_expenses"),
+        getIvonneDeposits(supabase),
+        getIvonneExpenses(supabase),
       ]);
       setDeposits((depositsRes.data || []) as Deposit[]);
       setExpenses((expensesRes.data || []) as Expense[]);
