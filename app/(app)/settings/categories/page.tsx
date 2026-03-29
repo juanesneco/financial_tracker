@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type MouseEvent, Fragment } from "react";
+import { useEffect, useState, useMemo, type MouseEvent, Fragment } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { getProfile, insertCategory, insertSubcategory, deleteCategory, deleteSubcategory, deleteSubcategoriesByIds, updateCategory, getExpenseCountsBySubcategoryIds, getExpenseCountByCategory } from "@/lib/supabase/queries";
@@ -209,7 +209,10 @@ export default function CategoriesSettingsPage() {
     refetch();
   };
 
-  const sortedCategories = [...categories].sort((a, b) => a.name.localeCompare(b.name));
+  const sortedCategories = useMemo(
+    () => [...categories].sort((a, b) => a.name.localeCompare(b.name)),
+    [categories]
+  );
 
   const renderAddSubcategory = (categoryId: string) =>
     addSubForCategory === categoryId ? (
