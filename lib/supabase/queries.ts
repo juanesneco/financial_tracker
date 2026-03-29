@@ -234,8 +234,8 @@ export async function getActiveSubscriptions(supabase: Client) {
   return supabase.from("ft_subscriptions").select("*").eq("is_active", true);
 }
 
-export async function insertSubscription(supabase: Client, sub: SubscriptionInsert) {
-  return supabase.from("ft_subscriptions").insert(sub).select().single();
+export async function insertSubscription(supabase: Client, subscription: SubscriptionInsert) {
+  return supabase.from("ft_subscriptions").insert(subscription).select().single();
 }
 
 export async function updateSubscription(supabase: Client, id: string, updates: SubscriptionUpdate) {
