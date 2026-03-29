@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { Loader2, Plus, CreditCard, Banknote, Receipt, DollarSign, Mic, Camera } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -16,7 +16,8 @@ import { useResponsiveAdd } from "@/hooks/useResponsiveAdd";
 import type { Expense, Category, IncomeRecord, CategoryTotal } from "@/lib/types";
 
 export default function DashboardPage() {
-  const supabase = createClient();
+  const supabaseRef = useRef(createClient());
+  const supabase = supabaseRef.current;
   const router = useRouter();
   const { isDesktop } = useResponsiveAdd();
   const [isLoading, setIsLoading] = useState(true);
