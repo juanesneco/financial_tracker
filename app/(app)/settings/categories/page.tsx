@@ -93,8 +93,7 @@ export default function CategoriesSettingsPage() {
       if (!data) return;
       const counts: Record<string, number> = {};
       for (const row of data) {
-        const sid = (row as { subcategory_id: string }).subcategory_id;
-        counts[sid] = (counts[sid] || 0) + 1;
+        counts[row.subcategory_id] = (counts[row.subcategory_id] || 0) + 1;
       }
       setSubExpenseCounts(counts);
     }
