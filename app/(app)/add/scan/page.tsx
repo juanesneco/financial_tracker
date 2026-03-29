@@ -15,38 +15,37 @@ interface ScanResult {
   payment_method?: "card" | "cash" | null;
 }
 
+function resizeImage(file: File, maxWidth = 1200): Promise<{ dataUrl: string; blob: Blob }> {
+  return new Promise((resolve) => {
+    const img = document.createElement("img");
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      let { width, height } = img;
+      if (width > maxWidth) {
+        height = (height * maxWidth) / width;
+        width = maxWidth;
+      }
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.drawImage(img, 0, 0, width, height);
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+      canvas.toBlob(
+        (blob) => { if (blob) resolve({ dataUrl, blob }); },
+        "image/jpeg",
+        0.85
+      );
+    };
+    img.src = URL.createObjectURL(file);
+  });
+}
+
 export default function ScanReceiptPage() {
   const router = useRouter();
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const galleryInputRef = useRef<HTMLInputElement>(null);
   const [isExtracting, setIsExtracting] = useState(false);
-
-  // Resize image to stay under Anthropic's 5MB limit and fit sessionStorage
-  const resizeImage = (file: File, maxWidth = 1200): Promise<{ dataUrl: string; blob: Blob }> => {
-    return new Promise((resolve) => {
-      const img = document.createElement("img");
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        let { width, height } = img;
-        if (width > maxWidth) {
-          height = (height * maxWidth) / width;
-          width = maxWidth;
-        }
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
-        ctx.drawImage(img, 0, 0, width, height);
-        const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
-        canvas.toBlob(
-          (blob) => { if (blob) resolve({ dataUrl, blob }); },
-          "image/jpeg",
-          0.85
-        );
-      };
-      img.src = URL.createObjectURL(file);
-    });
-  };
 
   const handleImage = async (file: File) => {
     setIsExtracting(true);
