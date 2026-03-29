@@ -55,8 +55,6 @@ export default function BudgetsPage() {
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
-  const getCategoryById = (id: string) => categories.find(c => c.id === id);
-
   const handleAdd = async () => {
     if (!categoryId || !amount) { toast.error("Category and amount required"); return; }
     setIsSaving(true);
@@ -139,7 +137,7 @@ export default function BudgetsPage() {
           <div className="space-y-3">
             {budgets.map((budget) => {
               const catId = budget.category_id;
-              const cat = catId ? getCategoryById(catId) : null;
+              const cat = catId ? categories.find(c => c.id === catId) : null;
               const spent = catId ? (spentByCategory[catId] ?? 0) : 0;
               const budgetAmount = budget.amount;
               const percentage = budgetAmount > 0 ? Math.min((spent / budgetAmount) * 100, 100) : 0;
