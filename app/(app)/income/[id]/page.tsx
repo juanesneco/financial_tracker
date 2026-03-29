@@ -80,7 +80,6 @@ export default function IncomeDetailPage() {
     fetchData();
   }, [supabase, recordId, router]);
 
-
   const handleSave = async () => {
     if (!date || !sourceId || !description.trim() || !amount) {
       toast.error("Please fill required fields");
