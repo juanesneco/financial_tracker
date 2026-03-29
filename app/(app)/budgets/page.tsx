@@ -164,7 +164,6 @@ export default function BudgetsPage() {
                       <span>{formatCurrency(budgetAmount)} budget</span>
                     </div>
 
-                    {/* Progress bar */}
                     <div className="w-full bg-muted rounded-full h-2.5">
                       <div
                         className={`h-2.5 rounded-full transition-all ${isOver ? "bg-destructive" : "bg-primary"}`}
