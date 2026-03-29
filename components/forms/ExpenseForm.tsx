@@ -6,6 +6,7 @@ import { Loader2, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import { getCards as dalGetCards, insertExpense, updateExpense } from "@/lib/supabase/queries";
+import type { ExpenseUpdate } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -158,21 +159,21 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
 
       if (isEdit) {
         // Edit mode: update existing expense
-        const updatePayload: Record<string, unknown> = {
+        const updatePayload: ExpenseUpdate = {
           amount: parseFloat(amount),
           category_id: categoryId,
           subcategory_id: subcategoryId,
           date,
           title: title.trim(),
           note: note.trim() || null,
-          payment_method: paymentMethod || null,
+          payment_method: (paymentMethod || null) as "card" | "cash" | null,
           card_id: cardId || null,
         };
         if (receiptUrl !== undefined) {
           updatePayload.receipt_url = receiptUrl;
         }
 
-        const { error } = await updateExpense(supabase, expenseId!, updatePayload as Parameters<typeof updateExpense>[2]);
+        const { error } = await updateExpense(supabase, expenseId!, updatePayload);
 
         if (error) {
           console.error("Update error:", error);
