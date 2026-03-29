@@ -135,9 +135,9 @@ export default function BalancePage() {
         getIncomeSources(supabase),
       ]);
 
-      const cats = (catsRes.data || []) as Category[];
+      const cats = catsRes.data || [];
       setCategories(cats);
-      const sources = (sourcesRes.data || []) as IncomeSource[];
+      const sources = sourcesRes.data || [];
 
       let combined: BalanceEntry[] = [
         ...incomeRecords.map((r) => ({
