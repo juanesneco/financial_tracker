@@ -64,15 +64,14 @@ export default function IncomeDetailPage() {
           return;
         }
 
-        const r = rec as IncomeRecord;
-        setRecord(r);
+        setRecord(rec);
         setSources(srcs ?? []);
 
         // Initialize form
-        setDate(r.date);
-        setSourceId(r.income_source_id || "");
-        setDescription(r.description || "");
-        setAmount(String(r.amount));
+        setDate(rec.date);
+        setSourceId(rec.income_source_id || "");
+        setDescription(rec.description || "");
+        setAmount(String(rec.amount));
       } finally {
         setIsLoading(false);
       }
