@@ -62,8 +62,8 @@ export default function SubscriptionsPage() {
       getSubscriptions(supabase),
       getCards(supabase),
     ]);
-    setSubscriptions((subsRes.data || []) as Subscription[]);
-    setCards((cardsRes.data || []) as CardType[]);
+    setSubscriptions(subsRes.data || []);
+    setCards(cardsRes.data || []);
     setIsLoading(false);
   }, [supabase]);
 
