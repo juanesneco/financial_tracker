@@ -46,7 +46,10 @@ export default function VoiceEntryPage() {
       const res = await fetch("/api/voice-parse", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ transcription: text }),
+        body: JSON.stringify({
+          transcription: text,
+          localDate: new Date().toLocaleDateString("en-CA"), // YYYY-MM-DD in user's timezone
+        }),
       });
 
       if (!res.ok) {
@@ -68,8 +71,6 @@ export default function VoiceEntryPage() {
   }, [router]);
 
   const transcribeAndParse = useCallback(async (audioBlob: Blob) => {
-    setState("transcribing");
-
     try {
       const formData = new FormData();
       formData.append("audio", audioBlob, "recording.webm");
@@ -133,6 +134,7 @@ export default function VoiceEntryPage() {
         });
 
         if (audioBlob.size > 0) {
+          setState("transcribing");
           transcribeAndParse(audioBlob);
         } else {
           toast.error("No audio recorded. Please try again.");
