@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Loader2, Plus, Trash2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { getIncomeSources, insertIncomeSource, deleteIncomeSource } from "@/lib/supabase/queries";
@@ -23,13 +23,13 @@ export default function IncomePage() {
   const [initials, setInitials] = useState("");
   const [legalName, setLegalName] = useState("");
 
-  async function fetchSources() {
+  const fetchSources = useCallback(async () => {
     const { data } = await getIncomeSources(supabase);
     setSources((data || []) as IncomeSource[]);
     setIsLoading(false);
-  }
+  }, [supabase]);
 
-  useEffect(() => { fetchSources(); }, [supabase]);
+  useEffect(() => { fetchSources(); }, [fetchSources]);
 
   const handleAdd = async () => {
     if (!sourceName) { toast.error("Source name required"); return; }
