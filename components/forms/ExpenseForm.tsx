@@ -73,7 +73,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
     async function fetchCards() {
       try {
         const { data } = await dalGetCards(supabase);
-        setCards((data || []) as CardType[]);
+        setCards(data || []);
       } finally {
         setCardsLoading(false);
       }
