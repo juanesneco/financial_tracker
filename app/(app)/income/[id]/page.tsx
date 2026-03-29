@@ -106,7 +106,7 @@ export default function IncomeDetailPage() {
       setIsEditing(false);
 
       const { data: updated } = await getIncomeRecordById(supabase, recordId);
-      if (updated) setRecord(updated as IncomeRecord);
+      if (updated) setRecord(updated);
     } finally {
       setIsSaving(false);
     }
