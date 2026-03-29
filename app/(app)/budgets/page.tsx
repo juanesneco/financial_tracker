@@ -33,17 +33,20 @@ export default function BudgetsPage() {
     const now = new Date();
     const { start, end } = getMonthDateRange(now.getMonth(), now.getFullYear());
 
-    const [
-      { data: b },
-      { data: exps },
-    ] = await Promise.all([
-      getBudgets(supabase),
-      getExpenses(supabase, { startDate: start, endDate: end }),
-    ]);
+    try {
+      const [
+        { data: b },
+        { data: exps },
+      ] = await Promise.all([
+        getBudgets(supabase),
+        getExpenses(supabase, { startDate: start, endDate: end }),
+      ]);
 
-    setBudgets((b || []) as Budget[]);
-    setExpenses((exps || []) as Expense[]);
-    setIsLoading(false);
+      setBudgets((b || []) as Budget[]);
+      setExpenses((exps || []) as Expense[]);
+    } finally {
+      setIsLoading(false);
+    }
   }, [supabase]);
 
   useEffect(() => { fetchData(); }, [fetchData]);
