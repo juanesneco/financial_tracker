@@ -61,12 +61,11 @@ export default function ExpenseDetailPage() {
           return;
         }
 
-        const e = exp as Expense;
-        setExpense(e);
+        setExpense(exp);
         setCards((userCards || []) as CardType[]);
 
-        if (e.receipt_url) {
-          const { data: urlData } = supabase.storage.from("receipts").getPublicUrl(e.receipt_url);
+        if (exp.receipt_url) {
+          const { data: urlData } = supabase.storage.from("receipts").getPublicUrl(exp.receipt_url);
           setReceiptPreviewUrl(urlData.publicUrl);
         }
       } finally {
