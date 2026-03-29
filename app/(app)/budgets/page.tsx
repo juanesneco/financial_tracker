@@ -42,10 +42,10 @@ export default function BudgetsPage() {
         getExpenses(supabase, { startDate: start, endDate: end }),
       ]);
 
-      setBudgets((b || []) as Budget[]);
+      setBudgets((b ?? []) as Budget[]);
       const totals: Record<string, number> = {};
-      for (const e of exps || []) {
-        totals[e.category_id] = (totals[e.category_id] ?? 0) + e.amount;
+      for (const { category_id, amount } of (exps ?? []) as Array<{ category_id: string; amount: number }>) {
+        totals[category_id] = (totals[category_id] ?? 0) + amount;
       }
       setSpentByCategory(totals);
     } finally {
