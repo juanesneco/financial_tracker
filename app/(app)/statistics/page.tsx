@@ -16,7 +16,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend,
 } from "recharts";
 import { BlurredAmount } from "@/components/shared/BlurredAmount";
-import type { Expense, Category, CategoryTotal } from "@/lib/types";
+import type { Expense, CategoryTotal } from "@/lib/types";
 
 const CHART_COLORS = [
   "#0d4ea6", "#D4915E", "#E57373", "#64B5F6", "#81C784",
