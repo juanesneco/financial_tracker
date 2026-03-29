@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { Loader2, Plus, Trash2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { getIncomeSources, insertIncomeSource, deleteIncomeSource } from "@/lib/supabase/queries";
-import { formatCurrency } from "@/lib/format-utils";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
