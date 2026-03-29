@@ -36,9 +36,8 @@ export default function DashboardPage() {
   const [slideOverTab, setSlideOverTab] = useState<"expense" | "income">("expense");
 
   // Month/year selector
-  const now = new Date();
-  const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
-  const [selectedYear, setSelectedYear] = useState(now.getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState(() => new Date().getMonth());
+  const [selectedYear, setSelectedYear] = useState(() => new Date().getFullYear());
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
