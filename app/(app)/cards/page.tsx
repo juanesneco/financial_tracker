@@ -113,8 +113,8 @@ export default function CardsPage() {
     );
   }
 
-  const activeCards = cards.filter(isCardActive);
-  const inactiveCards = cards.filter(c => !isCardActive(c));
+  const activeCount = cards.filter(isCardActive).length;
+  const inactiveCount = cards.length - activeCount;
 
   return (
     <>
@@ -123,7 +123,7 @@ export default function CardsPage() {
         <div className="max-w-lg lg:max-w-full mx-auto p-4 md:p-6 space-y-4">
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
-              {activeCards.length} active{inactiveCards.length > 0 ? `, ${inactiveCards.length} inactive` : ""}
+              {activeCount} active{inactiveCount > 0 ? `, ${inactiveCount} inactive` : ""}
             </p>
             <Button size="sm" onClick={() => setShowForm(!showForm)}>
               <Plus size={16} /> Add Card
