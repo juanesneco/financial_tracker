@@ -29,8 +29,6 @@ export type CategoryInsert = Tables["ft_categories"]["Insert"];
 export type CategoryUpdate = Tables["ft_categories"]["Update"];
 export type SubcategoryInsert = Tables["ft_subcategories"]["Insert"];
 export type SubcategoryUpdate = Tables["ft_subcategories"]["Update"];
-export type UserHiddenCategoryInsert = Tables["ft_user_hidden_categories"]["Insert"];
-
 // ─── Update Types ────────────────────────────────────────────────────────────
 
 export type ExpenseUpdate = Tables["ft_expenses"]["Update"];
