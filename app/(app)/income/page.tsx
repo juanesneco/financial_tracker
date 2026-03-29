@@ -25,7 +25,7 @@ export default function IncomePage() {
 
   const fetchSources = useCallback(async () => {
     const { data } = await getIncomeSources(supabase);
-    setSources((data || []) as IncomeSource[]);
+    setSources(data ?? []);
     setIsLoading(false);
   }, [supabase]);
 
