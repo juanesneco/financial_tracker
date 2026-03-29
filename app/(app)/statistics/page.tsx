@@ -128,7 +128,7 @@ export default function StatisticsPage() {
       const { start, end } = getMonthDateRange(selectedMonth, selectedYear);
       const { data: exps } = await getExpenses(supabase, { startDate: start, endDate: end });
 
-      const expenseList = (exps || []) as Expense[];
+      const expenseList = exps ?? [];
       setExpenses(expenseList);
 
       // Category totals
