@@ -246,7 +246,7 @@ export default function BalancePage() {
   const paginatedEntries = entries.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
   // Group paginated entries by date
-  const entriesByDate = paginatedEntries.reduce((groups: Record<string, BalanceEntry[]>, entry) => {
+  const entriesByDate = paginatedEntries.reduce<Record<string, BalanceEntry[]>>((groups, entry) => {
     if (!groups[entry.date]) groups[entry.date] = [];
     groups[entry.date].push(entry);
     return groups;
