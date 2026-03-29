@@ -155,6 +155,8 @@ export default function DashboardPage() {
 
   const getCategoryById = (id: string) => categories.find(c => c.id === id);
 
+  const netTotal = incomeTotal - monthlyTotal;
+
   if (isLoading) {
     return (
       <>
@@ -255,13 +257,13 @@ export default function DashboardPage() {
                 </div>
               </CardContent>
             </Card>
-            <Card className={`min-w-0 overflow-hidden ${incomeTotal - monthlyTotal >= 0 ? "border-emerald-200 dark:border-emerald-800" : "border-red-200 dark:border-red-800"}`}>
+            <Card className={`min-w-0 overflow-hidden ${netTotal >= 0 ? "border-emerald-200 dark:border-emerald-800" : "border-red-200 dark:border-red-800"}`}>
               <CardContent className="pt-5 pb-4 min-w-0">
                 <p className="text-xs text-muted-foreground mb-1">Net</p>
                 <div className="min-w-0 w-full overflow-hidden">
                   <BlurredAmount revealed={totalsRevealed} onToggle={() => setTotalsRevealed(!totalsRevealed)}>
-                    <p className={`currency-display text-xs sm:text-sm md:text-lg font-serif font-semibold ${incomeTotal - monthlyTotal >= 0 ? "text-emerald-600" : "text-red-500"}`}>
-                      {incomeTotal - monthlyTotal >= 0 ? "+" : ""}{formatCurrency(incomeTotal - monthlyTotal)}
+                    <p className={`currency-display text-xs sm:text-sm md:text-lg font-serif font-semibold ${netTotal >= 0 ? "text-emerald-600" : "text-red-500"}`}>
+                      {netTotal >= 0 ? "+" : ""}{formatCurrency(netTotal)}
                     </p>
                   </BlurredAmount>
                 </div>
