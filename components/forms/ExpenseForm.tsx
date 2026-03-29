@@ -157,7 +157,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
         receiptUrl = null;
       }
 
-      if (isEdit) {
+      if (isEdit && expenseId) {
         // Edit mode: update existing expense
         const updatePayload: ExpenseUpdate = {
           amount: parseFloat(amount),
@@ -173,7 +173,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
           updatePayload.receipt_url = receiptUrl;
         }
 
-        const { error } = await updateExpense(supabase, expenseId!, updatePayload);
+        const { error } = await updateExpense(supabase, expenseId, updatePayload);
 
         if (error) {
           console.error("Update error:", error);
