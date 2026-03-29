@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Loader2, Plus, Trash2, CreditCard, Banknote, Power, PowerOff } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { getCards, insertCard, updateCard, deleteCard, getActiveSubscriptions } from "@/lib/supabase/queries";
@@ -22,7 +22,7 @@ import type { Card as CardType, Subscription } from "@/lib/types";
 const isCardActive = (card: CardType) => !card.deactivated_at;
 
 export default function CardsPage() {
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
   const [isLoading, setIsLoading] = useState(true);
   const [cards, setCards] = useState<CardType[]>([]);
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
