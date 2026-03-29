@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Loader2, Plus, Trash2, Pencil, ArrowUpDown } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { getSubscriptions, insertSubscription, updateSubscription, deleteSubscription, getCards } from "@/lib/supabase/queries";
@@ -57,7 +57,7 @@ export default function SubscriptionsPage() {
   const [editCardId, setEditCardId] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
 
-  async function fetchData() {
+  const fetchData = useCallback(async () => {
     const [subsRes, cardsRes] = await Promise.all([
       getSubscriptions(supabase),
       getCards(supabase),
@@ -65,9 +65,9 @@ export default function SubscriptionsPage() {
     setSubscriptions((subsRes.data || []) as Subscription[]);
     setCards((cardsRes.data || []) as CardType[]);
     setIsLoading(false);
-  }
+  }, [supabase]);
 
-  useEffect(() => { fetchData(); }, [supabase]);
+  useEffect(() => { fetchData(); }, [fetchData]);
 
   const activeTotal = subscriptions
     .filter(s => s.is_active)
