@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Loader2, Plus, Trash2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { getBudgets, insertBudget, deleteBudget, getCategories, getExpenses } from "@/lib/supabase/queries";
+import { getBudgets, insertBudget, deleteBudget, getExpenses } from "@/lib/supabase/queries";
 import { formatCurrency, getMonthDateRange } from "@/lib/format-utils";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,18 +15,17 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { useCategories } from "@/hooks/useCategories";
-import type { Budget, Category, Expense } from "@/lib/types";
+import type { Budget, Expense } from "@/lib/types";
 
 export default function BudgetsPage() {
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
   const [budgets, setBudgets] = useState<Budget[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  const { visibleCategories } = useCategories();
+  const { categories, visibleCategories } = useCategories();
   const [categoryId, setCategoryId] = useState("");
   const [amount, setAmount] = useState("");
 
@@ -36,16 +35,13 @@ export default function BudgetsPage() {
 
     const [
       { data: b },
-      { data: cats },
       { data: exps },
     ] = await Promise.all([
       getBudgets(supabase),
-      getCategories(supabase),
       getExpenses(supabase, { startDate: start, endDate: end }),
     ]);
 
     setBudgets((b || []) as Budget[]);
-    setCategories((cats || []) as Category[]);
     setExpenses((exps || []) as Expense[]);
     setIsLoading(false);
   }, [supabase]);
