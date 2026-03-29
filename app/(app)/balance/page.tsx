@@ -138,23 +138,29 @@ export default function BalancePage() {
       const sources = sourcesRes.data || [];
 
       let combined: BalanceEntry[] = [
-        ...incomeRecords.map((r) => ({
-          id: r.id,
-          type: "income" as const,
-          amount: Number(r.amount),
-          title: r.description || sources.find((s) => s.id === r.income_source_id)?.source_name || "Income",
-          date: r.date,
-          source: sources.find((s) => s.id === r.income_source_id),
-        })),
-        ...expenses.map((e) => ({
-          id: e.id,
-          type: "expense" as const,
-          amount: Number(e.amount),
-          title: e.title || e.note || cats.find((c) => c.id === e.category_id)?.name || "Expense",
-          date: e.date,
-          category: cats.find((c) => c.id === e.category_id),
-          paymentMethod: e.payment_method,
-        })),
+        ...incomeRecords.map((r) => {
+          const source = sources.find((s) => s.id === r.income_source_id);
+          return {
+            id: r.id,
+            type: "income" as const,
+            amount: Number(r.amount),
+            title: r.description || source?.source_name || "Income",
+            date: r.date,
+            source,
+          };
+        }),
+        ...expenses.map((e) => {
+          const category = cats.find((c) => c.id === e.category_id);
+          return {
+            id: e.id,
+            type: "expense" as const,
+            amount: Number(e.amount),
+            title: e.title || e.note || category?.name || "Expense",
+            date: e.date,
+            category,
+            paymentMethod: e.payment_method,
+          };
+        }),
       ];
 
       // Apply filters
