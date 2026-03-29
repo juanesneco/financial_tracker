@@ -84,7 +84,7 @@ export default function DashboardPage() {
 
       const catTotals: CategoryTotal[] = [];
       catMap.forEach(({ total, count }, catId) => {
-        const cat = (cats || []).find((c: Category) => c.id === catId);
+        const cat = (cats || []).find((c) => c.id === catId);
         if (cat) catTotals.push({ category: cat, total, count });
       });
       catTotals.sort((a, b) => b.total - a.total);
