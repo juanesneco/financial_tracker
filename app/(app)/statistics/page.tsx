@@ -102,8 +102,8 @@ export default function StatisticsPage() {
           getIncomeRecords(supabase, { startDate: start, endDate: end }),
         ]);
 
-        const expenses = (expData || []).reduce((sum: number, r: { amount: number }) => sum + Number(r.amount), 0);
-        const income = (incData || []).reduce((sum: number, r: { amount: number }) => sum + Number(r.amount), 0);
+        const expenses = (expData || []).reduce((sum, r) => sum + Number(r.amount), 0);
+        const income = (incData || []).reduce((sum, r) => sum + Number(r.amount), 0);
 
         return { month: m, income, expenses };
       });
