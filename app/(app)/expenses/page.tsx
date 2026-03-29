@@ -61,7 +61,7 @@ export default function ExpensesPage() {
         offset: page * PAGE_SIZE,
       });
 
-      setExpenses((data || []) as Expense[]);
+      setExpenses(data || []);
       setTotalCount(count || 0);
     } finally {
       setIsLoading(false);
