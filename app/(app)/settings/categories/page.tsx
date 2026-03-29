@@ -156,7 +156,7 @@ export default function CategoriesSettingsPage() {
     // Check how many expenses use this category
     const { count } = await getExpenseCountByCategory(supabase, id);
 
-    if (count && count > 0) {
+    if (count) {
       toast.error(`Cannot delete — ${count} expense(s) are linked to this category`);
       return;
     }
