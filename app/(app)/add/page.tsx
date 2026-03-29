@@ -8,6 +8,15 @@ import type { ExpenseFormDefaults } from "@/components/forms/ExpenseForm";
 import { format } from "date-fns";
 import { toast } from "sonner";
 
+interface ParsedScanData {
+  date?: string;
+  subcategory_id?: string;
+  title?: string;
+  amount?: number | string;
+  payment_method?: string;
+  receiptPreview?: string;
+}
+
 function loadDefaults(storageKey: string): ExpenseFormDefaults | undefined {
   const raw = sessionStorage.getItem(storageKey);
   sessionStorage.removeItem(storageKey);
@@ -15,7 +24,7 @@ function loadDefaults(storageKey: string): ExpenseFormDefaults | undefined {
   if (!raw) return undefined;
 
   try {
-    const scan = JSON.parse(raw);
+    const scan = JSON.parse(raw) as ParsedScanData;
     const d: ExpenseFormDefaults = {};
 
     if (scan.date) {
