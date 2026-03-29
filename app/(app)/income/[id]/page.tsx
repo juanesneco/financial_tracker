@@ -66,7 +66,7 @@ export default function IncomeDetailPage() {
 
         const r = rec as IncomeRecord;
         setRecord(r);
-        setSources((srcs || []) as IncomeSource[]);
+        setSources(srcs ?? []);
 
         // Initialize form
         setDate(r.date);
