@@ -29,7 +29,7 @@ export default function DepositsPage() {
 
   async function fetchDeposits() {
     const { data } = await getDeposits(supabase, { limit: 100 });
-    setDeposits((data || []) as Deposit[]);
+    setDeposits(data || []);
     setIsLoading(false);
   }
 
