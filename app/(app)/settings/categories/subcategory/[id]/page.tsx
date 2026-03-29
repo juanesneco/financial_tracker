@@ -21,7 +21,7 @@ import {
   Check,
   X,
 } from "lucide-react";
-import type { Expense, Profile, Subcategory } from "@/lib/types";
+import type { Expense, Profile } from "@/lib/types";
 
 export default function SubcategoryDetailPage() {
   const router = useRouter();
