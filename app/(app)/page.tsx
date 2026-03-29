@@ -53,8 +53,9 @@ export default function DashboardPage() {
       );
 
       const { data: cats } = await getCategories(supabase);
+      const catList = cats || [];
 
-      setCategories(cats || []);
+      setCategories(catList);
 
       const { start, end } = getMonthDateRange(selectedMonth, selectedYear);
 
@@ -81,7 +82,7 @@ export default function DashboardPage() {
 
       const catTotals: CategoryTotal[] = [];
       catMap.forEach(({ total, count }, catId) => {
-        const cat = (cats || []).find((c) => c.id === catId);
+        const cat = catList.find((c) => c.id === catId);
         if (cat) catTotals.push({ category: cat, total, count });
       });
       catTotals.sort((a, b) => b.total - a.total);
