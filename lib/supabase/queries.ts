@@ -20,8 +20,6 @@ import type {
   Profile,
 } from "@/lib/types";
 
-// The codebase uses `(supabase as any).from("ft_*")` pattern because
-// Supabase client types don't recognize our custom views as writable tables.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Client = SupabaseClient<any, any, any>;
 
