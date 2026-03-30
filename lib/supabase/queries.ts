@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type {
+  Profile,
   ExpenseInsert,
   ExpenseUpdate,
   DepositInsert,
@@ -19,7 +20,6 @@ import type {
   SubcategoryUpdate,
   PaginationOptions,
   ExpenseQueryOptions,
-  Profile,
 } from "@/lib/types";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
