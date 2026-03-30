@@ -18,6 +18,7 @@ import type {
   SubcategoryInsert,
   SubcategoryUpdate,
   PaginationOptions,
+  ExpenseQueryOptions,
   Profile,
 } from "@/lib/types";
 
@@ -103,15 +104,7 @@ export async function deleteSubcategoriesByIds(supabase: Client, ids: string[]) 
 
 export async function getExpenses(
   supabase: Client,
-  options: {
-    startDate?: string;
-    endDate?: string;
-    categoryId?: string;
-    paymentMethod?: string;
-    search?: string;
-    limit?: number;
-    offset?: number;
-  } = {}
+  options: ExpenseQueryOptions = {}
 ) {
   let query = supabase.from("ft_expenses").select("*", { count: "exact" });
 
