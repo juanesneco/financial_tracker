@@ -20,6 +20,12 @@ type PageState = "idle" | "recording" | "transcribing" | "processing";
 
 const MAX_RECORDING_SECONDS = 15;
 
+function formatTime(s: number) {
+  const mins = Math.floor(s / 60);
+  const secs = s % 60;
+  return `${mins}:${secs.toString().padStart(2, "0")}`;
+}
+
 export default function VoiceEntryPage() {
   const router = useRouter();
   const [state, setState] = useState<PageState>("idle");
@@ -178,12 +184,6 @@ export default function VoiceEntryPage() {
     if (!text) return;
     setTextInput("");
     parseTranscript(text);
-  };
-
-  const formatTime = (s: number) => {
-    const mins = Math.floor(s / 60);
-    const secs = s % 60;
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   // Processing / Transcribing state

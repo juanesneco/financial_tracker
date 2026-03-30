@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { Loader2, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
-import { getCards as dalGetCards, insertExpense, updateExpense } from "@/lib/supabase/queries";
+import { getCards, insertExpense, updateExpense } from "@/lib/supabase/queries";
+import type { ExpenseUpdate } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -72,7 +73,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
     if (cardsProp) return;
     async function fetchCards() {
       try {
-        const { data } = await dalGetCards(supabase);
+        const { data } = await getCards(supabase);
         setCards((data || []) as CardType[]);
       } finally {
         setCardsLoading(false);
@@ -83,12 +84,20 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
 
   const categoryId = subcategoryMap.get(subcategoryId)?.categoryId || "";
 
+  const availableCards = isEdit
+    ? cards.filter(c =>
+        !c.deactivated_at ||
+        c.id === cardId ||
+        (c.deactivated_at && date && c.deactivated_at >= date)
+      )
+    : cards.filter(c => !c.deactivated_at);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setReceiptFile(file);
       const reader = new FileReader();
-      reader.onloadend = () => setReceiptPreview(reader.result as string);
+      reader.onloadend = () => { if (typeof reader.result === "string") setReceiptPreview(reader.result); };
       reader.readAsDataURL(file);
     }
   };
@@ -156,23 +165,23 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
         receiptUrl = null;
       }
 
-      if (isEdit) {
+      if (isEdit && expenseId) {
         // Edit mode: update existing expense
-        const updatePayload: Record<string, unknown> = {
+        const updatePayload: ExpenseUpdate = {
           amount: parseFloat(amount),
           category_id: categoryId,
           subcategory_id: subcategoryId,
           date,
           title: title.trim(),
           note: note.trim() || null,
-          payment_method: paymentMethod || null,
+          payment_method: (paymentMethod || null) as "card" | "cash" | null,
           card_id: cardId || null,
         };
         if (receiptUrl !== undefined) {
           updatePayload.receipt_url = receiptUrl;
         }
 
-        const { error } = await updateExpense(supabase, expenseId!, updatePayload as Parameters<typeof updateExpense>[2]);
+        const { error } = await updateExpense(supabase, expenseId, updatePayload);
 
         if (error) {
           console.error("Update error:", error);
@@ -307,32 +316,23 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
       </div>
 
       {/* Card Selector */}
-      {paymentMethod === "card" && (() => {
-        const availableCards = isEdit
-          ? cards.filter(c =>
-              !c.deactivated_at ||
-              c.id === cardId ||
-              (c.deactivated_at && date && c.deactivated_at >= date)
-            )
-          : cards.filter(c => !c.deactivated_at);
-        return availableCards.length > 0 ? (
-          <div className="space-y-2">
-            <Label>Card</Label>
-            <Select value={cardId} onValueChange={setCardId} disabled={isSubmitting}>
-              <SelectTrigger className="w-full h-11 md:h-9">
-                <SelectValue placeholder="Select a card" />
-              </SelectTrigger>
-              <SelectContent>
-                {availableCards.map((card) => (
-                  <SelectItem key={card.id} value={card.id}>
-                    {card.label || `${card.bank} ${card.last_four ? `(${card.last_four})` : ""}`}{card.deactivated_at ? " (inactive)" : ""}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        ) : null;
-      })()}
+      {paymentMethod === "card" && availableCards.length > 0 && (
+        <div className="space-y-2">
+          <Label>Card</Label>
+          <Select value={cardId} onValueChange={setCardId} disabled={isSubmitting}>
+            <SelectTrigger className="w-full h-11 md:h-9">
+              <SelectValue placeholder="Select a card" />
+            </SelectTrigger>
+            <SelectContent>
+              {availableCards.map((card) => (
+                <SelectItem key={card.id} value={card.id}>
+                  {card.label || `${card.bank} ${card.last_four ? `(${card.last_four})` : ""}`}{card.deactivated_at ? " (inactive)" : ""}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
 
       {/* Notes */}
       <div className="space-y-2">
