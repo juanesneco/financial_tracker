@@ -1,9 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { ChevronLeft, Wallet } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -30,14 +29,14 @@ export function Header({ title, showBackButton, backHref }: HeaderProps) {
                 <ChevronLeft size={20} />
               </Link>
             ) : (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-9 w-9 -ml-2"
-              onClick={() => router.back()}
-            >
-              <ChevronLeft size={20} />
-            </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-9 w-9 -ml-2"
+                onClick={() => router.back()}
+              >
+                <ChevronLeft size={20} />
+              </Button>
             )
           ) : (
             <Link href="/" className="flex items-center gap-2">

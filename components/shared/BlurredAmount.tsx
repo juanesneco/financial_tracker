@@ -1,7 +1,9 @@
 "use client";
 
+import type { ReactNode } from "react";
+
 interface BlurredAmountProps {
-  children: React.ReactNode;
+  children: ReactNode;
   revealed: boolean;
   onToggle: () => void;
 }

@@ -27,10 +27,6 @@ export function AddSlideOver({
     onSuccess?.();
   };
 
-  const handleCancel = () => {
-    onOpenChange(false);
-  };
-
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-full sm:max-w-lg overflow-y-auto overflow-x-hidden">
@@ -42,9 +38,9 @@ export function AddSlideOver({
 
         <div className="px-4 pb-6 md:px-6 mt-4">
           {defaultTab === "expense" ? (
-            <ExpenseForm isSheet onSuccess={handleSuccess} onCancel={handleCancel} />
+            <ExpenseForm isSheet onSuccess={handleSuccess} onCancel={() => onOpenChange(false)} />
           ) : (
-            <IncomeForm isSheet onSuccess={handleSuccess} onCancel={handleCancel} />
+            <IncomeForm isSheet onSuccess={handleSuccess} onCancel={() => onOpenChange(false)} />
           )}
         </div>
       </SheetContent>
