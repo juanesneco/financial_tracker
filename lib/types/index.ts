@@ -5,6 +5,7 @@ import type { Database } from "./database";
 type Tables = Database["public"]["Tables"];
 
 export type Profile = Tables["ft_profiles"]["Row"];
+export type ProfileUpdate = Tables["ft_profiles"]["Update"];
 export type Category = Tables["ft_categories"]["Row"];
 export type Subcategory = Tables["ft_subcategories"]["Row"];
 export type Expense = Tables["ft_expenses"]["Row"];

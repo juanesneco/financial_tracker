@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type {
   Profile,
+  ProfileUpdate,
   ExpenseInsert,
   ExpenseUpdate,
   DepositInsert,
@@ -31,7 +32,7 @@ export async function getProfile(supabase: Client, userId: string) {
   return supabase.from("ft_profiles").select("*").eq("id", userId).single();
 }
 
-export async function updateProfile(supabase: Client, userId: string, updates: Partial<Profile>) {
+export async function updateProfile(supabase: Client, userId: string, updates: ProfileUpdate) {
   return supabase.from("ft_profiles").update(updates).eq("id", userId);
 }
 
