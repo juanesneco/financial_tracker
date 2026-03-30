@@ -50,6 +50,11 @@ export interface DateRange {
   end: string;   // YYYY-MM-DD
 }
 
+export interface MonthYear {
+  month: number; // 0-11
+  year: number;
+}
+
 export interface PaginationOptions {
   startDate?: string;
   endDate?: string;
@@ -61,11 +66,6 @@ export interface ExpenseQueryOptions extends PaginationOptions {
   categoryId?: string;
   paymentMethod?: PaymentMethod;
   search?: string;
-}
-
-export interface MonthYear {
-  month: number; // 0-11
-  year: number;
 }
 
 export interface CategoryTotal {
