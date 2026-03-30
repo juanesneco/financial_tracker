@@ -27,7 +27,7 @@ export function ExpenseRow({ expense, category }: ExpenseRowProps) {
         {expense.payment_method === "card" && <CreditCard size={12} className="text-muted-foreground" />}
         {expense.payment_method === "cash" && <Banknote size={12} className="text-muted-foreground" />}
         <p className="text-sm font-semibold tabular-nums">
-          {formatCurrency(Number(expense.amount))}
+          {formatCurrency(expense.amount)}
         </p>
       </div>
     </Link>
