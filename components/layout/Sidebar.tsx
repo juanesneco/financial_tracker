@@ -20,13 +20,13 @@ const navItems = [
 
 export function Sidebar() {
   const pathname = usePathname();
-  const supabase = createClient();
   const [displayName, setDisplayName] = useState<string | null>(null);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [isJuanes, setIsJuanes] = useState(false);
 
   useEffect(() => {
     async function getUser() {
+      const supabase = createClient();
       const { data: { user: authUser } } = await supabase.auth.getUser();
       if (authUser) {
         const { data: profile } = await getProfile(supabase, authUser.id);
@@ -41,7 +41,7 @@ export function Sidebar() {
       }
     }
     getUser();
-  }, [supabase]);
+  }, []);
 
   return (
     <aside className="hidden lg:flex flex-col w-64 border-r bg-background/80 backdrop-blur-xl h-screen sticky top-0">
