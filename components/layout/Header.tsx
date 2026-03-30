@@ -29,14 +29,14 @@ export function Header({ title, showBackButton, backHref }: HeaderProps) {
                 <ChevronLeft size={20} />
               </Link>
             ) : (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-9 w-9 -ml-2"
-              onClick={() => router.back()}
-            >
-              <ChevronLeft size={20} />
-            </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-9 w-9 -ml-2"
+                onClick={() => router.back()}
+              >
+                <ChevronLeft size={20} />
+              </Button>
             )
           ) : (
             <Link href="/" className="flex items-center gap-2">
