@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { createClient } from "@/lib/supabase/server";
 import { getVisibleCategoriesWithSubs } from "@/lib/supabase/queries";
+import type { Category, Subcategory } from "@/lib/types";
 
 export const maxDuration = 30;
 
@@ -36,16 +37,16 @@ export async function POST(request: Request) {
 
     const categories = catsRes.data || [];
     const subcategories = subsRes.data || [];
-    const hiddenIds = new Set((hiddenRes.data || []).map((r: { category_id: string }) => r.category_id));
+    const hiddenIds = new Set((hiddenRes.data || []).map((r) => r.category_id));
 
     // Build subcategory list scoped to visible categories
     const visibleCategories = categories.filter(
-      (c: { id: string; is_displayed?: boolean }) => c.is_displayed !== false && !hiddenIds.has(c.id)
+      (c: Category) => c.is_displayed !== false && !hiddenIds.has(c.id)
     );
 
-    const subcategoryList = visibleCategories.flatMap((cat: { id: string; name: string; emoji?: string; icon?: string }) => {
-      const subs = subcategories.filter((s: { category_id: string }) => s.category_id === cat.id);
-      return subs.map((s: { id: string; name: string }) => ({
+    const subcategoryList = visibleCategories.flatMap((cat: Category) => {
+      const subs = subcategories.filter((s: Subcategory) => s.category_id === cat.id);
+      return subs.map((s: Subcategory) => ({
         id: s.id,
         category: cat.name,
         subcategory: s.name,
