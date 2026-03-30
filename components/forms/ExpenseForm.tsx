@@ -6,7 +6,6 @@ import { Loader2, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import { getCards, insertExpense, updateExpense } from "@/lib/supabase/queries";
-import type { ExpenseUpdate } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import type { Card as CardType } from "@/lib/types";
+import type { Card as CardType, ExpenseUpdate } from "@/lib/types";
 import { useCategories } from "@/hooks/useCategories";
 import { CategoryCombobox } from "@/components/forms/CategoryCombobox";
 
@@ -74,7 +73,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
     async function fetchCards() {
       try {
         const { data } = await getCards(supabase);
-        setCards((data || []) as CardType[]);
+        setCards(data || []);
       } finally {
         setCardsLoading(false);
       }
@@ -131,6 +130,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { toast.error("Not authenticated"); return; }
 
+      const paymentMethodValue = (paymentMethod || null) as "card" | "cash" | null;
       // Handle receipt upload (shared between create and edit)
       let receiptUrl: string | null | undefined = isEdit ? undefined : null;
       if (receiptFile) {
@@ -181,6 +181,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
           updatePayload.receipt_url = receiptUrl;
         }
 
+        if (!expenseId) { toast.error("Expense ID missing"); return; }
         const { error } = await updateExpense(supabase, expenseId, updatePayload);
 
         if (error) {
@@ -201,7 +202,7 @@ export function ExpenseForm({ onSuccess, onCancel, isSheet, defaultValues, mode 
           date,
           title: title.trim(),
           note: note.trim() || null,
-          payment_method: (paymentMethod || null) as "card" | "cash" | null,
+          payment_method: paymentMethodValue,
           card_id: cardId || null,
           receipt_url: receiptUrl as string | null,
         });

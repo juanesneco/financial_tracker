@@ -61,12 +61,11 @@ export default function ExpenseDetailPage() {
           return;
         }
 
-        const e = exp as Expense;
-        setExpense(e);
-        setCards((userCards || []) as CardType[]);
+        setExpense(exp);
+        setCards(userCards || []);
 
-        if (e.receipt_url) {
-          const { data: urlData } = supabase.storage.from("receipts").getPublicUrl(e.receipt_url);
+        if (exp.receipt_url) {
+          const { data: urlData } = supabase.storage.from("receipts").getPublicUrl(exp.receipt_url);
           setReceiptPreviewUrl(urlData.publicUrl);
         }
       } finally {
@@ -76,10 +75,6 @@ export default function ExpenseDetailPage() {
 
     fetchData();
   }, [supabase, expenseId, router]);
-
-  const getCategoryById = (id: string) => categories.find(c => c.id === id);
-  const getSubcategoryById = (id: string) => subcategories.find(s => s.id === id);
-  const getCardById = (id: string) => cards.find(c => c.id === id);
 
   const handleDelete = async () => {
     if (!confirm("Are you sure you want to delete this expense?")) return;
@@ -112,9 +107,9 @@ export default function ExpenseDetailPage() {
 
   if (!expense) return null;
 
-  const cat = getCategoryById(expense.category_id);
-  const sub = expense.subcategory_id ? getSubcategoryById(expense.subcategory_id) : null;
-  const card = expense.card_id ? getCardById(expense.card_id) : null;
+  const cat = categories.find(c => c.id === expense.category_id);
+  const sub = expense.subcategory_id ? subcategories.find(s => s.id === expense.subcategory_id) : null;
+  const card = expense.card_id ? cards.find(c => c.id === expense.card_id) : null;
 
   if (isEditing) {
     return (
@@ -142,10 +137,9 @@ export default function ExpenseDetailPage() {
                 setIsEditing(false);
                 const { data: updated } = await getExpenseById(supabase, expenseId);
                 if (updated) {
-                  const u = updated as Expense;
-                  setExpense(u);
-                  if (u.receipt_url) {
-                    const { data: urlData } = supabase.storage.from("receipts").getPublicUrl(u.receipt_url);
+                  setExpense(updated);
+                  if (updated.receipt_url) {
+                    const { data: urlData } = supabase.storage.from("receipts").getPublicUrl(updated.receipt_url);
                     setReceiptPreviewUrl(urlData.publicUrl);
                   } else {
                     setReceiptPreviewUrl(null);

@@ -55,13 +55,13 @@ export default function ExpensesPage() {
         startDate: startDate || undefined,
         endDate: endDate || undefined,
         categoryId: categoryFilter || undefined,
-        paymentMethod: paymentFilter || undefined,
+        paymentMethod: (paymentFilter || undefined) as "card" | "cash" | undefined,
         search: debouncedSearch || undefined,
         limit: PAGE_SIZE,
         offset: page * PAGE_SIZE,
       });
 
-      setExpenses((data || []) as Expense[]);
+      setExpenses(data || []);
       setTotalCount(count || 0);
     } finally {
       setIsLoading(false);
