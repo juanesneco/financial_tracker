@@ -18,6 +18,15 @@ const navItems = [
   { href: "/settings", icon: Settings, label: "Settings" },
 ];
 
+function navLinkClass(isActive: boolean): string {
+  return cn(
+    "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors",
+    isActive
+      ? "bg-primary text-primary-foreground"
+      : "text-muted-foreground hover:bg-muted hover:text-foreground"
+  );
+}
+
 export function Sidebar() {
   const pathname = usePathname();
   const [displayName, setDisplayName] = useState<string | null>(null);
@@ -60,16 +69,7 @@ export function Sidebar() {
         {navItems.map((item) => {
           const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href + "/"));
           return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors",
-                isActive
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
-              )}
-            >
+            <Link key={item.href} href={item.href} className={navLinkClass(isActive)}>
               <item.icon size={20} />
               {item.label}
             </Link>
@@ -78,15 +78,7 @@ export function Sidebar() {
 
         {/* Juanes tab — only visible to Juanes */}
         {isJuanes && (
-          <Link
-            href="/juanes"
-            className={cn(
-              "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors",
-              pathname === "/juanes" || pathname.startsWith("/juanes/")
-                ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
-            )}
-          >
+          <Link href="/juanes" className={navLinkClass(pathname === "/juanes" || pathname.startsWith("/juanes/"))}>
             <ArrowDownCircle size={20} />
             Juanes
           </Link>
@@ -94,15 +86,7 @@ export function Sidebar() {
 
         {/* Admin-only nav items */}
         {isSuperAdmin && (
-          <Link
-            href="/design-kit"
-            className={cn(
-              "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors",
-              pathname === "/design-kit" || pathname.startsWith("/design-kit/")
-                ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
-            )}
-          >
+          <Link href="/design-kit" className={navLinkClass(pathname === "/design-kit" || pathname.startsWith("/design-kit/"))}>
             <Palette size={20} />
             Design Kit
           </Link>
