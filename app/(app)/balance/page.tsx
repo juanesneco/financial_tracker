@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
-import { Loader2, TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight, Search, Receipt, DollarSign, Filter, X } from "lucide-react";
+import { Loader2, TrendingUp, TrendingDown, ArrowDownRight, Search, Receipt, DollarSign, Filter, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -29,7 +29,7 @@ import {
 import { AddSlideOver } from "@/components/shared/AddSlideOver";
 import { useResponsiveAdd } from "@/hooks/useResponsiveAdd";
 import { useCategories } from "@/hooks/useCategories";
-import type { Expense, Category, IncomeRecord, IncomeSource } from "@/lib/types";
+import type { Expense, Category, IncomeRecord, IncomeSource, PaymentMethod } from "@/lib/types";
 
 const PAGE_SIZE = 50;
 
@@ -41,7 +41,7 @@ type BalanceEntry = {
   date: string;
   category?: Category;
   source?: IncomeSource;
-  paymentMethod?: string | null;
+  paymentMethod?: PaymentMethod | null;
 };
 
 export default function BalancePage() {
@@ -53,7 +53,6 @@ export default function BalancePage() {
   const [entries, setEntries] = useState<BalanceEntry[]>([]);
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpenses, setTotalExpenses] = useState(0);
-  const [categories, setCategories] = useState<Category[]>([]);
 
   // Slide-over
   const [slideOverOpen, setSlideOverOpen] = useState(false);
@@ -61,7 +60,7 @@ export default function BalancePage() {
 
   // Month selector (defaults to current month)
   const [now] = useState(() => new Date());
-  const [selectedMonth, setSelectedMonth] = useState<number | null>(now.getMonth());
+  const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
   const [selectedYear, setSelectedYear] = useState(now.getFullYear());
 
   // Filters
@@ -100,18 +99,18 @@ export default function BalancePage() {
       if (filtersActive) {
         dateStart = startDate || null;
         dateEnd = endDate || null;
-      } else if (selectedMonth !== null) {
+      } else {
         const range = getMonthDateRange(selectedMonth, selectedYear);
         dateStart = range.start;
         dateEnd = range.end;
       }
 
       // Helper to fetch all rows (PostgREST caps at 1000 per request)
-      const fetchAllPages = async (
-        fetcher: (opts: { startDate?: string; endDate?: string; limit?: number; offset?: number }) => Promise<{ data: unknown[] | null }>
-      ) => {
+      const fetchAllPages = async <T,>(
+        fetcher: (opts: { startDate?: string; endDate?: string; limit?: number; offset?: number }) => Promise<{ data: T[] | null }>
+      ): Promise<T[]> => {
         const PAGE = 1000;
-        let allRows: unknown[] = [];
+        let allRows: T[] = [];
         let from = 0;
         while (true) {
           const { data } = await fetcher({
@@ -130,33 +129,38 @@ export default function BalancePage() {
 
       const [catsRes, expenses, incomeRecords, sourcesRes] = await Promise.all([
         getCategories(supabase),
-        fetchAllPages((opts) => getExpenses(supabase, opts)) as Promise<Expense[]>,
-        fetchAllPages((opts) => getIncomeRecords(supabase, opts)) as Promise<IncomeRecord[]>,
+        fetchAllPages<Expense>((opts) => getExpenses(supabase, opts)),
+        fetchAllPages<IncomeRecord>((opts) => getIncomeRecords(supabase, opts)),
         getIncomeSources(supabase),
       ]);
 
-      const cats = (catsRes.data || []) as Category[];
-      setCategories(cats);
-      const sources = (sourcesRes.data || []) as IncomeSource[];
+      const cats = catsRes.data || [];
+      const sources = sourcesRes.data || [];
 
       let combined: BalanceEntry[] = [
-        ...incomeRecords.map((r) => ({
-          id: r.id,
-          type: "income" as const,
-          amount: Number(r.amount),
-          title: r.description || sources.find((s) => s.id === r.income_source_id)?.source_name || "Income",
-          date: r.date,
-          source: sources.find((s) => s.id === r.income_source_id),
-        })),
-        ...expenses.map((e) => ({
-          id: e.id,
-          type: "expense" as const,
-          amount: Number(e.amount),
-          title: e.title || e.note || cats.find((c) => c.id === e.category_id)?.name || "Expense",
-          date: e.date,
-          category: cats.find((c) => c.id === e.category_id),
-          paymentMethod: e.payment_method,
-        })),
+        ...incomeRecords.map((r) => {
+          const source = sources.find((s) => s.id === r.income_source_id);
+          return {
+            id: r.id,
+            type: "income" as const,
+            amount: Number(r.amount),
+            title: r.description || source?.source_name || "Income",
+            date: r.date,
+            source,
+          };
+        }),
+        ...expenses.map((e) => {
+          const category = cats.find((c) => c.id === e.category_id);
+          return {
+            id: e.id,
+            type: "expense" as const,
+            amount: Number(e.amount),
+            title: e.title || e.note || category?.name || "Expense",
+            date: e.date,
+            category,
+            paymentMethod: e.payment_method,
+          };
+        }),
       ];
 
       // Apply filters
@@ -202,8 +206,8 @@ export default function BalancePage() {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      (intersections) => {
+        intersections.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
             observer.unobserve(entry.target);
@@ -217,13 +221,11 @@ export default function BalancePage() {
   }, [isLoading]);
 
   const goToPreviousMonth = () => {
-    if (selectedMonth === null) { setSelectedMonth(now.getMonth()); setSelectedYear(now.getFullYear()); return; }
     if (selectedMonth === 0) { setSelectedMonth(11); setSelectedYear(selectedYear - 1); }
     else setSelectedMonth(selectedMonth - 1);
   };
 
   const goToNextMonth = () => {
-    if (selectedMonth === null) { setSelectedMonth(now.getMonth()); setSelectedYear(now.getFullYear()); return; }
     if (selectedMonth === 11) { setSelectedMonth(0); setSelectedYear(selectedYear + 1); }
     else setSelectedMonth(selectedMonth + 1);
   };
@@ -244,7 +246,7 @@ export default function BalancePage() {
   const paginatedEntries = entries.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
   // Group paginated entries by date
-  const entriesByDate = paginatedEntries.reduce((groups: Record<string, BalanceEntry[]>, entry) => {
+  const entriesByDate = paginatedEntries.reduce<Record<string, BalanceEntry[]>>((groups, entry) => {
     if (!groups[entry.date]) groups[entry.date] = [];
     groups[entry.date].push(entry);
     return groups;
@@ -271,7 +273,7 @@ export default function BalancePage() {
             <div className="flex items-center justify-between">
               <Button variant="ghost" size="sm" onClick={goToPreviousMonth}>&larr;</Button>
               <span className="text-sm font-medium">
-                {selectedMonth !== null ? formatMonthYear(selectedMonth, selectedYear) : "All Time"}
+                {formatMonthYear(selectedMonth, selectedYear)}
               </span>
               <Button variant="ghost" size="sm" onClick={goToNextMonth}>&rarr;</Button>
             </div>
