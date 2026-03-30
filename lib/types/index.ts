@@ -5,7 +5,6 @@ import type { Database } from "./database";
 type Tables = Database["public"]["Tables"];
 
 export type Profile = Tables["ft_profiles"]["Row"];
-export type ProfileUpdate = Tables["ft_profiles"]["Update"];
 export type Category = Tables["ft_categories"]["Row"];
 export type Subcategory = Tables["ft_subcategories"]["Row"];
 export type Expense = Tables["ft_expenses"]["Row"];
@@ -31,6 +30,7 @@ export type SubcategoryInsert = Tables["ft_subcategories"]["Insert"];
 
 // ─── Update Types ────────────────────────────────────────────────────────────
 
+export type ProfileUpdate = Tables["ft_profiles"]["Update"];
 export type ExpenseUpdate = Tables["ft_expenses"]["Update"];
 export type CardUpdate = Tables["ft_cards"]["Update"];
 export type SubscriptionUpdate = Tables["ft_subscriptions"]["Update"];
