@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Loader2, Plus, Trash2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { getDeposits, insertDeposit, deleteDeposit } from "@/lib/supabase/queries";
@@ -27,13 +27,13 @@ export default function DepositsPage() {
   const [date, setDate] = useState(format(new Date(), "yyyy-MM-dd"));
   const [note, setNote] = useState("");
 
-  async function fetchDeposits() {
+  const fetchDeposits = useCallback(async () => {
     const { data } = await getDeposits(supabase, { limit: 100 });
-    setDeposits((data || []) as Deposit[]);
+    setDeposits(data || []);
     setIsLoading(false);
-  }
+  }, [supabase]);
 
-  useEffect(() => { fetchDeposits(); }, [supabase]);
+  useEffect(() => { fetchDeposits(); }, [fetchDeposits]);
 
   const totalDeposits = deposits.reduce((sum, d) => sum + Number(d.amount), 0);
 
