@@ -26,9 +26,8 @@ export type BudgetInsert = Tables["ft_budgets"]["Insert"];
 export type IncomeSourceInsert = Tables["ft_income_sources"]["Insert"];
 export type IncomeRecordInsert = Tables["ft_income_records"]["Insert"];
 export type CategoryInsert = Tables["ft_categories"]["Insert"];
-export type CategoryUpdate = Tables["ft_categories"]["Update"];
 export type SubcategoryInsert = Tables["ft_subcategories"]["Insert"];
-export type SubcategoryUpdate = Tables["ft_subcategories"]["Update"];
+
 // ─── Update Types ────────────────────────────────────────────────────────────
 
 export type ExpenseUpdate = Tables["ft_expenses"]["Update"];
@@ -37,6 +36,8 @@ export type SubscriptionUpdate = Tables["ft_subscriptions"]["Update"];
 export type BudgetUpdate = Tables["ft_budgets"]["Update"];
 export type IncomeSourceUpdate = Tables["ft_income_sources"]["Update"];
 export type IncomeRecordUpdate = Tables["ft_income_records"]["Update"];
+export type CategoryUpdate = Tables["ft_categories"]["Update"];
+export type SubcategoryUpdate = Tables["ft_subcategories"]["Update"];
 
 // ─── App Types ───────────────────────────────────────────────────────────────
 
