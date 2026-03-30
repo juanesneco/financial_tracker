@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { Loader2, Plus, CreditCard, Banknote, Receipt, DollarSign, Mic, Camera } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { getProfile, getCategories, getExpenses, getDeposits, getIncomeRecords } from "@/lib/supabase/queries";
+import { getProfile, getCategories, getExpenses, getIncomeRecords } from "@/lib/supabase/queries";
 import { formatCurrency, formatDateShort, getMonthDateRange, formatMonthYear } from "@/lib/format-utils";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -13,20 +13,18 @@ import { Button } from "@/components/ui/button";
 import { AddSlideOver } from "@/components/shared/AddSlideOver";
 import { BlurredAmount } from "@/components/shared/BlurredAmount";
 import { useResponsiveAdd } from "@/hooks/useResponsiveAdd";
-import type { Expense, Category, Deposit, IncomeRecord, CategoryTotal } from "@/lib/types";
+import type { Expense, Category, CategoryTotal } from "@/lib/types";
 
 export default function DashboardPage() {
-  const supabase = createClient();
+  const supabaseRef = useRef(createClient());
+  const supabase = supabaseRef.current;
   const router = useRouter();
   const { isDesktop } = useResponsiveAdd();
   const [isLoading, setIsLoading] = useState(true);
   const [displayName, setDisplayName] = useState<string>("");
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [deposits, setDeposits] = useState<Deposit[]>([]);
-  const [incomeRecords, setIncomeRecords] = useState<IncomeRecord[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [monthlyTotal, setMonthlyTotal] = useState(0);
-  const [depositsTotal, setDepositsTotal] = useState(0);
   const [incomeTotal, setIncomeTotal] = useState(0);
   const [categoryTotals, setCategoryTotals] = useState<CategoryTotal[]>([]);
 
@@ -38,9 +36,8 @@ export default function DashboardPage() {
   const [slideOverTab, setSlideOverTab] = useState<"expense" | "income">("expense");
 
   // Month/year selector
-  const now = new Date();
-  const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
-  const [selectedYear, setSelectedYear] = useState(now.getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState(() => new Date().getMonth());
+  const [selectedYear, setSelectedYear] = useState(() => new Date().getFullYear());
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
@@ -48,39 +45,27 @@ export default function DashboardPage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { data: profile } = await getProfile(supabase, user.id);
-
-      setDisplayName(
-        profile?.display_name ||
-        user.email?.split("@")[0] || "there"
-      );
-
-      const { data: cats } = await getCategories(supabase);
-
-      setCategories(cats || []);
-
       const { start, end } = getMonthDateRange(selectedMonth, selectedYear);
 
-      const { data: monthExpenses } = await getExpenses(supabase, { startDate: start, endDate: end });
+      const [{ data: profile }, { data: cats }, { data: monthExpenses }, { data: monthIncome }] = await Promise.all([
+        getProfile(supabase, user.id),
+        getCategories(supabase),
+        getExpenses(supabase, { startDate: start, endDate: end }),
+        getIncomeRecords(supabase, { startDate: start, endDate: end }),
+      ]);
 
-      const exps = (monthExpenses || []) as Expense[];
+      setDisplayName(profile?.display_name || user.email?.split("@")[0] || "there");
+
+      const catList = cats || [];
+      setCategories(catList);
+
+      const exps = monthExpenses || [];
       setExpenses(exps);
 
-      const { data: monthDeposits } = await getDeposits(supabase, { startDate: start, endDate: end });
-
-      const deps = (monthDeposits || []) as Deposit[];
-      setDeposits(deps);
-
-      const { data: monthIncome } = await getIncomeRecords(supabase, { startDate: start, endDate: end });
-
-      const incRecs = (monthIncome || []) as IncomeRecord[];
-      setIncomeRecords(incRecs);
+      const incRecs = monthIncome || [];
 
       const expTotal = exps.reduce((sum, e) => sum + Number(e.amount), 0);
       setMonthlyTotal(expTotal);
-
-      const depTotal = deps.reduce((sum, d) => sum + Number(d.amount), 0);
-      setDepositsTotal(depTotal);
 
       const incTotal = incRecs.reduce((sum, r) => sum + Number(r.amount), 0);
       setIncomeTotal(incTotal);
@@ -93,7 +78,7 @@ export default function DashboardPage() {
 
       const catTotals: CategoryTotal[] = [];
       catMap.forEach(({ total, count }, catId) => {
-        const cat = (cats || []).find((c: Category) => c.id === catId);
+        const cat = catList.find((c) => c.id === catId);
         if (cat) catTotals.push({ category: cat, total, count });
       });
       catTotals.sort((a, b) => b.total - a.total);
@@ -165,6 +150,8 @@ export default function DashboardPage() {
   }, {});
 
   const getCategoryById = (id: string) => categories.find(c => c.id === id);
+
+  const netTotal = incomeTotal - monthlyTotal;
 
   if (isLoading) {
     return (
@@ -266,13 +253,13 @@ export default function DashboardPage() {
                 </div>
               </CardContent>
             </Card>
-            <Card className={`min-w-0 overflow-hidden ${incomeTotal - monthlyTotal >= 0 ? "border-emerald-200 dark:border-emerald-800" : "border-red-200 dark:border-red-800"}`}>
+            <Card className={`min-w-0 overflow-hidden ${netTotal >= 0 ? "border-emerald-200 dark:border-emerald-800" : "border-red-200 dark:border-red-800"}`}>
               <CardContent className="pt-5 pb-4 min-w-0">
                 <p className="text-xs text-muted-foreground mb-1">Net</p>
                 <div className="min-w-0 w-full overflow-hidden">
                   <BlurredAmount revealed={totalsRevealed} onToggle={() => setTotalsRevealed(!totalsRevealed)}>
-                    <p className={`currency-display text-xs sm:text-sm md:text-lg font-serif font-semibold ${incomeTotal - monthlyTotal >= 0 ? "text-emerald-600" : "text-red-500"}`}>
-                      {incomeTotal - monthlyTotal >= 0 ? "+" : ""}{formatCurrency(incomeTotal - monthlyTotal)}
+                    <p className={`currency-display text-xs sm:text-sm md:text-lg font-serif font-semibold ${netTotal >= 0 ? "text-emerald-600" : "text-red-500"}`}>
+                      {netTotal >= 0 ? "+" : ""}{formatCurrency(netTotal)}
                     </p>
                   </BlurredAmount>
                 </div>
