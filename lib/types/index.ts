@@ -50,6 +50,13 @@ export interface DateRange {
   end: string;   // YYYY-MM-DD
 }
 
+export interface PaginationOptions {
+  startDate?: string;
+  endDate?: string;
+  limit?: number;
+  offset?: number;
+}
+
 export interface MonthYear {
   month: number; // 0-11
   year: number;

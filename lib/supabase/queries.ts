@@ -17,6 +17,7 @@ import type {
   CategoryUpdate,
   SubcategoryInsert,
   SubcategoryUpdate,
+  PaginationOptions,
   Profile,
 } from "@/lib/types";
 
@@ -171,7 +172,7 @@ export async function deleteExpense(supabase: Client, id: string) {
 
 export async function getDeposits(
   supabase: Client,
-  options: { startDate?: string; endDate?: string; limit?: number; offset?: number } = {}
+  options: PaginationOptions = {}
 ) {
   let query = supabase.from("ft_deposits").select("*", { count: "exact" });
 
@@ -284,7 +285,7 @@ export async function deleteIncomeSource(supabase: Client, id: string) {
 
 export async function getIncomeRecords(
   supabase: Client,
-  options: { startDate?: string; endDate?: string; limit?: number; offset?: number } = {}
+  options: PaginationOptions = {}
 ) {
   let query = supabase.from("ft_income_records").select("*", { count: "exact" });
 
