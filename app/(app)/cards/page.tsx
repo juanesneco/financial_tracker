@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Loader2, Plus, Trash2, CreditCard, Banknote, Power, PowerOff } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { getCards, insertCard, updateCard, deleteCard, getActiveSubscriptions } from "@/lib/supabase/queries";
@@ -19,32 +19,32 @@ import {
 import { toast } from "sonner";
 import type { Card as CardType, Subscription } from "@/lib/types";
 
-const isCardActive = (card: CardType) => !card.deactivated_at;
+const isCardActive = (card: CardType): boolean => !card.deactivated_at;
+const capitalizeFirst = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
 
-export default function CardsPage() {
-  const supabase = createClient();
+export default function CardsPage(): React.JSX.Element {
+  const supabase = useMemo(() => createClient(), []);
   const [isLoading, setIsLoading] = useState(true);
   const [cards, setCards] = useState<CardType[]>([]);
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  // Form
   const [bank, setBank] = useState("");
   const [lastFour, setLastFour] = useState("");
   const [cardType, setCardType] = useState("");
 
-  async function fetchData() {
+  const fetchData = useCallback(async () => {
     const [cardsRes, subsRes] = await Promise.all([
       getCards(supabase),
       getActiveSubscriptions(supabase),
     ]);
-    setCards((cardsRes.data || []) as CardType[]);
-    setSubscriptions((subsRes.data || []) as Subscription[]);
+    setCards(cardsRes.data || []);
+    setSubscriptions(subsRes.data || []);
     setIsLoading(false);
-  }
+  }, [supabase]);
 
-  useEffect(() => { fetchData(); }, [supabase]);
+  useEffect(() => { fetchData(); }, [fetchData]);
 
   const getActiveSubCount = (cardId: string) =>
     subscriptions.filter(s => s.card_id === cardId).length;
@@ -57,7 +57,7 @@ export default function CardsPage() {
       if (!user) return;
 
       const validType = cardType === "credit" || cardType === "debit" ? cardType : null;
-      const label = [bank, validType ? validType.charAt(0).toUpperCase() + validType.slice(1) : null, lastFour ? `(${lastFour})` : null].filter(Boolean).join(" ");
+      const label = [bank, validType ? capitalizeFirst(validType) : null, lastFour ? `(${lastFour})` : null].filter(Boolean).join(" ");
 
       const { error } = await insertCard(supabase, {
         user_id: user.id, bank, last_four: lastFour || null, card_type: validType, label,
@@ -112,8 +112,8 @@ export default function CardsPage() {
     );
   }
 
-  const activeCards = cards.filter(isCardActive);
-  const inactiveCards = cards.filter(c => !isCardActive(c));
+  const activeCount = cards.filter(isCardActive).length;
+  const inactiveCount = cards.length - activeCount;
 
   return (
     <>
@@ -122,7 +122,7 @@ export default function CardsPage() {
         <div className="max-w-lg lg:max-w-full mx-auto p-4 md:p-6 space-y-4">
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
-              {activeCards.length} active{inactiveCards.length > 0 ? `, ${inactiveCards.length} inactive` : ""}
+              {activeCount} active{inactiveCount > 0 ? `, ${inactiveCount} inactive` : ""}
             </p>
             <Button size="sm" onClick={() => setShowForm(!showForm)}>
               <Plus size={16} /> Add Card
@@ -180,7 +180,7 @@ export default function CardsPage() {
                       </div>
                       <div className="flex items-center gap-2">
                         <p className="text-xs text-muted-foreground">
-                          {card.card_type ? card.card_type.charAt(0).toUpperCase() + card.card_type.slice(1) : "Card"}
+                          {card.card_type ? capitalizeFirst(card.card_type) : "Card"}
                           {card.last_four ? ` ending in ${card.last_four}` : ""}
                         </p>
                         {subCount > 0 && (
@@ -242,7 +242,7 @@ export default function CardsPage() {
                             </div>
                           </TableCell>
                           <TableCell className="text-muted-foreground">
-                            {card.card_type ? card.card_type.charAt(0).toUpperCase() + card.card_type.slice(1) : "—"}
+                            {card.card_type ? capitalizeFirst(card.card_type) : "—"}
                           </TableCell>
                           <TableCell className="tabular-nums text-muted-foreground">
                             {card.last_four || "—"}
