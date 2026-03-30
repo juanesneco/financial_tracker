@@ -16,7 +16,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend,
 } from "recharts";
 import { BlurredAmount } from "@/components/shared/BlurredAmount";
-import type { Expense, Category, CategoryTotal } from "@/lib/types";
+import type { Expense, CategoryTotal } from "@/lib/types";
 
 const CHART_COLORS = [
   "#0d4ea6", "#D4915E", "#E57373", "#64B5F6", "#81C784",
@@ -38,6 +38,11 @@ interface MonthlyData {
   month: number;
   income: number;
   expenses: number;
+}
+
+interface TrendDataPoint {
+  month: string;
+  total: number;
 }
 
 export default function StatisticsPage() {
@@ -63,9 +68,8 @@ export default function StatisticsPage() {
   // Month detail data
   const [monthLoading, setMonthLoading] = useState(false);
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [categoryTotals, setCategoryTotals] = useState<CategoryTotal[]>([]);
-  const [trendData, setTrendData] = useState<{ month: string; total: number }[]>([]);
+  const [trendData, setTrendData] = useState<TrendDataPoint[]>([]);
 
   // ─── Fetch valid year range on mount ─────────────────────────────────────────
   useEffect(() => {
@@ -80,7 +84,7 @@ export default function StatisticsPage() {
       const dates = [
         oldestExp?.[0]?.date, oldestInc?.[0]?.date,
         newestExp?.[0]?.date, newestInc?.[0]?.date,
-      ].filter(Boolean).map((d: string) => new Date(d + "T00:00:00").getFullYear());
+      ].filter((d): d is string => Boolean(d)).map((d) => new Date(d + "T00:00:00").getFullYear());
 
       if (dates.length > 0) {
         setMinYear(Math.min(...dates));
@@ -103,8 +107,8 @@ export default function StatisticsPage() {
           getIncomeRecords(supabase, { startDate: start, endDate: end }),
         ]);
 
-        const expenses = (expData || []).reduce((sum: number, r: { amount: number }) => sum + Number(r.amount), 0);
-        const income = (incData || []).reduce((sum: number, r: { amount: number }) => sum + Number(r.amount), 0);
+        const expenses = (expData ?? []).reduce((sum, r) => sum + Number(r.amount), 0);
+        const income = (incData ?? []).reduce((sum, r) => sum + Number(r.amount), 0);
 
         return { month: m, income, expenses };
       });
@@ -120,12 +124,11 @@ export default function StatisticsPage() {
     setMonthLoading(true);
     try {
       const { data: cats } = await getCategories(supabase);
-      setCategories((cats || []) as Category[]);
 
       const { start, end } = getMonthDateRange(selectedMonth, selectedYear);
       const { data: exps } = await getExpenses(supabase, { startDate: start, endDate: end });
 
-      const expenseList = (exps || []) as Expense[];
+      const expenseList = exps ?? [];
       setExpenses(expenseList);
 
       // Category totals
@@ -137,26 +140,23 @@ export default function StatisticsPage() {
 
       const totals: CategoryTotal[] = [];
       catMap.forEach(({ total, count }, catId) => {
-        const cat = (cats || []).find((c: Category) => c.id === catId);
+        const cat = (cats ?? []).find((c) => c.id === catId);
         if (cat) totals.push({ category: cat, total, count });
       });
       totals.sort((a, b) => b.total - a.total);
       setCategoryTotals(totals);
 
       // 6-month trend
-      const months = [];
-      for (let i = 5; i >= 0; i--) {
-        let m = selectedMonth - i;
-        let y = selectedYear;
-        while (m < 0) { m += 12; y--; }
-        months.push({ month: m, year: y });
-      }
+      const months = Array.from({ length: 6 }, (_, i) => {
+        const d = new Date(selectedYear, selectedMonth - (5 - i));
+        return { month: d.getMonth(), year: d.getFullYear() };
+      });
 
       const trendPromises = months.map(async ({ month, year }) => {
         const { start: s, end: e } = getMonthDateRange(month, year);
         const { data } = await getExpenses(supabase, { startDate: s, endDate: e });
 
-        const total = (data || []).reduce((sum: number, row: { amount: number }) => sum + Number(row.amount), 0);
+        const total = (data ?? []).reduce((sum, row) => sum + Number(row.amount), 0);
         const monthName = new Date(year, month).toLocaleDateString("en", { month: "short" });
         return { month: monthName, total };
       });
