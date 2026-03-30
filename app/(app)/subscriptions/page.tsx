@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Loader2, Plus, Trash2, Pencil, ArrowUpDown } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { getSubscriptions, insertSubscription, updateSubscription, deleteSubscription, getCards } from "@/lib/supabase/queries";
@@ -33,7 +33,7 @@ import { toast } from "sonner";
 import type { Subscription, Card as CardType } from "@/lib/types";
 
 export default function SubscriptionsPage() {
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
   const [isLoading, setIsLoading] = useState(true);
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [cards, setCards] = useState<CardType[]>([]);
@@ -57,21 +57,27 @@ export default function SubscriptionsPage() {
   const [editCardId, setEditCardId] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
 
-  async function fetchData() {
+  const fetchData = useCallback(async () => {
     const [subsRes, cardsRes] = await Promise.all([
       getSubscriptions(supabase),
       getCards(supabase),
     ]);
-    setSubscriptions((subsRes.data || []) as Subscription[]);
-    setCards((cardsRes.data || []) as CardType[]);
+    setSubscriptions(subsRes.data || []);
+    setCards(cardsRes.data || []);
     setIsLoading(false);
-  }
+  }, [supabase]);
 
-  useEffect(() => { fetchData(); }, [supabase]);
+  useEffect(() => { fetchData(); }, [fetchData]);
 
-  const activeTotal = subscriptions
-    .filter(s => s.is_active)
-    .reduce((sum, s) => sum + Number(s.amount), 0);
+  const activeTotal = subscriptions.reduce((sum, s) => (s.is_active ? sum + s.amount : sum), 0);
+
+  const parseRenewalDay = (value: string): number | null => {
+    const day = value ? parseInt(value) : null;
+    return day && day >= 1 && day <= 31 ? day : null;
+  };
+
+  const parseCardId = (value: string): string | null =>
+    value && value !== "none" ? value : null;
 
   const handleAdd = async () => {
     if (!title || !amount) { toast.error("Title and amount required"); return; }
@@ -80,19 +86,22 @@ export default function SubscriptionsPage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const day = renewalDay ? parseInt(renewalDay) : null;
       const { error } = await insertSubscription(supabase, {
         user_id: user.id,
         title,
         amount: parseFloat(amount),
-        renewal_day: day && day >= 1 && day <= 31 ? day : null,
+        renewal_day: parseRenewalDay(renewalDay),
         is_active: true,
-        card_id: cardId && cardId !== "none" ? cardId : null,
+        card_id: parseCardId(cardId),
       });
 
       if (error) { toast.error("Failed to add"); return; }
       toast.success("Subscription added");
-      setShowForm(false); setTitle(""); setAmount(""); setRenewalDay(""); setCardId("");
+      setShowForm(false);
+      setTitle("");
+      setAmount("");
+      setRenewalDay("");
+      setCardId("");
       fetchData();
     } finally { setIsSaving(false); }
   };
@@ -110,12 +119,11 @@ export default function SubscriptionsPage() {
     if (!editTitle || !editAmount) { toast.error("Title and amount required"); return; }
     setIsUpdating(true);
     try {
-      const day = editRenewalDay ? parseInt(editRenewalDay) : null;
       const { error } = await updateSubscription(supabase, editingSub.id, {
         title: editTitle,
         amount: parseFloat(editAmount),
-        renewal_day: day && day >= 1 && day <= 31 ? day : null,
-        card_id: editCardId && editCardId !== "none" ? editCardId : null,
+        renewal_day: parseRenewalDay(editRenewalDay),
+        card_id: parseCardId(editCardId),
       });
 
       if (error) { toast.error("Failed to update"); return; }
@@ -154,9 +162,9 @@ export default function SubscriptionsPage() {
   const activeSubs = sortSubs(subscriptions.filter(s => s.is_active));
   const inactiveSubs = sortSubs(subscriptions.filter(s => !s.is_active));
 
-  const getCardLabel = (cardId: string | null) => {
-    if (!cardId) return null;
-    const card = cards.find(c => c.id === cardId);
+  const getCardLabel = (id: string | null) => {
+    if (!id) return null;
+    const card = cards.find(c => c.id === id);
     return card ? (card.label || card.bank) : null;
   };
 
@@ -165,9 +173,9 @@ export default function SubscriptionsPage() {
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium truncate">{sub.title}</p>
         <p className="text-xs text-muted-foreground">
-          {formatCurrency(Number(sub.amount))}
+          {formatCurrency(sub.amount)}
           {sub.renewal_day ? ` / day ${sub.renewal_day}` : ""}
-          {sub.card_id ? ` · ${getCardLabel(sub.card_id)}` : ""}
+          {getCardLabel(sub.card_id) ? ` · ${getCardLabel(sub.card_id)}` : ""}
         </p>
       </div>
       <Button
