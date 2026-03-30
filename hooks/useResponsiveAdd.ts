@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-export function useResponsiveAdd() {
+export function useResponsiveAdd(): { isDesktop: boolean } {
   const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
