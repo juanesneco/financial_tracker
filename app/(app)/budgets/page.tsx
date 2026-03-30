@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Loader2, Plus, Trash2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { getBudgets, insertBudget, deleteBudget, getCategories, getExpenses } from "@/lib/supabase/queries";
+import { getBudgets, insertBudget, deleteBudget, getExpenses } from "@/lib/supabase/queries";
 import { formatCurrency, getMonthDateRange } from "@/lib/format-utils";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,18 +15,17 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { useCategories } from "@/hooks/useCategories";
-import type { Budget, Category, Expense } from "@/lib/types";
+import type { Budget } from "@/lib/types";
 
 export default function BudgetsPage() {
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
   const [budgets, setBudgets] = useState<Budget[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [spentByCategory, setSpentByCategory] = useState<Record<string, number>>({});
   const [showForm, setShowForm] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  const { visibleCategories } = useCategories();
+  const { categories, visibleCategories } = useCategories();
   const [categoryId, setCategoryId] = useState("");
   const [amount, setAmount] = useState("");
 
@@ -34,31 +33,27 @@ export default function BudgetsPage() {
     const now = new Date();
     const { start, end } = getMonthDateRange(now.getMonth(), now.getFullYear());
 
-    const [
-      { data: b },
-      { data: cats },
-      { data: exps },
-    ] = await Promise.all([
-      getBudgets(supabase),
-      getCategories(supabase),
-      getExpenses(supabase, { startDate: start, endDate: end }),
-    ]);
+    try {
+      const [
+        { data: b },
+        { data: exps },
+      ] = await Promise.all([
+        getBudgets(supabase),
+        getExpenses(supabase, { startDate: start, endDate: end }),
+      ]);
 
-    setBudgets((b || []) as Budget[]);
-    setCategories((cats || []) as Category[]);
-    setExpenses((exps || []) as Expense[]);
-    setIsLoading(false);
+      setBudgets((b ?? []) as Budget[]);
+      const totals: Record<string, number> = {};
+      for (const { category_id, amount: expAmount } of (exps ?? []) as Array<{ category_id: string; amount: number }>) {
+        totals[category_id] = (totals[category_id] ?? 0) + expAmount;
+      }
+      setSpentByCategory(totals);
+    } finally {
+      setIsLoading(false);
+    }
   }, [supabase]);
 
   useEffect(() => { fetchData(); }, [fetchData]);
-
-  const getCategoryById = (id: string) => categories.find(c => c.id === id);
-
-  const getSpentForCategory = (catId: string) => {
-    return expenses
-      .filter(e => e.category_id === catId)
-      .reduce((sum, e) => sum + Number(e.amount), 0);
-  };
 
   const handleAdd = async () => {
     if (!categoryId || !amount) { toast.error("Category and amount required"); return; }
@@ -141,9 +136,10 @@ export default function BudgetsPage() {
 
           <div className="space-y-3">
             {budgets.map((budget) => {
-              const cat = budget.category_id ? getCategoryById(budget.category_id) : null;
-              const spent = budget.category_id ? getSpentForCategory(budget.category_id) : 0;
-              const budgetAmount = Number(budget.amount);
+              const catId = budget.category_id;
+              const cat = catId ? categories.find(c => c.id === catId) : null;
+              const spent = catId ? (spentByCategory[catId] ?? 0) : 0;
+              const budgetAmount = budget.amount;
               const percentage = budgetAmount > 0 ? Math.min((spent / budgetAmount) * 100, 100) : 0;
               const isOver = spent > budgetAmount;
 
@@ -165,7 +161,6 @@ export default function BudgetsPage() {
                       <span>{formatCurrency(budgetAmount)} budget</span>
                     </div>
 
-                    {/* Progress bar */}
                     <div className="w-full bg-muted rounded-full h-2.5">
                       <div
                         className={`h-2.5 rounded-full transition-all ${isOver ? "bg-destructive" : "bg-primary"}`}
