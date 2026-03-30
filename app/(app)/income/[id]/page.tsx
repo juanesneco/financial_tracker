@@ -64,15 +64,14 @@ export default function IncomeDetailPage() {
           return;
         }
 
-        const r = rec as IncomeRecord;
-        setRecord(r);
-        setSources((srcs || []) as IncomeSource[]);
+        setRecord(rec);
+        setSources(srcs ?? []);
 
         // Initialize form
-        setDate(r.date);
-        setSourceId(r.income_source_id || "");
-        setDescription(r.description || "");
-        setAmount(String(r.amount));
+        setDate(rec.date);
+        setSourceId(rec.income_source_id || "");
+        setDescription(rec.description || "");
+        setAmount(String(rec.amount));
       } finally {
         setIsLoading(false);
       }
@@ -80,8 +79,6 @@ export default function IncomeDetailPage() {
 
     fetchData();
   }, [supabase, recordId, router]);
-
-  const getSourceById = (id: string) => sources.find((s) => s.id === id);
 
   const handleSave = async () => {
     if (!date || !sourceId || !description.trim() || !amount) {
@@ -107,7 +104,7 @@ export default function IncomeDetailPage() {
       setIsEditing(false);
 
       const { data: updated } = await getIncomeRecordById(supabase, recordId);
-      if (updated) setRecord(updated as IncomeRecord);
+      if (updated) setRecord(updated);
     } finally {
       setIsSaving(false);
     }
@@ -144,7 +141,7 @@ export default function IncomeDetailPage() {
 
   if (!record) return null;
 
-  const source = record.income_source_id ? getSourceById(record.income_source_id) : null;
+  const source = record.income_source_id ? sources.find((s) => s.id === record.income_source_id) : null;
 
   if (isEditing) {
     return (

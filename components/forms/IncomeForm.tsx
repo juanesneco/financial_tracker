@@ -42,7 +42,7 @@ export function IncomeForm({ onSuccess, onCancel, isSheet }: IncomeFormProps) {
   useEffect(() => {
     async function fetchSources() {
       const { data } = await getIncomeSources(supabase);
-      setSources((data || []) as IncomeSource[]);
+      setSources(data ?? []);
       setIsLoading(false);
     }
     fetchSources();
@@ -80,7 +80,7 @@ export function IncomeForm({ onSuccess, onCancel, isSheet }: IncomeFormProps) {
         amount: parseFloat(amount),
         date,
         income_source_id: sourceId || null,
-        description: description || null,
+        description: description.trim() || null,
       });
 
       if (error) { toast.error("Failed to save income"); return; }
