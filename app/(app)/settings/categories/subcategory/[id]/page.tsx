@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
@@ -21,13 +21,13 @@ import {
   Check,
   X,
 } from "lucide-react";
-import type { Expense, Profile, Subcategory } from "@/lib/types";
+import type { Expense, Profile } from "@/lib/types";
 
 export default function SubcategoryDetailPage() {
   const router = useRouter();
   const params = useParams();
   const supabase = createClient();
-  const subcategoryId = params.id as string;
+  const subcategoryId = Array.isArray(params.id) ? params.id[0] : (params.id ?? "");
 
   const { categories, subcategories, isLoading: catLoading, refetch } = useCategories();
 
@@ -50,42 +50,52 @@ export default function SubcategoryDetailPage() {
   // Fetch profile + expenses
   useEffect(() => {
     async function fetchData() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) return;
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (!user) return;
 
-      const [{ data: prof }, { data: exps }] = await Promise.all([
-        getProfile(supabase, user.id),
-        getExpensesBySubcategoryId(supabase, subcategoryId),
-      ]);
+        const [{ data: prof }, { data: exps }] = await Promise.all([
+          getProfile(supabase, user.id),
+          getExpensesBySubcategoryId(supabase, subcategoryId),
+        ]);
 
-      if (prof) setProfile(prof as Profile);
-      setExpenses((exps || []) as Expense[]);
-      setIsLoadingExpenses(false);
+        if (prof) setProfile(prof as Profile);
+        setExpenses((exps || []) as Expense[]);
+      } finally {
+        setIsLoadingExpenses(false);
+      }
     }
     fetchData();
   }, [supabase, subcategoryId]);
 
   const isLoading = catLoading || isLoadingExpenses;
 
-  const totalAmount = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
+  const totalAmount = useMemo(
+    () => expenses.reduce((sum, e) => sum + Number(e.amount), 0),
+    [expenses]
+  );
   const canEdit =
     subcategory &&
     (subcategory.user_id !== null || profile?.is_super_admin);
 
   // Group expenses by date
-  const groupedExpenses = expenses.reduce<Record<string, Expense[]>>(
-    (acc, exp) => {
-      const key = exp.date;
-      if (!acc[key]) acc[key] = [];
-      acc[key].push(exp);
-      return acc;
-    },
-    {}
+  const groupedExpenses = useMemo(
+    () =>
+      expenses.reduce<Record<string, Expense[]>>((acc, exp) => {
+        if (!acc[exp.date]) acc[exp.date] = [];
+        acc[exp.date].push(exp);
+        return acc;
+      }, {}),
+    [expenses]
   );
-  const sortedDates = Object.keys(groupedExpenses).sort(
-    (a, b) => new Date(b).getTime() - new Date(a).getTime()
+  const sortedDates = useMemo(
+    () =>
+      Object.keys(groupedExpenses).sort(
+        (a, b) => new Date(b).getTime() - new Date(a).getTime()
+      ),
+    [groupedExpenses]
   );
 
   const handleStartEdit = () => {

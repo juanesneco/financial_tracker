@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, type MouseEvent, Fragment } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { getProfile, insertCategory, insertSubcategory, deleteCategory, deleteSubcategory, deleteSubcategoriesByIds, updateCategory, getExpenseCountsBySubcategoryIds, getExpenseCountByCategory } from "@/lib/supabase/queries";
@@ -93,8 +93,7 @@ export default function CategoriesSettingsPage() {
       if (!data) return;
       const counts: Record<string, number> = {};
       for (const row of data) {
-        const sid = (row as { subcategory_id: string }).subcategory_id;
-        counts[sid] = (counts[sid] || 0) + 1;
+        counts[row.subcategory_id] = (counts[row.subcategory_id] || 0) + 1;
       }
       setSubExpenseCounts(counts);
     }
@@ -104,19 +103,15 @@ export default function CategoriesSettingsPage() {
   // ─── Handlers ───────────────────────────────────────────────────────────────
 
   const handleAddCategory = async () => {
-    if (!newCatName.trim()) return;
+    if (!newCatName.trim() || !profile) return;
     setIsSaving(true);
     try {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) return;
       const { error } = await insertCategory(supabase, {
         name: newCatName.trim(),
         emoji: newCatEmoji || null,
         icon: newCatEmoji || "📦",
         color: newCatColor,
-        user_id: user.id,
+        user_id: profile.id,
       });
       if (error) {
         toast.error("Failed to create category");
@@ -134,18 +129,14 @@ export default function CategoriesSettingsPage() {
   };
 
   const handleAddSubcategory = async (categoryId: string) => {
-    if (!newSubName.trim()) return;
+    if (!newSubName.trim() || !profile) return;
     setIsSaving(true);
     try {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) return;
       const { error } = await insertSubcategory(supabase, {
         category_id: categoryId,
         name: newSubName.trim(),
         emoji: newSubEmoji || null,
-        user_id: user.id,
+        user_id: profile.id,
       });
       if (error) {
         toast.error("Failed to create subcategory");
@@ -165,7 +156,7 @@ export default function CategoriesSettingsPage() {
     // Check how many expenses use this category
     const { count } = await getExpenseCountByCategory(supabase, id);
 
-    if (count && count > 0) {
+    if (count) {
       toast.error(`Cannot delete — ${count} expense(s) are linked to this category`);
       return;
     }
@@ -187,7 +178,7 @@ export default function CategoriesSettingsPage() {
     refetch();
   };
 
-  const handleDeleteSubcategory = async (id: string, e?: React.MouseEvent) => {
+  const handleDeleteSubcategory = async (id: string, e?: MouseEvent) => {
     e?.preventDefault();
     e?.stopPropagation();
 
@@ -218,7 +209,10 @@ export default function CategoriesSettingsPage() {
     refetch();
   };
 
-  const sortedCategories = [...categories].sort((a, b) => a.name.localeCompare(b.name));
+  const sortedCategories = useMemo(
+    () => [...categories].sort((a, b) => a.name.localeCompare(b.name)),
+    [categories]
+  );
 
   const renderAddSubcategory = (categoryId: string) =>
     addSubForCategory === categoryId ? (
@@ -367,7 +361,7 @@ export default function CategoriesSettingsPage() {
                 .filter((s) => s.category_id === cat.id)
                 .sort((a, b) => a.name.localeCompare(b.name));
               const canEdit = !isUniversal || profile?.is_super_admin;
-              const isNotDisplayed = cat.is_displayed === false;
+              const isNotDisplayed = !cat.is_displayed;
 
               return (
                 <Card
@@ -403,11 +397,11 @@ export default function CategoriesSettingsPage() {
                       </div>
                       {canEdit && (
                         <button
-                          onClick={() => handleToggleDisplayed(cat.id, cat.is_displayed !== false)}
-                          className={`p-2 transition-colors ${cat.is_displayed !== false ? "text-emerald-600 hover:text-muted-foreground" : "text-muted-foreground hover:text-emerald-600"}`}
-                          title={cat.is_displayed !== false ? "Hide from dropdowns" : "Show in dropdowns"}
+                          onClick={() => handleToggleDisplayed(cat.id, cat.is_displayed)}
+                          className={`p-2 transition-colors ${cat.is_displayed ? "text-emerald-600 hover:text-muted-foreground" : "text-muted-foreground hover:text-emerald-600"}`}
+                          title={cat.is_displayed ? "Hide from dropdowns" : "Show in dropdowns"}
                         >
-                          {cat.is_displayed !== false ? <ToggleRight size={18} /> : <ToggleLeft size={18} />}
+                          {cat.is_displayed ? <ToggleRight size={18} /> : <ToggleLeft size={18} />}
                         </button>
                       )}
                       {isUniversal && (
@@ -507,10 +501,10 @@ export default function CategoriesSettingsPage() {
                       .filter((s) => s.category_id === cat.id)
                       .sort((a, b) => a.name.localeCompare(b.name));
                     const canEdit = !isUniversal || profile?.is_super_admin;
-                    const isNotDisplayed = cat.is_displayed === false;
+                    const isNotDisplayed = !cat.is_displayed;
 
                     return (
-                      <React.Fragment key={cat.id}>
+                      <Fragment key={cat.id}>
                         <tr className={`${isHidden || isNotDisplayed ? "opacity-50" : ""} hover:bg-muted/30`}>
                           <td className="py-3 pr-2">
                             <button
@@ -537,11 +531,11 @@ export default function CategoriesSettingsPage() {
                           <td className="py-3 pr-4 text-center">
                             {canEdit && (
                               <button
-                                onClick={() => handleToggleDisplayed(cat.id, cat.is_displayed !== false)}
-                                className={`p-1 transition-colors ${cat.is_displayed !== false ? "text-emerald-600 hover:text-muted-foreground" : "text-muted-foreground hover:text-emerald-600"}`}
-                                title={cat.is_displayed !== false ? "Hide from dropdowns" : "Show in dropdowns"}
+                                onClick={() => handleToggleDisplayed(cat.id, cat.is_displayed)}
+                                className={`p-1 transition-colors ${cat.is_displayed ? "text-emerald-600 hover:text-muted-foreground" : "text-muted-foreground hover:text-emerald-600"}`}
+                                title={cat.is_displayed ? "Hide from dropdowns" : "Show in dropdowns"}
                               >
-                                {cat.is_displayed !== false ? <ToggleRight size={18} /> : <ToggleLeft size={18} />}
+                                {cat.is_displayed ? <ToggleRight size={18} /> : <ToggleLeft size={18} />}
                               </button>
                             )}
                           </td>
@@ -626,7 +620,7 @@ export default function CategoriesSettingsPage() {
                             </td>
                           </tr>
                         )}
-                      </React.Fragment>
+                      </Fragment>
                     );
                   })}
                 </tbody>
