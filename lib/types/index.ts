@@ -46,9 +46,11 @@ export type PaymentMethod = "card" | "cash";
 
 export type TimeRange = "today" | "this_week" | "this_month" | "this_year" | "custom";
 
+export type ISODateString = string;
+
 export interface DateRange {
-  start: string; // YYYY-MM-DD
-  end: string;   // YYYY-MM-DD
+  start: ISODateString;
+  end: ISODateString;
 }
 
 export interface MonthYear {
@@ -57,8 +59,8 @@ export interface MonthYear {
 }
 
 export interface PaginationOptions {
-  startDate?: string;
-  endDate?: string;
+  startDate?: ISODateString;
+  endDate?: ISODateString;
   limit?: number;
   offset?: number;
 }
