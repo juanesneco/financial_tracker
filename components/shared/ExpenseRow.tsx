@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { CreditCard, Banknote } from "lucide-react";
 import { formatCurrency } from "@/lib/format-utils";
 import type { Expense, Category } from "@/lib/types";
+import { PaymentMethodIcon } from "./PaymentMethodIcon";
 
 interface ExpenseRowProps {
   expense: Expense;
@@ -24,8 +24,7 @@ export function ExpenseRow({ expense, category }: ExpenseRowProps) {
         <p className="text-xs text-muted-foreground">{category?.name}</p>
       </div>
       <div className="flex items-center gap-1.5">
-        {expense.payment_method === "card" && <CreditCard size={12} className="text-muted-foreground" />}
-        {expense.payment_method === "cash" && <Banknote size={12} className="text-muted-foreground" />}
+        <PaymentMethodIcon method={expense.payment_method} size={12} />
         <p className="text-sm font-semibold tabular-nums">
           {formatCurrency(expense.amount)}
         </p>
