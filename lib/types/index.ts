@@ -59,7 +59,7 @@ export interface PaginationOptions {
 
 export interface ExpenseQueryOptions extends PaginationOptions {
   categoryId?: string;
-  paymentMethod?: string;
+  paymentMethod?: PaymentMethod;
   search?: string;
 }
 
