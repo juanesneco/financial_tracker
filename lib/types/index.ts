@@ -26,17 +26,19 @@ export type BudgetInsert = Tables["ft_budgets"]["Insert"];
 export type IncomeSourceInsert = Tables["ft_income_sources"]["Insert"];
 export type IncomeRecordInsert = Tables["ft_income_records"]["Insert"];
 export type CategoryInsert = Tables["ft_categories"]["Insert"];
-export type CategoryUpdate = Tables["ft_categories"]["Update"];
 export type SubcategoryInsert = Tables["ft_subcategories"]["Insert"];
-export type SubcategoryUpdate = Tables["ft_subcategories"]["Update"];
+
 // ─── Update Types ────────────────────────────────────────────────────────────
 
+export type ProfileUpdate = Tables["ft_profiles"]["Update"];
 export type ExpenseUpdate = Tables["ft_expenses"]["Update"];
 export type CardUpdate = Tables["ft_cards"]["Update"];
 export type SubscriptionUpdate = Tables["ft_subscriptions"]["Update"];
 export type BudgetUpdate = Tables["ft_budgets"]["Update"];
 export type IncomeSourceUpdate = Tables["ft_income_sources"]["Update"];
 export type IncomeRecordUpdate = Tables["ft_income_records"]["Update"];
+export type CategoryUpdate = Tables["ft_categories"]["Update"];
+export type SubcategoryUpdate = Tables["ft_subcategories"]["Update"];
 
 // ─── App Types ───────────────────────────────────────────────────────────────
 
@@ -44,14 +46,29 @@ export type PaymentMethod = "card" | "cash";
 
 export type TimeRange = "today" | "this_week" | "this_month" | "this_year" | "custom";
 
+export type ISODateString = string;
+
 export interface DateRange {
-  start: string; // YYYY-MM-DD
-  end: string;   // YYYY-MM-DD
+  start: ISODateString;
+  end: ISODateString;
 }
 
 export interface MonthYear {
   month: number; // 0-11
   year: number;
+}
+
+export interface PaginationOptions {
+  startDate?: ISODateString;
+  endDate?: ISODateString;
+  limit?: number;
+  offset?: number;
+}
+
+export interface ExpenseQueryOptions extends PaginationOptions {
+  categoryId?: string;
+  paymentMethod?: PaymentMethod;
+  search?: string;
 }
 
 export interface CategoryTotal {

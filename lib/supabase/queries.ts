@@ -1,5 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type {
+  Profile,
+  ProfileUpdate,
   ExpenseInsert,
   ExpenseUpdate,
   DepositInsert,
@@ -17,11 +19,10 @@ import type {
   CategoryUpdate,
   SubcategoryInsert,
   SubcategoryUpdate,
-  Profile,
+  PaginationOptions,
+  ExpenseQueryOptions,
 } from "@/lib/types";
 
-// The codebase uses `(supabase as any).from("ft_*")` pattern because
-// Supabase client types don't recognize our custom views as writable tables.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Client = SupabaseClient<any, any, any>;
 
@@ -31,7 +32,7 @@ export async function getProfile(supabase: Client, userId: string) {
   return supabase.from("ft_profiles").select("*").eq("id", userId).single();
 }
 
-export async function updateProfile(supabase: Client, userId: string, updates: Partial<Profile>) {
+export async function updateProfile(supabase: Client, userId: string, updates: ProfileUpdate) {
   return supabase.from("ft_profiles").update(updates).eq("id", userId);
 }
 
@@ -104,15 +105,7 @@ export async function deleteSubcategoriesByIds(supabase: Client, ids: string[]) 
 
 export async function getExpenses(
   supabase: Client,
-  options: {
-    startDate?: string;
-    endDate?: string;
-    categoryId?: string;
-    paymentMethod?: string;
-    search?: string;
-    limit?: number;
-    offset?: number;
-  } = {}
+  options: ExpenseQueryOptions = {}
 ) {
   let query = supabase.from("ft_expenses").select("*", { count: "exact" });
 
@@ -173,7 +166,7 @@ export async function deleteExpense(supabase: Client, id: string) {
 
 export async function getDeposits(
   supabase: Client,
-  options: { startDate?: string; endDate?: string; limit?: number; offset?: number } = {}
+  options: PaginationOptions = {}
 ) {
   let query = supabase.from("ft_deposits").select("*", { count: "exact" });
 
@@ -286,7 +279,7 @@ export async function deleteIncomeSource(supabase: Client, id: string) {
 
 export async function getIncomeRecords(
   supabase: Client,
-  options: { startDate?: string; endDate?: string; limit?: number; offset?: number } = {}
+  options: PaginationOptions = {}
 ) {
   let query = supabase.from("ft_income_records").select("*", { count: "exact" });
 
