@@ -134,7 +134,7 @@ ${JSON.stringify(subcategoryList, null, 2)}
 
     // Validate subcategory_id exists in our list
     const validSubId = subcategoryList.find(
-      (s: { id: string }) => s.id === extracted.subcategory_id
+      (s) => s.id === extracted.subcategory_id
     );
     if (!validSubId) {
       extracted.subcategory_id = null;
