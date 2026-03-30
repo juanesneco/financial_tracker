@@ -30,6 +30,13 @@ const moreMenuItems = [
   { href: "/settings", icon: Settings, label: "Settings" },
 ];
 
+function moreMenuLinkClass(isActive: boolean): string {
+  return cn(
+    "flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-colors",
+    isActive ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-muted"
+  );
+}
+
 export function MobileNav() {
   const pathname = usePathname();
   const router = useRouter();
@@ -183,33 +190,14 @@ export function MobileNav() {
             {moreMenuItems.map((item) => {
               const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
               return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMoreOpen(false)}
-                  className={cn(
-                    "flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-colors",
-                    isActive
-                      ? "bg-primary text-primary-foreground"
-                      : "text-foreground hover:bg-muted"
-                  )}
-                >
+                <Link key={item.href} href={item.href} onClick={() => setMoreOpen(false)} className={moreMenuLinkClass(isActive)}>
                   <item.icon size={20} />
                   {item.label}
                 </Link>
               );
             })}
             {isJuanes && (
-              <Link
-                href="/juanes"
-                onClick={() => setMoreOpen(false)}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-colors",
-                  pathname === "/juanes" || pathname.startsWith("/juanes/")
-                    ? "bg-primary text-primary-foreground"
-                    : "text-foreground hover:bg-muted"
-                )}
-              >
+              <Link href="/juanes" onClick={() => setMoreOpen(false)} className={moreMenuLinkClass(pathname === "/juanes" || pathname.startsWith("/juanes/"))}>
                 <ArrowDownCircle size={20} />
                 Juanes
               </Link>
